@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MenuButtons : MonoBehaviour {
 
-public Canvas panelCanvas; 
-private bool openpanel = false; 
+public Canvas diffpanelCanvas;
+public Canvas rulesPanelCanvas;
+
+private bool opendiff = false;
+private bool openrule = false; 
 
 	// Use this for initialization
 	void Start () {
@@ -17,14 +20,25 @@ private bool openpanel = false;
 		
 	}
 
-	public void PanelState(){
-		if (openpanel == false){
-			openpanel = true;
-			panelCanvas.enabled = true; 
-		}
-		else if (openpanel == true){
-			openpanel = false;
-			panelCanvas.enabled = false; 
-		}
+	public void DiffPanelState(){
+			if (opendiff == false){
+				opendiff = true;
+				diffpanelCanvas.enabled = true; 
+			}
+			else if (opendiff == true){
+				opendiff = false;
+				diffpanelCanvas.enabled = false; 
+			}
 	}
+		public void rulePanelState(){
+			if (openrule == false){
+				openrule = true;
+				rulesPanelCanvas.enabled = true; 
+			}
+			else if (openrule == true){
+				openrule = false;
+				rulesPanelCanvas.enabled = false; 
+			}
+	}
+
 }
