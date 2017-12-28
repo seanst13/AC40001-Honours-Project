@@ -41,4 +41,8 @@ private bool openrule = false;
 			}
 	}
 
+	public void exitGame(){
+		Application.Quit();
+	}
+
 }
