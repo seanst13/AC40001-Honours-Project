@@ -26,16 +26,16 @@ public class GameController : MonoBehaviour {
              for (var column = 0; column < this.boardColumnCount; column++)
              {
 				 if (BoxWhite == true){
-                 	Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity).SetActive(true);
+                 	Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity).transform.SetParent(this.transform,false);
 					BoxWhite = false;
 				 } else if (BoxWhite == false){
-                 	Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity).SetActive(true);
+                 	Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity).transform.SetParent(this.transform,false);
 					BoxWhite = true;
              	}
-				 xpos = xpos -50;
+				 xpos = xpos +60;
 			 }
 			 xpos = -285;
-			 ypos = ypos-50; 
+			 ypos = ypos-60; 
          }
 	}
 
