@@ -38,8 +38,8 @@ public class BoxClick : MonoBehaviour {
 
 	void changeColour(){
 		if (white){
-		Debug.Log("Button escpaed");
-		GetComponent<Image>().color = Color.white;
+			Debug.Log("Button escpaed");
+			GetComponent<Image>().color = Color.white;
 		} else {
 			Debug.Log("Button escpaed");
 			GetComponent<Image>().color = greybox;
