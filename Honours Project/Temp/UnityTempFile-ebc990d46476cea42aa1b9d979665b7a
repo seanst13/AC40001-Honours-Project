@@ -78,6 +78,8 @@
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_WIN
 -define:UNITY_TEAM_LICENSE
+Assets/BoxClick.cs
+Assets/Scripts/GameController.cs
 Assets/Scripts/MenuButtons.cs
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Runtime.Serialization.dll"
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Xml.Linq.dll"
