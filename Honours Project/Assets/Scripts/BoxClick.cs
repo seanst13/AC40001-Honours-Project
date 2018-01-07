@@ -9,7 +9,7 @@ public class BoxClick : MonoBehaviour {
 	bool buttonPressed = false;
 	bool white = false;
 
-	 Color greybox = new Color(.529f,.529f,.529f);
+	 Color32 greybox = new Color32(135,135,135,255);
 
 	// Use this for initialization
 	public void turnBlue(){
@@ -18,7 +18,7 @@ public class BoxClick : MonoBehaviour {
 			if(GetComponent<Image>().color == Color.white){
 				GetComponent<Image>().color = Color.cyan;
 				white = true; 
-			}else {
+			}else if(GetComponent<Image>().color == greybox) {
 				GetComponent<Image>().color = Color.red;
 				white = false; 
 			}
