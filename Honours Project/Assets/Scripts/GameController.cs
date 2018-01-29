@@ -24,22 +24,30 @@ public class GameController : MonoBehaviour {
 	public void DisplayBoard(){
 		int xpos = -285;
 		int ypos = 185; 
-		   for (var row = 0; row < this.gridSize; row++)
-         {
-             for (var column = 0; column < this.gridSize; column++)
-             {
-				 if (BoxWhite){
-                 	Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity).transform.SetParent(this.transform,false);
-					BoxWhite = false;
-				 } else if (!BoxWhite){
-                 	Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity).transform.SetParent(this.transform,false);
-					BoxWhite = true;
-             	}
-				 xpos = xpos +60;
-			 }
-			 xpos = -285;
-			 ypos = ypos-60; 
+		for (var row = 0; row < this.gridSize; row++){
+        	for (var column = 0; column < this.gridSize; column++){
+				SpawnBox(row,column,xpos,ypos);
+				xpos = xpos +60;
+            }
+			xpos = -285;
+			ypos = ypos-60; 
          }
-	}
+}
+public void SpawnBox(int row, int column, int xpos, int ypos){
+		if (BoxWhite){
+			GameObject box = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+			box.transform.SetParent(this.transform,false);
+			if (column == middleSquare && row == middleSquare)
+				box.GetComponentInChildren<Text>().text = "5";
+			BoxWhite = false;
+		} else if (!BoxWhite){
+			GameObject box = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+			box.transform.SetParent(this.transform,false);
+			if (column == middleSquare && row == middleSquare)
+				box.GetComponentInChildren<Text>().text = "5";
+			BoxWhite = true;
+		}
+
+}
 
 }
