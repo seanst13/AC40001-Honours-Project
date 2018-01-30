@@ -9,9 +9,12 @@ public class GameController : MonoBehaviour {
 	bool BoxWhite = true; 
 	public GameObject whiteSquare;
 	public GameObject greySquare;
-	private int middleSquare; 
+	private int middleSquare;
+	public GameObject[,] gridArray; 
 
 	void Start(){
+		//Set up Array and Middle Square Values
+		gridArray = new GameObject[gridSize,gridSize];
 		middleSquare = Mathf.RoundToInt(gridSize/2);
 		DisplayBoard(); 
 		
@@ -33,19 +36,24 @@ public class GameController : MonoBehaviour {
 			ypos = ypos-60; 
          }
 }
+// Spawns A White or Grey Box and adds them to the array
 public void SpawnBox(int row, int column, int xpos, int ypos){
 		if (BoxWhite){
-			GameObject box = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
-			box.transform.SetParent(this.transform,false);
+			gridArray[row,column] = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+			gridArray[row,column].transform.SetParent(this.transform,false);
+			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
-				box.GetComponentInChildren<Text>().text = "5";
-			BoxWhite = false;
+				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
+			BoxWhite = false;			
 		} else if (!BoxWhite){
-			GameObject box = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
-			box.transform.SetParent(this.transform,false);
+			gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+			gridArray[row,column].transform.SetParent(this.transform,false);
+			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
-				box.GetComponentInChildren<Text>().text = "5";
+				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
+
 			BoxWhite = true;
+			
 		}
 
 }
