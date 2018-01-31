@@ -19,6 +19,7 @@ public class NumberBag : MonoBehaviour {
 		}
 
 		foreach (int num in numbers){
+			Debug.Log(num);
 		}	
 	}
 	
