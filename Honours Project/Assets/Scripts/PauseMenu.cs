@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class PauseMenu : MonoBehaviour {
 
@@ -18,7 +19,7 @@ public class PauseMenu : MonoBehaviour {
 		}
 	}
 
-	void Resume(){
+	public void Resume(){
 		PauseMenuUI.SetActive(false);
 		Time.timeScale = 1f;
 		PausedGame = false; 
@@ -28,5 +29,12 @@ public class PauseMenu : MonoBehaviour {
 		PauseMenuUI.SetActive(true);
 		Time.timeScale = 0f;
 		PausedGame = true; 
+	}
+	public void LoadMenu(){
+        SceneManager.LoadScene("Title Screen");
+	}
+
+	public void QuitGame(){
+		Application.Quit();
 	}
 }
