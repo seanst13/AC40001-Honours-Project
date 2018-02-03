@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;
-	public GameObject[,] gridArray; 
+	public static GameObject[,] gridArray; 
 
 	void Start(){
 		//Set up Array and Middle Square Values
@@ -18,10 +18,6 @@ public class GameController : MonoBehaviour {
 		middleSquare = Mathf.RoundToInt(gridSize/2);
 		DisplayBoard(); 
 		
-	}
-
-	public void returnToMenu(){
-		SceneManager.LoadScene("Title Screen");
 	}
 
 	public void DisplayBoard(){
