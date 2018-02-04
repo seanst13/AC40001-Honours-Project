@@ -9,13 +9,13 @@ public class PieceGeneration : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {	
-		numberList = NumberBag.instance.returnList(); 	
+		numberList = NumberBag.instance.returnList(); 
 		setValue();
 	}
 	
 	void setValue(){
-		if(numberList == null){
-			int value = (int) numberList[Random.Range(0,NumberBag.numbers.Count)];
+		if(numberList != null){
+			int value = (int) numberList[Random.Range(0,numberList.Count)];
 			Debug.Log("THIS IS VALUE:" + value);
 			playingPiece.GetComponentInChildren<Text>().text = value.ToString(); 
 	}
