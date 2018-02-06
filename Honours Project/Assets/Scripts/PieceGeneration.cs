@@ -9,18 +9,20 @@ public class PieceGeneration : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {	
-		numberList = NumberBag.instance.returnList(); 
+		numberList = NumberBag.numbers; 
 		setValue();
 	}
 	
 	void setValue(){
 		if(numberList != null){
-			int value = (int) numberList[Random.Range(0,numberList.Count)];
-			Debug.Log("THIS IS VALUE:" + value);
+			int index = Random.Range(0,numberList.Count);
+			int value = (int) numberList[index];
+			Debug.Log("The value that has been retrieved is: " + value);
 			playingPiece.GetComponentInChildren<Text>().text = value.ToString(); 
+			numberList.RemoveAt(index); 
 	}
 	else {
-		Debug.Log("NUMBERS IS NULL. WAT DO");
+		Debug.Log("The list is Null. ");
 	}
 }
 	// Update is called once per frame
