@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour {
+public class BoxSpawner : MonoBehaviour {
 	public int gridSize; 
 	bool BoxWhite = true; 
 	public GameObject whiteSquare;
@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour {
 	public static GameObject[,] gridArray; 
 
 	void Start(){
-		//Set up Array and Middle Square Values
+	//Set up Array and Middle Square Values
 		gridArray = new GameObject[gridSize,gridSize];
 		middleSquare = Mathf.RoundToInt(gridSize/2);
 		DisplayBoard(); 
@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
 				SpawnBox(row,column,xpos,ypos);
 				xpos = xpos +60;
             }
+		//Reset Row Back to the Start
 			xpos = -285;
 			ypos = ypos-60; 
          }
@@ -47,7 +48,6 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
 				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
-
 			BoxWhite = true;
 			
 		}

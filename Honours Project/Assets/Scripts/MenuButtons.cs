@@ -22,21 +22,21 @@ private bool openrule = false;
 	}
 
 	public void DiffPanelState(){
-			if (opendiff == false){
+			if (!opendiff){
 				opendiff = true;
 				diffpanelCanvas.enabled = true; 
 			}
-			else if (opendiff == true){
+			else if (opendiff){
 				opendiff = false;
 				diffpanelCanvas.enabled = false; 
 			}
 	}
 		public void rulePanelState(){
-			if (openrule == false){
+			if (!openrule){
 				openrule = true;
 				rulesPanelCanvas.enabled = true; 
 			}
-			else if (openrule == true){
+			else if (openrule){
 				openrule = false;
 				rulesPanelCanvas.enabled = false; 
 			}

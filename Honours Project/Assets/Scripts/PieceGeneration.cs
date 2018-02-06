@@ -11,9 +11,9 @@ public class PieceGeneration : MonoBehaviour {
 	void Start () {	
 		numberList = NumberBag.numbers; 
 		setValue();
-	}
-	
+	}	
 	void setValue(){
+	//Retrieves a random value from the number bag and adds it to the list. 
 		if(numberList != null){
 			int index = Random.Range(0,numberList.Count);
 			int value = (int) numberList[index];

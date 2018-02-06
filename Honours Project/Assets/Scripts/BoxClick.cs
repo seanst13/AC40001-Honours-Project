@@ -7,43 +7,25 @@ using UnityEngine.EventSystems;
 public class BoxClick : MonoBehaviour {
 
 	bool buttonPressed = false;
-	bool white = false;
-
-	 Color32 greybox = new Color32(135,135,135,255);
-
-	// Use this for initialization
-	public void turnBlue(){
+	 Color32 defaultColour;
+	public void boxEnter(){
 		if(!buttonPressed){
+			defaultColour = GetComponent<Image>().color;
 			Debug.Log("Button pressed");
-			if(GetComponent<Image>().color == Color.white){
-				GetComponent<Image>().color = Color.cyan;
-				white = true; 
-			}else if(GetComponent<Image>().color == greybox) {
-				GetComponent<Image>().color = Color.red;
-				white = false; 
-			}
+			GetComponent<Image>().color = Color.cyan;
 		}
-			buttonPressed = true; 
-
+		buttonPressed = true; 
 	}
-
-	public void turnWhite(){
-
+	public void boxExit(){
 		if(buttonPressed){
-			Invoke("changeColour", 2);
+			Invoke("returnToDefault", 2); //Wait 2 Seconds before resetting the colour
 			buttonPressed = false; 
 		}
-		// GetComponent<Image>.color = Color.green;
+	
 	}
 
-	void changeColour(){
-		if (white){
-			Debug.Log("Button escpaed");
-			GetComponent<Image>().color = Color.white;
-		} else {
-			Debug.Log("Button escpaed");
-			GetComponent<Image>().color = greybox;
-		}
+	void returnToDefault(){
+		GetComponent<Image>().color = defaultColour; 
 	}
 	void Update () {
 		
