@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PieceGeneration : MonoBehaviour {
+public class PieceManager : MonoBehaviour {
 	public GameObject playingPiece; 
 	List<int> numberList;  
 	public bool PieceSelected; 
 
-	public static PieceGeneration instance; 
+	public static PieceManager instance; 
 
 	// Use this for initialization
 	void Start () {	

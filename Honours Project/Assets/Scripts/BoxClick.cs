@@ -15,10 +15,10 @@ public class BoxClick : MonoBehaviour {
 			string objectname = this.name;
 			Debug.Log(objectname + " has been clicked.");
 
-			if (PieceGeneration.instance.PieceSelected){
-				GetComponentInChildren<Text>().text = PieceGeneration.instance.playingPiece.GetComponentInChildren<Text>().text;
-				PieceGeneration.instance.setPieceValue(); 
-				PieceGeneration.instance.PieceSelected = false; 
+			if (PieceManager.instance.PieceSelected){
+				GetComponentInChildren<Text>().text = PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text;
+				PieceManager.instance.setPieceValue(); 
+				PieceManager.instance.PieceSelected = false; 
 			}
 
 		}
