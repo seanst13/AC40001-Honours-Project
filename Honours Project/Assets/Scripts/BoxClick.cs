@@ -15,10 +15,12 @@ public class BoxClick : MonoBehaviour {
 			string objectname = this.name;
 			Debug.Log(objectname + " has been clicked.");
 
-			if (PieceManager.instance.PieceSelected){
+//Checks if The Piece has been clicked and will place it on the grid if it has. 
+			if (PieceManager.instance.PieceSelected && GetComponentInChildren<Text>().text == ""){
 				GetComponentInChildren<Text>().text = PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text;
 				PieceManager.instance.setPieceValue(); 
 				PieceManager.instance.PieceSelected = false; 
+				GetComponent<Collider2D>().enabled = false; 
 			}
 
 		}
