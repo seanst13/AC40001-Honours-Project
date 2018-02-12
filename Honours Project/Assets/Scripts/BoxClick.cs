@@ -11,10 +11,16 @@ public class BoxClick : MonoBehaviour {
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;
-			Debug.Log("Button pressed");
 			GetComponent<Image>().color = Color.cyan;
 			string objectname = this.name;
-			Debug.Log(objectname + "has been clicked.");
+			Debug.Log(objectname + " has been clicked.");
+
+			if (PieceGeneration.instance.PieceSelected){
+				GetComponentInChildren<Text>().text = PieceGeneration.instance.playingPiece.GetComponentInChildren<Text>().text;
+				PieceGeneration.instance.setPieceValue(); 
+				PieceGeneration.instance.PieceSelected = false; 
+			}
+
 		}
 		buttonPressed = true; 
 	}
