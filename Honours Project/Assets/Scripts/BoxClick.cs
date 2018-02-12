@@ -13,6 +13,8 @@ public class BoxClick : MonoBehaviour {
 			defaultColour = GetComponent<Image>().color;
 			Debug.Log("Button pressed");
 			GetComponent<Image>().color = Color.cyan;
+			string objectname = this.name;
+			Debug.Log(objectname + "has been clicked.");
 		}
 		buttonPressed = true; 
 	}

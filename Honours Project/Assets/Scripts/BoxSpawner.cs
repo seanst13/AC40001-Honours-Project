@@ -41,6 +41,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
 				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
+			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
 			BoxWhite = false;			
 		} else if (!BoxWhite){
 			gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
@@ -48,6 +49,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
 				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
+			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
 			BoxWhite = true;
 			
 		}
