@@ -29,15 +29,13 @@ public class BoxClick : MonoBehaviour {
 			} else if (PieceManager.instance.PieceSelected && GetComponentInChildren<Text>().text != "") {
 				PieceManager.instance.PieceSelected = false; 
 				ErrorManagement.instance.ShowError("Error: Piece cannot be placed ontop of an existing piece.");
-			}
-			
-		} else {
-			PieceManager.instance.PieceSelected = false; 
-			ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");
+			} else {
+				PieceManager.instance.PieceSelected = false; 
+				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");
 			
 		}
 		buttonPressed = true; 	
-		
+		}	
 	}
 	public void boxExit(){
 		if(buttonPressed){
@@ -55,16 +53,32 @@ public class BoxClick : MonoBehaviour {
 		int row = int.Parse(this.name.Substring(0,1)); 
 		int column = int.Parse(this.name.Substring(2,1));
 
-		//If the piece lies in the middle squares; 
-		if (row > 0 && row < 4  && column > 0 && column < 4){
-			if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-				BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-				BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-				BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-					return true; 
+		//If the piece lies in the rows; 
+		if ((row > 0 && row < 4)  && (column >=0 && column <=4)){
+			if (column+1 >4){
+				if(		BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
+						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
+						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
+						return true; 
+					}
+				else { return false; }
+			} else if (column -1 < 0) {
+				if(		BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
+						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
+						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
+						return true; 
+					}
+				else { return false; }
+			} else {
+				if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
+					BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
+					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
+					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
+						return true; 
+					}
+				else {
+					return false; 
 				}
-			else {
-				return false; 
 			}
 		//If the piece lies in the top row
 		} else if (row == 0 && (column >= 0 && column <=4)){
