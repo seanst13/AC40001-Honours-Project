@@ -4,24 +4,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour {
+public class BoxSpawner : MonoBehaviour {
 	public int gridSize; 
 	bool BoxWhite = true; 
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;
-	public GameObject[,] gridArray; 
+	public static GameObject[,] gridArray;
+
+	public static BoxSpawner instance; 
 
 	void Start(){
-		//Set up Array and Middle Square Values
+		instance = this; 
+	//Set up Array and Middle Square Values
 		gridArray = new GameObject[gridSize,gridSize];
 		middleSquare = Mathf.RoundToInt(gridSize/2);
 		DisplayBoard(); 
 		
-	}
-
-	public void returnToMenu(){
-		SceneManager.LoadScene("Title Screen");
 	}
 
 	public void DisplayBoard(){
@@ -32,6 +31,7 @@ public class GameController : MonoBehaviour {
 				SpawnBox(row,column,xpos,ypos);
 				xpos = xpos +60;
             }
+		//Reset Row Back to the Start
 			xpos = -285;
 			ypos = ypos-60; 
          }
@@ -43,15 +43,22 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			gridArray[row,column].transform.SetParent(this.transform,false);
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
-				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
+				{
+					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
+					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+				}
+			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
 			BoxWhite = false;			
 		} else if (!BoxWhite){
 			gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
 			gridArray[row,column].transform.SetParent(this.transform,false);
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
-				{gridArray[row,column].GetComponentInChildren<Text>().text = "5";}
-
+				{
+					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
+					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+				}
+			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
 			BoxWhite = true;
 			
 		}
