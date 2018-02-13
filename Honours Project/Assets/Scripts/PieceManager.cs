@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PieceGeneration : MonoBehaviour {
+public class PieceManager : MonoBehaviour {
 	public GameObject playingPiece; 
 	List<int> numberList;  
+	public bool PieceSelected; 
+
+	public static PieceManager instance; 
 
 	// Use this for initialization
 	void Start () {	
-		numberList = NumberBag.numbers; 
-		setValue();
+		instance = this; 
+		PieceSelected= false; 
+		setPieceValue();
 	}	
-	void setValue(){
+	public void setPieceValue(){
 	//Retrieves a random value from the number bag and adds it to the list. 
-		if(numberList != null){
-			int index = Random.Range(0,numberList.Count);
-			int value = (int) numberList[index];
+		if(NumberBag.numbers != null){
+			int index = Random.Range(0,NumberBag.numbers.Count);
+			int value = (int) NumberBag.numbers[index];
 			Debug.Log("The value that has been retrieved is: " + value);
 			playingPiece.GetComponentInChildren<Text>().text = value.ToString(); 
-			numberList.RemoveAt(index); 
+			NumberBag.numbers.RemoveAt(index); 
 	}
 	else {
 		Debug.Log("The list is Null. ");
@@ -29,4 +33,9 @@ public class PieceGeneration : MonoBehaviour {
 	void Update () {
 		
 	}
+	public void pieceClicked(){
+		PieceSelected = true; 
+	}
+	
+
 }
