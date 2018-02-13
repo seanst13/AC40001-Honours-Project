@@ -10,9 +10,12 @@ public class BoxSpawner : MonoBehaviour {
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;
-	public static GameObject[,] gridArray; 
+	public static GameObject[,] gridArray;
+
+	public static BoxSpawner instance; 
 
 	void Start(){
+		instance = this; 
 	//Set up Array and Middle Square Values
 		gridArray = new GameObject[gridSize,gridSize];
 		middleSquare = Mathf.RoundToInt(gridSize/2);
