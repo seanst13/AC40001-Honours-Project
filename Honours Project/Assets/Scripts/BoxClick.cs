@@ -152,8 +152,8 @@ public bool ColumnValidation(){
 			string txt = BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text;
 			int value = 0;
 			if (txt != ""){
-			Debug.Log("String from Grid:" + txt);
-			value = int.Parse(txt);
+				Debug.Log("String from Grid:" + txt);
+				value = int.Parse(txt);
 			} else if (txt == ""){
 				value = 0; 
 			}
@@ -161,17 +161,11 @@ public bool ColumnValidation(){
 		}
 
 		total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
-			Debug.Log("Row Total: " + total);
+		Debug.Log("Row Total: " + total);
 
 	//Check if the total score for the column is an odd number. 
-		if (total % 2 != 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+			return oddTotalValidation(total);
+
 	}
 	public bool RowValidation(){
 		int row = int.Parse(this.name.Substring(0,1)); 
@@ -182,8 +176,8 @@ public bool ColumnValidation(){
 
 			int value = 0;
 			if (txt != ""){
-			Debug.Log("String from Grid:" + txt);
-			value = int.Parse(txt);
+				Debug.Log("String from Grid:" + txt);
+				value = int.Parse(txt);
 			} else if (txt == ""){
 				value = 0; 
 			}
@@ -193,14 +187,11 @@ public bool ColumnValidation(){
 	total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
 	Debug.Log("Row Total: " + total);
 
-	//Check if the total score for the row is an odd number. 
-		if (total % 2 != 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+			return oddTotalValidation(total);
+	}
+
+//Check if the total score for the row is an odd number. 
+	bool oddTotalValidation(int total){
+		return total %2 !=0; 
 	}
 }
