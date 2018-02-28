@@ -19,12 +19,13 @@ public class BoxClick : MonoBehaviour {
 
 				if (PositioningValidation())
 				{
-					if(RowValidation() && ColumnValidation()){
-					GetComponentInChildren<Text>().text = PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text;
-					PieceManager.instance.setPieceValue(); 
-					PieceManager.instance.PieceSelected = false; 
-					GetComponent<Collider2D>().enabled = false; 
+					if(PieceManager.instance.firstmove){
+						PieceManager.instance.firstmove = false;
+						addPiece();  
+					}else if (RowValidation() && ColumnValidation() ) {
+						addPiece(); 
 					} else {
+						PieceManager.instance.PieceSelected = false; 
 						ErrorManagement.instance.ShowError("Error: Please ensure that the total value is an odd number");
 					}
 
@@ -52,6 +53,14 @@ public class BoxClick : MonoBehaviour {
 
 	void returnToDefault(){
 		GetComponent<Image>().color = defaultColour; 
+	}
+
+
+	void addPiece(){
+		GetComponentInChildren<Text>().text = PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text;
+		PieceManager.instance.setPieceValue(); 
+		PieceManager.instance.PieceSelected = false; 
+		GetComponent<Collider2D>().enabled = false; 
 	}
 
 	bool PositioningValidation(){
@@ -145,53 +154,137 @@ public class BoxClick : MonoBehaviour {
 		}
 	}
 public bool ColumnValidation(){
-		int column = int.Parse(this.name.Substring(2,1));
+		int row = int.Parse(this.name.Substring(0,1));
+		int column = int.Parse(this.name.Substring(2,1)); 
 		Debug.Log("Column: " + column);
 		int total = 0;
-		for(int i=0;i<5;i++){
-			string txt = BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text;
-			int value = 0;
-			if (txt != ""){
-				Debug.Log("String from Grid:" + txt);
-				value = int.Parse(txt);
-			} else if (txt == ""){
-				value = 0; 
+		int firstpos = FindFirstVerticalPosition(row, column);
+		int lastpos = findLastVerticalPosition(row,column);
+		if (firstpos < lastpos){
+				for(int i=firstpos;i<lastpos;i++){
+					string txt = BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text;
+					int value = 0;
+					if (txt != ""){
+						Debug.Log("String from Grid:" + txt);
+						value = int.Parse(txt);
+					} else if (txt == ""){
+						value = 0; 
+					}
+					total = total + value;
+				}
+				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				Debug.Log("Column Total: " + total);
+
+				return oddTotalValidation(total);
 			}
-			total = total + value;
-		}
-
-		total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
-		Debug.Log("Row Total: " + total);
-
-	//Check if the total score for the column is an odd number. 
-			return oddTotalValidation(total);
+			else if (firstpos == lastpos){
+				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				return RowValidation(); 
+			}
+		
+		return oddTotalValidation(total);
 
 	}
 	public bool RowValidation(){
-		int row = int.Parse(this.name.Substring(0,1)); 
+		int row = int.Parse(this.name.Substring(0,1));
+		int column = int.Parse(this.name.Substring(2,1)); 
 		Debug.Log("Row: " + row); 
 		int total = 0;
-		for(int i=0;i<5;i++){
-			string txt = BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text;
+		int firstpos = FindFirstHorizontalPosition(row, column);
+		int lastpos = findLastHortizontalPosition(row,column);
 
-			int value = 0;
-			if (txt != ""){
-				Debug.Log("String from Grid:" + txt);
-				value = int.Parse(txt);
-			} else if (txt == ""){
-				value = 0; 
+		if (firstpos < lastpos){
+				for(int i=firstpos;i<lastpos;i++){
+					string txt = BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text;
+					int value = 0;
+					if (txt != ""){
+						Debug.Log("String from Grid:" + txt);
+						value = int.Parse(txt);
+					} else if (txt == ""){
+						value = 0; 
+					}
+					total = total + value;
+				}
+				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				Debug.Log("Row Total: " + total);
+
+				return oddTotalValidation(total);
 			}
-			total = total + value;
-		}
-
-	total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
-	Debug.Log("Row Total: " + total);
-
-			return oddTotalValidation(total);
+			else if (firstpos == lastpos){
+				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				return ColumnValidation(); 
+			}
+		
+		return oddTotalValidation(total);
 	}
 
 //Check if the total score for the row is an odd number. 
 	bool oddTotalValidation(int total){
 		return total %2 !=0; 
 	}
+
+	int FindFirstHorizontalPosition(int row, int column){
+		int first = column;
+
+			for (int i = column; i > -1; i--){
+				if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
+					if (first > i){
+						first = i;
+					}
+				} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
+						return first; 
+				}
+			} 
+
+		return first; 
+	}
+
+	int findLastHortizontalPosition(int row, int column){
+			int last = column;
+			for (int i = column; i < 5; i++){
+				if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
+					if (last < i){
+						last = i;
+					}
+				} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
+						return last; 
+				}
+			} 
+
+		return last;
+	}
+
+	int FindFirstVerticalPosition(int row, int column){
+	int first = row;
+
+			for (int i = row; i > -1; i--){
+				if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
+					if (first > i){
+						first = i;
+					}
+				}else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
+						return first; }
+
+			} 
+
+		return first; 
+
+	}
+
+	int findLastVerticalPosition(int row, int column){
+			int last = row;
+			for (int i = row; i < 5; i++){
+				if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
+					if (last < i){
+						last = i;
+					}
+				} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != "") {
+						return last; 
+				}
+			} 
+
+		return last;
+	}
+
+
 }
