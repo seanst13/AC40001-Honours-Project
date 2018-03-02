@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PieceManager : MonoBehaviour {
 	public GameObject playingPiece; 
-	List<int> numberList;  
 	public bool PieceSelected; 
 	public bool firstmove = true; 
 	public static PieceManager instance; 
@@ -13,14 +12,18 @@ public class PieceManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {	
 		instance = this; 
-		PieceSelected= false; 
+		int value = int.Parse(this.name.Substring(2,1));
+		Debug.Log("Value:" + value);
+		playingPiece = PieceSpawner.pieceArray[value]; 
+		Debug.Log(playingPiece.name);
+		PieceSelected = false; 
 		setPieceValue();
 	}	
 
-	void spawnPieces(){
-		GameObject clone = Instantiate(playingPiece,new Vector3(110,-110,0), Quaternion.identity,instance.transform);
-		playingPiece = Instantiate(playingPiece,new Vector3(180,-110,0), Quaternion.identity,instance.transform);
-	}
+	// void spawnPieces(){
+	// 	 = Instantiate(playingPiece,new Vector3(110,-110,0), Quaternion.identity,instance.transform);
+	// 	playingPiece 
+	// }
 
 	public void setPieceValue(){
 		int value = -1; 
@@ -57,7 +60,13 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 	public void pieceClicked(){
-		PieceSelected = true; 
+		if(!PieceSelected){
+			PieceSelected = true; 
+			Debug.Log(playingPiece.name + " has been selected.");
+		} else if (PieceSelected){
+			PieceSelected = false; 
+			Debug.Log(playingPiece.name + " has been deselected.");
+		}
 	}
 	
 

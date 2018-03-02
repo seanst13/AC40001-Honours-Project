@@ -116,6 +116,7 @@ public static bool ColumnValidation(int row, int column){
 				return oddTotalValidation(total);
 			}
 			else if (firstpos == lastpos){
+				Debug.Log("FIRSTPOS == LASTPOS FOR COLUMNS");
 				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
 				return RowValidation(row, column); 
 			}
@@ -147,6 +148,7 @@ public static bool ColumnValidation(int row, int column){
 				return oddTotalValidation(total);
 			}
 			else if (firstpos == lastpos){
+				Debug.Log("FIRSTPOS == LASTPOS FOR ROWS");
 				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
 				return ColumnValidation(row, column); 
 			}
