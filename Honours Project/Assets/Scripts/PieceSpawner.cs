@@ -11,8 +11,8 @@ public class PieceSpawner : MonoBehaviour {
 
 	public static PieceSpawner instance;
 
-	private static int index; 
-	public static bool firstmove = true; 
+	public int index; 
+	public bool firstmove = true; 
 	void Start () {
 		
 		pieceArray = new GameObject[3]; 
@@ -46,6 +46,7 @@ public class PieceSpawner : MonoBehaviour {
 				numindex = Random.Range(0,NumberBag.numbers.Count-1);
 				value = (int) NumberBag.numbers[numindex];
 				Debug.Log("The value that has been retrieved is: " + value);
+				Debug.Log("THIS IS THE PIECE INDEX: " + pieceIndex);
 				pieceArray[pieceIndex].GetComponentInChildren<Text>().text = value.ToString(); 
 				NumberBag.numbers.RemoveAt(numindex); 
 			} else if(firstmove) {
@@ -66,7 +67,7 @@ public class PieceSpawner : MonoBehaviour {
 		}
 	}
 
-	public static int returnIndex(){
+	public int returnIndex(){
 		return index; 
 	}
 
