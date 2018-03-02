@@ -110,14 +110,14 @@ public static bool ColumnValidation(int row, int column){
 					}
 					total = total + value;
 				}
-				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				total = total + PieceSpawner.instance.returnPieceValue();
 				Debug.Log("Column Total: " + total);
 
 				return oddTotalValidation(total);
 			}
 			else if (firstpos == lastpos){
 				Debug.Log("FIRSTPOS == LASTPOS FOR COLUMNS");
-				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				total = total + PieceSpawner.instance.returnPieceValue();
 				return RowValidation(row, column); 
 			}
 		
@@ -142,14 +142,14 @@ public static bool ColumnValidation(int row, int column){
 					}
 					total = total + value;
 				}
-				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				total = total + PieceSpawner.instance.returnPieceValue();
 				Debug.Log("Row Total: " + total);
 
 				return oddTotalValidation(total);
 			}
 			else if (firstpos == lastpos){
 				Debug.Log("FIRSTPOS == LASTPOS FOR ROWS");
-				total = total + int.Parse(PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text);
+				total = total + PieceSpawner.instance.returnPieceValue();
 				return ColumnValidation(row, column); 
 			}
 		
