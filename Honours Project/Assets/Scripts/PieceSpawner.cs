@@ -109,7 +109,18 @@ public class PieceSpawner : MonoBehaviour {
 					foreach (char i in swap){
 						if (i.ToString() == val.ToString())
 							{Debug.Log("match found at index: " + p);
-							swap.Remove(p,0);}
+							swap = swap.Remove(p,1);}
+						p++; 
+					}
+					pieceArray[val].GetComponent<Image>().color = Color.white;
+				}
+			}else if (swap.Length == pieceArray.Length){
+				if (swap.Contains(val.ToString())){
+					int p = 0; 
+					foreach (char i in swap){
+						if (i.ToString() == val.ToString())
+							{Debug.Log("match found at index: " + p);
+							swap = swap.Remove(p,1);}
 						p++; 
 					}
 					pieceArray[val].GetComponent<Image>().color = Color.white;
