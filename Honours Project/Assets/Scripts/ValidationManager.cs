@@ -102,10 +102,10 @@ public static bool ColumnValidation(int row, int column){
 
 		total = columnTotal(row, column);
 
-		total = total + PieceSpawner.instance.returnPieceValue();
+		total = total + PieceManager.instance.returnPieceValue();
 		Debug.Log("Column Total:  " + total);
 
-		// if (total != PieceSpawner.instance.returnPieceValue()){
+		// if (total != PieceManager.instance.returnPieceValue()){
 			return oddTotalValidation(total);
 
 		// } else{
@@ -120,10 +120,10 @@ public static bool ColumnValidation(int row, int column){
 		// int lastpos = findLastHortizontalPosition(row,column);
 
 		total = RowTotal(row, column); 
-		total = total + PieceSpawner.instance.returnPieceValue();
+		total = total + PieceManager.instance.returnPieceValue();
 		Debug.Log("Row Total:  " + total);
 
-		if (total != PieceSpawner.instance.returnPieceValue()){
+		if (total != PieceManager.instance.returnPieceValue()){
 			return oddTotalValidation(total);
 
 		} else{
