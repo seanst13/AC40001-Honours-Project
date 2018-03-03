@@ -5,37 +5,28 @@ using UnityEngine.UI;
 
 public class PieceManager : MonoBehaviour {
 	public GameObject playingPiece; 
-	List<int> numberList;  
-	public bool PieceSelected; 
-
-	public static PieceManager instance; 
+	public static bool PieceSelected; 
+	public bool firstmove = true; 
+	//public static PieceManager instance; 
+	public int index; 
 
 	// Use this for initialization
-	void Start () {	
-		instance = this; 
-		PieceSelected= false; 
-		setPieceValue();
-	}	
-	public void setPieceValue(){
-	//Retrieves a random value from the number bag and adds it to the list. 
-		if(NumberBag.numbers != null){
-			int index = Random.Range(0,NumberBag.numbers.Count);
-			int value = (int) NumberBag.numbers[index];
-			Debug.Log("The value that has been retrieved is: " + value);
-			playingPiece.GetComponentInChildren<Text>().text = value.ToString(); 
-			NumberBag.numbers.RemoveAt(index); 
+	// void Start () {	
+	// 	//instance = this; 
+	// 	index = int.Parse(this.name.Substring(2,1));
+	// 	Debug.Log("Value:" + index);
+	// 	PieceSpawner.pieceArray[index] = playingPiece; 
+	// 	Debug.Log(playingPiece.name);
+	// 	PieceSelected = false; 
+	// 	// setPieceValue(index);
+	// }	
+
+	public void Clicked(){
+		int index = int.Parse(this.name.Substring(2,1));
+		PieceSpawner.instance.pieceClicked(index); 
 	}
-	else {
-		Debug.Log("The list is Null. ");
-	}
-}
-	// Update is called once per frame
-	void Update () {
-		
-	}
-	public void pieceClicked(){
-		PieceSelected = true; 
-	}
+
+	
 	
 
 }
