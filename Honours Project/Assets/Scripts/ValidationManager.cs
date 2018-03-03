@@ -145,7 +145,7 @@ public static bool ColumnValidation(int row, int column){
 			}
 		}
 
-		for(int i = column+1; i < 4; i++){
+		for(int i = column+1; i <= 4; i++){
 			if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
 				total = total + int.Parse(BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
 				Debug.Log("Row Total["+i+"]:" + total );
