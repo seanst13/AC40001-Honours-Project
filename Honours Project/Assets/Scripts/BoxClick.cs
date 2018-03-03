@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class BoxClick : MonoBehaviour {
 
 	bool buttonPressed = false;
-	 Color32 defaultColour;
+	Color32 defaultColour;
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;

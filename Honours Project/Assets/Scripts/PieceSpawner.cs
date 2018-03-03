@@ -4,19 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PieceSpawner : MonoBehaviour {
-
-	public static GameObject[] pieceArray; 
-	public GameObject playingPiece;   
-	public bool selected; 
-
-	public static PieceSpawner instance;
-
-	public int index; 
-	public bool firstmove = true; 
-	public bool swapSelected = false; 
-	public string swap; 
-	void Start () {
+	#region Variables
+	[Header("Piece Array Related")]	
+		public static GameObject[] pieceArray; 
+		public GameObject playingPiece;   
 		
+		public int index; 
+		public static PieceSpawner instance;
+		[Header("Boolean Values")]
+		public bool selected; 
+		public bool firstmove = true; 
+		[Space]
+		[Header("Swapping Pieces Related Variables")]
+		private bool swapSelected = false; 
+		private string swap; 
+#endregion
+#region Set UP
+	void Start () {
 		pieceArray = new GameObject[3]; 
 		instance = this; 
 		generatePieces();
@@ -70,7 +74,8 @@ public class PieceSpawner : MonoBehaviour {
 			Debug.Log("The list is Null. ");
 		}
 	}
-
+#endregion
+#region Return Methods
 	public int returnIndex(){
 		return index; 
 	}
@@ -88,6 +93,8 @@ public class PieceSpawner : MonoBehaviour {
 			}
 		}
 	}
+#endregion
+
 	public void pieceClicked(int val){
 		if(!swapSelected){
 			if(!selected){
@@ -126,11 +133,9 @@ public class PieceSpawner : MonoBehaviour {
 					pieceArray[val].GetComponent<Image>().color = Color.white;
 				}
 			}
-
-	//This will just conintinually add things. Will need to check on that.
 		} 
 	}
-
+#region Piece Swapping Related
 	public void SwapPieces(int index){
 		NumberBag.numbers.Add(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
 		setPieceValue(index);
@@ -152,6 +157,6 @@ public class PieceSpawner : MonoBehaviour {
 			swapSelected = true; 
 		}
 	}
-
+#endregion
 
 }

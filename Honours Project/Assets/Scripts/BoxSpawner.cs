@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BoxSpawner : MonoBehaviour {
+	[Header("Grid Attributes")]
 	public int gridSize; 
 	bool BoxWhite = true; 
+	[Space]
+	[Header("Game Objects")]
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;

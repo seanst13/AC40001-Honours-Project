@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ValidationManager : MonoBehaviour {
 
+#region Positioning Validation
 public static bool PositioningValidation(int row, int column){
 		//If the piece lies in the rows; 
 		if ((row > 0 && row < 4)  && (column >=0 && column <=4)){
@@ -93,6 +94,8 @@ public static bool PositioningValidation(int row, int column){
 			return false; 
 		}
 	}
+#endregion
+#region Row & Column Validation
 public static bool ColumnValidation(int row, int column){
 		Debug.Log("Column: " + column);
 		int total = 0;
@@ -132,8 +135,8 @@ public static bool ColumnValidation(int row, int column){
 	static bool oddTotalValidation(int total){
 		return total %2 !=0; 
 	}
-
-
+#endregion
+#region Total Generation
 	public static int RowTotal(int row, int column){
 		int total = 0; 
 		for (int i = column; i >= 0; i--){
@@ -179,5 +182,5 @@ public static bool ColumnValidation(int row, int column){
 		
 		return total; 
 	}
-
+#endregion
 }
