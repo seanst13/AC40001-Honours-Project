@@ -21,6 +21,7 @@ public class PieceSpawner : MonoBehaviour {
 		for (int i = 0; i < pieceArray.Length; i++){
 			setPieceValue(i);
 		} 
+		firstmove = true; 
 		// Instantiate(playingPiece,new Vector3(180,-110,0), Quaternion.identity,instance.transform).SetActive(true);
 	}
 
@@ -61,6 +62,7 @@ public class PieceSpawner : MonoBehaviour {
 				}
 				pieceArray[pieceIndex].GetComponentInChildren<Text>().text = value.ToString(); 
 				NumberBag.numbers.RemoveAt(numindex); 
+				firstmove = false;
 			}
 		} else {
 			Debug.Log("The list is Null. ");

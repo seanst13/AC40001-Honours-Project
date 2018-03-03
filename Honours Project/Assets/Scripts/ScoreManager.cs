@@ -6,23 +6,20 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour {
 	public static ScoreManager instance;
 	public GameObject Scoreboard;
+	public int playerScore; 
 
 	// Use this for initialization
 	void Start () {
+		playerScore = 0; 
 		instance = this;
-		setPlayerScore(0);
+		setPlayerScore(playerScore);
 	}
 	
-	void setPlayerScore(int value){
-		Scoreboard.GetComponent<Text>().text = value.ToString();
+	public void setPlayerScore(int value){
+		playerScore = playerScore + value; 
+		Scoreboard.GetComponent<Text>().text = playerScore.ToString();
 	}
 
-	
 
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 }

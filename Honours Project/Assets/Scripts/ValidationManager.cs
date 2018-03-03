@@ -99,7 +99,7 @@ public static bool ColumnValidation(int row, int column){
 		int firstpos = FindFirstVerticalPosition(row, column);
 		int lastpos = findLastVerticalPosition(row,column);
 		if (firstpos < lastpos){
-				for(int i=firstpos;i<lastpos;i++){
+				for(int i=firstpos;i<=lastpos;i++){
 					string txt = BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text;
 					int value = 0;
 					if (txt != ""){
@@ -131,7 +131,7 @@ public static bool ColumnValidation(int row, int column){
 		int lastpos = findLastHortizontalPosition(row,column);
 
 		if (firstpos < lastpos){
-				for(int i=firstpos;i<lastpos;i++){
+				for(int i=firstpos;i<=lastpos;i++){
 					string txt = BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text;
 					int value = 0;
 					if (txt != ""){
@@ -161,7 +161,7 @@ public static bool ColumnValidation(int row, int column){
 		return total %2 !=0; 
 	}
 
-	static int FindFirstHorizontalPosition(int row, int column){
+	public static int FindFirstHorizontalPosition(int row, int column){
 		int first = column;
 
 			for (int i = column; i > -1; i--){
@@ -177,7 +177,7 @@ public static bool ColumnValidation(int row, int column){
 		return first; 
 	}
 
-	static int findLastHortizontalPosition(int row, int column){
+	public static int findLastHortizontalPosition(int row, int column){
 			int last = column;
 			for (int i = column; i < 5; i++){
 				if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
@@ -192,7 +192,7 @@ public static bool ColumnValidation(int row, int column){
 		return last;
 	}
 
-	static int FindFirstVerticalPosition(int row, int column){
+	public static int FindFirstVerticalPosition(int row, int column){
 	int first = row;
 
 			for (int i = row; i > -1; i--){
@@ -209,7 +209,7 @@ public static bool ColumnValidation(int row, int column){
 
 	}
 
-	static int findLastVerticalPosition(int row, int column){
+	public static int findLastVerticalPosition(int row, int column){
 			int last = row;
 			for (int i = row; i < 5; i++){
 				if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){

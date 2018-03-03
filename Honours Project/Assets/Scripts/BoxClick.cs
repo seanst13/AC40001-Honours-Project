@@ -11,7 +11,7 @@ public class BoxClick : MonoBehaviour {
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;
-			Debug.Log(PieceSpawner.pieceArray[PieceSpawner.instance.returnIndex()].name);
+			// Debug.Log(PieceSpawner.pieceArray[PieceSpawner.instance.returnIndex()].name);
 			//Checks if The Piece has been clicked and will place it on the grid if it has. 
 			if (PieceSpawner.instance.selected && GetComponentInChildren<Text>().text == ""){
 				GetComponent<Image>().color = Color.cyan;
@@ -23,11 +23,14 @@ public class BoxClick : MonoBehaviour {
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
-					if(PieceSpawner.instance.firstmove){
-						PieceSpawner.instance.firstmove = false;
-						addPiece();  
-					}else if (ValidationManager.RowValidation(row, column) && ValidationManager.ColumnValidation(row,column) ) {
-						addPiece(); 
+					// if(PieceSpawner.instance.firstmove){
+					// 	PieceSpawner.instance.firstmove = false;
+					// 	addPiece();
+					// 	addScore(row,column);  
+					// }else 
+					if (ValidationManager.RowValidation(row, column) && ValidationManager.ColumnValidation(row,column) ) {
+						addPiece(row, column); 
+						addScore(row,column);
 					} else {
 						PieceSpawner.instance.selected = false; 
 						ErrorManagement.instance.ShowError("Error: Please ensure that the total value is an odd number");
@@ -61,13 +64,29 @@ public class BoxClick : MonoBehaviour {
 	}
 
 
-	void addPiece(){
-		GetComponentInChildren<Text>().text = PieceSpawner.instance.returnPieceValue().ToString();
-		Debug.Log("INDEX: " + PieceSpawner.instance.returnIndex());
+	void addPiece(int row, int column){
+		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceSpawner.instance.returnPieceValue().ToString();
+
 		PieceSpawner.instance.pieceClicked(PieceSpawner.instance.returnIndex()); 
 		GetComponent<Collider2D>().enabled = false;
 		PieceSpawner.instance.setPieceValue(PieceSpawner.instance.returnIndex());
 	}
 
+	void addScore(int row, int column){
+		int firstposition = ValidationManager.FindFirstHorizontalPosition(row,column);
+		int lastposition = ValidationManager.findLastHortizontalPosition(row,column);
 
+		Debug.Log(" ---- First Position: " + firstposition);
+		Debug.Log(" ---- Last Position: " + lastposition);
+
+
+		int total = 0; 
+		for (int i = firstposition; i<=lastposition; i++ ){
+			Debug.Log("We are at row: " + i);
+			total = total +int.Parse( BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
+		}
+
+		ScoreManager.instance.setPlayerScore(total);
+
+	}
 }
