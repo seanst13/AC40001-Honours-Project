@@ -96,64 +96,36 @@ public static bool PositioningValidation(int row, int column){
 public static bool ColumnValidation(int row, int column){
 		Debug.Log("Column: " + column);
 		int total = 0;
-		int firstpos = FindFirstVerticalPosition(row, column);
-		int lastpos = findLastVerticalPosition(row,column);
-		if (firstpos < lastpos){
-				for(int i=firstpos;i<=lastpos;i++){
-					string txt = BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text;
-					int value = 0;
-					if (txt != ""){
-						Debug.Log("String from Grid:" + txt);
-						value = int.Parse(txt);
-					} else if (txt == ""){
-						value = 0; 
-					}
-					total = total + value;
-				}
-				total = total + PieceSpawner.instance.returnPieceValue();
-				Debug.Log("Column Total: " + total);
 
-				return oddTotalValidation(total);
-			}
-			else if (firstpos == lastpos){
-				Debug.Log("FIRSTPOS == LASTPOS FOR COLUMNS");
-				total = total + PieceSpawner.instance.returnPieceValue();
-				return RowValidation(row, column); 
-			}
-		
-		return oddTotalValidation(total);
+		total = columnTotal(row, column);
+
+		total = total + PieceSpawner.instance.returnPieceValue();
+		Debug.Log("Column Total:  " + total);
+
+		// if (total != PieceSpawner.instance.returnPieceValue()){
+			return oddTotalValidation(total);
+
+		// } else{
+		// 	return RowValidation(row,column);
+		// }
 
 	}
 	public static bool RowValidation(int row, int column){
 		Debug.Log("Row: " + row); 
 		int total = 0;
-		int firstpos = FindFirstHorizontalPosition(row, column);
-		int lastpos = findLastHortizontalPosition(row,column);
+		// int firstpos = FindFirstHorizontalPosition(row, column);
+		// int lastpos = findLastHortizontalPosition(row,column);
 
-		if (firstpos < lastpos){
-				for(int i=firstpos;i<=lastpos;i++){
-					string txt = BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text;
-					int value = 0;
-					if (txt != ""){
-						Debug.Log("String from Grid:" + txt);
-						value = int.Parse(txt);
-					} else if (txt == ""){
-						value = 0; 
-					}
-					total = total + value;
-				}
-				total = total + PieceSpawner.instance.returnPieceValue();
-				Debug.Log("Row Total: " + total);
+		total = RowTotal(row, column); 
+		total = total + PieceSpawner.instance.returnPieceValue();
+		Debug.Log("Row Total:  " + total);
 
-				return oddTotalValidation(total);
-			}
-			else if (firstpos == lastpos){
-				Debug.Log("FIRSTPOS == LASTPOS FOR ROWS");
-				total = total + PieceSpawner.instance.returnPieceValue();
-				return ColumnValidation(row, column); 
-			}
-		
-		return oddTotalValidation(total);
+		if (total != PieceSpawner.instance.returnPieceValue()){
+			return oddTotalValidation(total);
+
+		} else{
+			return ColumnValidation(row,column);
+		}
 	}
 
 //Check if the total score for the row is an odd number. 
@@ -161,66 +133,51 @@ public static bool ColumnValidation(int row, int column){
 		return total %2 !=0; 
 	}
 
-	public static int FindFirstHorizontalPosition(int row, int column){
-		int first = column;
 
-			for (int i = column; i > -1; i--){
-				if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
-					if (first > i){
-						first = i;
-					}
-				} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
-						return first; 
-				}
-			} 
+	public static int RowTotal(int row, int column){
+		int total = 0; 
+		for (int i = column; i >= 0; i--){
+			if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
+				total = total + int.Parse(BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
+				Debug.Log("Row Total["+i+"]:" + total );
+			} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text == "" && i != column){
+				break; 
+			}
+		}
 
-		return first; 
+		for(int i = column+1; i < 4; i++){
+			if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
+				total = total + int.Parse(BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
+				Debug.Log("Row Total["+i+"]:" + total );
+			} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text == "" && i != column){
+				break; 
+			}
+		}
+		return total; 
 	}
 
-	public static int findLastHortizontalPosition(int row, int column){
-			int last = column;
-			for (int i = column; i < 5; i++){
-				if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
-					if (last < i){
-						last = i;
-					}
-				} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
-						return last; 
-				}
-			} 
+	public static int columnTotal(int row, int column){
+		int total = 0; 
 
-		return last;
+		for (int i = row; i >= 0; i--){
+			if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
+				total = total + int.Parse(BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
+				Debug.Log("Column Total["+i+"]:" + total );
+			} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text == "" && i != row){
+				break; 
+			}
+		}
+
+		for(int i = row+1; i <=4; i++){
+			if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
+				total = total + int.Parse(BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
+				Debug.Log("Column Total["+i+"]:" + total );
+			} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text == "" && i != row){
+				break; 
+			}
+		}
+		
+		return total; 
 	}
 
-	public static int FindFirstVerticalPosition(int row, int column){
-	int first = row;
-
-			for (int i = row; i > -1; i--){
-				if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
-					if (first > i){
-						first = i;
-					}
-				}else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != "") {
-						return first; }
-
-			} 
-
-		return first; 
-
-	}
-
-	public static int findLastVerticalPosition(int row, int column){
-			int last = row;
-			for (int i = row; i < 5; i++){
-				if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
-					if (last < i){
-						last = i;
-					}
-				} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != "") {
-						return last; 
-				}
-			} 
-
-		return last;
-	}
 }

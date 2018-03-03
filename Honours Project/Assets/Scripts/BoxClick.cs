@@ -28,7 +28,7 @@ public class BoxClick : MonoBehaviour {
 					// 	addPiece();
 					// 	addScore(row,column);  
 					// }else 
-					if (ValidationManager.RowValidation(row, column) && ValidationManager.ColumnValidation(row,column) ) {
+					if (ValidationManager.RowValidation(row, column) ) {
 						addPiece(row, column); 
 						addScore(row,column);
 					} else {
@@ -73,32 +73,25 @@ public class BoxClick : MonoBehaviour {
 	}
 
 	void addScore(int row, int column){
-		int firstposition = ValidationManager.FindFirstHorizontalPosition(row,column);
-		int lastposition = ValidationManager.findLastHortizontalPosition(row,column);
+		int total = 0;
+		int secondtotal = 0; 
 
-		Debug.Log(" ---- First Position: " + firstposition);
-		Debug.Log(" ---- Last Position: " + lastposition);
-
-		int total = 0; 
-		if (firstposition != lastposition){
-			for (int i = firstposition; i<=lastposition; i++ ){
-				Debug.Log("We are at row: " + i);
-				total = total +int.Parse( BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
-			}
+		if (ValidationManager.RowTotal(row, column) != PieceSpawner.instance.returnPieceValue()){
+			total = ValidationManager.RowTotal(row, column);
+			// Secondary Column Checks
+			if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
+				|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+					secondtotal = ValidationManager.columnTotal(row,column);
+				}
+			total = total + secondtotal; 
 		} else {
-			firstposition = ValidationManager.FindFirstVerticalPosition(row,column);
-			lastposition = ValidationManager.findLastVerticalPosition(row, column);
-
-			Debug.Log(" ---- First Vertical Position: " + firstposition);
-			Debug.Log(" ---- Last Vertical Position: " + lastposition);
-
-			for (int i = firstposition; i<=lastposition; i++ ){
-				Debug.Log("We are at row: " + i);
-				total = total +int.Parse( BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
-			}
-
+			total = ValidationManager.columnTotal(row, column);
 		}
+
+		Debug.Log("TOTAL SCORE: " + total);
 		ScoreManager.instance.setPlayerScore(total);
 
 	}
+
+
 }
