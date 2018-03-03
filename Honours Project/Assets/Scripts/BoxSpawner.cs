@@ -45,7 +45,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			if (column == middleSquare && row == middleSquare)
 				{
 					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
 			BoxWhite = false;			
@@ -56,7 +56,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			if (column == middleSquare && row == middleSquare)
 				{
 					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
 			BoxWhite = true;

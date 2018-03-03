@@ -11,26 +11,40 @@ public class BoxClick : MonoBehaviour {
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;
+			// Debug.Log(PieceSpawner.pieceArray[PieceSpawner.instance.returnIndex()].name);
 			//Checks if The Piece has been clicked and will place it on the grid if it has. 
-			if (PieceManager.instance.PieceSelected && GetComponentInChildren<Text>().text == ""){
+			if (PieceSpawner.instance.selected && GetComponentInChildren<Text>().text == ""){
 				GetComponent<Image>().color = Color.cyan;
 				string objectname = this.name;
 				Debug.Log(objectname + " has been clicked.");
 
-				if (PositioningValidation())
+				int row = int.Parse(this.name.Substring(0,1)); 
+				int column = int.Parse(this.name.Substring(2,1));
+
+				if (ValidationManager.PositioningValidation(row, column))
 				{
-					GetComponentInChildren<Text>().text = PieceManager.instance.playingPiece.GetComponentInChildren<Text>().text;
-					PieceManager.instance.setPieceValue(); 
-					PieceManager.instance.PieceSelected = false; 
-					GetComponent<Collider2D>().enabled = false; 
+					// if(PieceSpawner.instance.firstmove){
+					// 	PieceSpawner.instance.firstmove = false;
+					// 	addPiece();
+					// 	addScore(row,column);  
+					// }else 
+					if (ValidationManager.RowValidation(row, column) ) {
+						addPiece(row, column); 
+						addScore(row,column);
+					} else {
+						PieceSpawner.instance.selected = false; 
+						ErrorManagement.instance.ShowError("Error: Please ensure that the total value is an odd number");
+					}
+
 				} else{
 					ErrorManagement.instance.ShowError("Error: Piece must be placed next to an existing piece.");
 				}
-			} else if (PieceManager.instance.PieceSelected && GetComponentInChildren<Text>().text != "") {
-				PieceManager.instance.PieceSelected = false; 
+			} else if (PieceSpawner.instance.selected && GetComponentInChildren<Text>().text != "") {
+				PieceSpawner.instance.selected = false; 
 				ErrorManagement.instance.ShowError("Error: Piece cannot be placed ontop of an existing piece.");
-			} else {
-				PieceManager.instance.PieceSelected = false; 
+			} else if (!PieceSpawner.instance.selected) {
+				Debug.Log(PieceSpawner.pieceArray[PieceSpawner.instance.returnIndex()].name + "is " + PieceSpawner.instance.selected);
+				PieceSpawner.instance.selected = false; 
 				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");
 			
 		}
@@ -49,98 +63,35 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
-	bool PositioningValidation(){
-		int row = int.Parse(this.name.Substring(0,1)); 
-		int column = int.Parse(this.name.Substring(2,1));
 
-		//If the piece lies in the rows; 
-		if ((row > 0 && row < 4)  && (column >=0 && column <=4)){
-			if (column+1 >4){
-				if(		BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else { return false; }
-			} else if (column -1 < 0) {
-				if(		BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else { return false; }
-			} else {
-				if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
-					return false; 
+	void addPiece(int row, int column){
+		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceSpawner.instance.returnPieceValue().ToString();
+
+		PieceSpawner.instance.pieceClicked(PieceSpawner.instance.returnIndex()); 
+		GetComponent<Collider2D>().enabled = false;
+		PieceSpawner.instance.setPieceValue(PieceSpawner.instance.returnIndex());
+	}
+
+	void addScore(int row, int column){
+		int total = 0;
+		int secondtotal = 0; 
+
+		if (ValidationManager.RowTotal(row, column) != PieceSpawner.instance.returnPieceValue()){
+			total = ValidationManager.RowTotal(row, column);
+			// Secondary Column Checks
+			if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
+				|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+					secondtotal = ValidationManager.columnTotal(row,column);
 				}
-			}
-		//If the piece lies in the top row
-		} else if (row == 0 && (column >= 0 && column <=4)){
-			if (column+1 > 4){
-				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
-					return false; 
-				}	
-			} else if (column-1 < 0 ){
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			} else {
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			}
-		} else if (row == 4 && (column >= 0 && column <= 4))
-		{
-			if (column+1 > 4){
-				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
-					return false; 
-				}	
-			} else if (column-1 < 0 ){
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			} else {
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			}
+			total = total + secondtotal; 
 		} else {
-			return false; 
+			total = ValidationManager.columnTotal(row, column);
 		}
+
+		Debug.Log("TOTAL SCORE: " + total);
+		ScoreManager.instance.setPlayerScore(total);
+
 	}
-	void Update () {
-		
-	}
+
+
 }
