@@ -13,6 +13,8 @@ public class PieceSpawner : MonoBehaviour {
 
 	public int index; 
 	public bool firstmove = true; 
+	public bool swapSelected = false; 
+	string swap; 
 	void Start () {
 		
 		pieceArray = new GameObject[3]; 
@@ -21,7 +23,7 @@ public class PieceSpawner : MonoBehaviour {
 		for (int i = 0; i < pieceArray.Length; i++){
 			setPieceValue(i);
 		} 
-		firstmove = true; 
+		//firstmove = true; 
 		// Instantiate(playingPiece,new Vector3(180,-110,0), Quaternion.identity,instance.transform).SetActive(true);
 	}
 
@@ -85,15 +87,42 @@ public class PieceSpawner : MonoBehaviour {
 		}
 	}
 	public void pieceClicked(int val){
-		if(!selected){
-			selected = true; 
-			index =  val;
-			Debug.Log(pieceArray[index].name + " has been selected.");
-		} else if (selected){
+		if(!swapSelected){
+			if(!selected){
+				selected = true; 
+				index =  val;
+				Debug.Log(pieceArray[index].name + " has been selected.");
+			} else if (selected){
+				selected = false; 
+				Debug.Log(pieceArray[index].name + " has been deselected.");
+				// index = -5;
+			}
+		} else if (swapSelected){
+			swap = swap + val.ToString();
+			pieceArray[val].GetComponent<Image>().color = Color.magenta;
+
+	//This will just conintinually add things. Will need to check on that.
+		} 
+	}
+
+	public void SwapPieces(int index){
+		NumberBag.numbers.Add(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
+		setPieceValue(index);
+	}
+
+	public void PerformSwap(){
+		if (swapSelected){
+			foreach(char i in swap){
+			 SwapPieces(int.Parse(i.ToString()));
+			 pieceArray[int.Parse(i.ToString())].GetComponent<Image>().color = Color.white;
+			}
+			swapSelected = false; 
+			swap = ""; 
+		} else if (!swapSelected){
+			swapSelected = true; 
 			selected = false; 
-			Debug.Log(pieceArray[index].name + " has been deselected.");
-			// index = -5;
 		}
 	}
+
 
 }
