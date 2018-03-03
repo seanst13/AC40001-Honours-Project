@@ -14,7 +14,7 @@ public class PieceSpawner : MonoBehaviour {
 	public int index; 
 	public bool firstmove = true; 
 	public bool swapSelected = false; 
-	string swap; 
+	public string swap; 
 	void Start () {
 		
 		pieceArray = new GameObject[3]; 
@@ -80,10 +80,12 @@ public class PieceSpawner : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if(selected){
-			pieceArray[index].GetComponent<Image>().color = Color.yellow;
-		} else {
-			pieceArray[index].GetComponent<Image>().color = Color.white;
+		if (!swapSelected){
+			if(selected){
+				pieceArray[index].GetComponent<Image>().color = Color.yellow;
+			} else if (!selected) {
+				pieceArray[index].GetComponent<Image>().color = Color.white;
+			}
 		}
 	}
 	public void pieceClicked(int val){
@@ -98,8 +100,21 @@ public class PieceSpawner : MonoBehaviour {
 				// index = -5;
 			}
 		} else if (swapSelected){
-			swap = swap + val.ToString();
-			pieceArray[val].GetComponent<Image>().color = Color.magenta;
+			if (swap.Length != pieceArray.Length){
+				if(!swap.Contains(val.ToString())){
+					swap = swap + val.ToString();
+					pieceArray[val].GetComponent<Image>().color = Color.magenta;
+				} else if (swap.Contains(val.ToString())){
+					int p = 0; 
+					foreach (char i in swap){
+						if (i.ToString() == val.ToString())
+							{Debug.Log("match found at index: " + p);
+							swap.Remove(p,0);}
+						p++; 
+					}
+					pieceArray[val].GetComponent<Image>().color = Color.white;
+				}
+			}
 
 	//This will just conintinually add things. Will need to check on that.
 		} 
@@ -112,6 +127,7 @@ public class PieceSpawner : MonoBehaviour {
 
 	public void PerformSwap(){
 		if (swapSelected){
+			// index = 0; 
 			foreach(char i in swap){
 			 SwapPieces(int.Parse(i.ToString()));
 			 pieceArray[int.Parse(i.ToString())].GetComponent<Image>().color = Color.white;
@@ -119,8 +135,10 @@ public class PieceSpawner : MonoBehaviour {
 			swapSelected = false; 
 			swap = ""; 
 		} else if (!swapSelected){
-			swapSelected = true; 
+			pieceArray[index].GetComponent<Image>().color = Color.white;
 			selected = false; 
+			// index = pieceArray.Length + 1; 
+			swapSelected = true; 
 		}
 	}
 
