@@ -79,13 +79,25 @@ public class BoxClick : MonoBehaviour {
 		Debug.Log(" ---- First Position: " + firstposition);
 		Debug.Log(" ---- Last Position: " + lastposition);
 
-
 		int total = 0; 
-		for (int i = firstposition; i<=lastposition; i++ ){
-			Debug.Log("We are at row: " + i);
-			total = total +int.Parse( BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
-		}
+		if (firstposition != lastposition){
+			for (int i = firstposition; i<=lastposition; i++ ){
+				Debug.Log("We are at row: " + i);
+				total = total +int.Parse( BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
+			}
+		} else {
+			firstposition = ValidationManager.FindFirstVerticalPosition(row,column);
+			lastposition = ValidationManager.findLastVerticalPosition(row, column);
 
+			Debug.Log(" ---- First Vertical Position: " + firstposition);
+			Debug.Log(" ---- Last Vertical Position: " + lastposition);
+
+			for (int i = firstposition; i<=lastposition; i++ ){
+				Debug.Log("We are at row: " + i);
+				total = total +int.Parse( BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
+			}
+
+		}
 		ScoreManager.instance.setPlayerScore(total);
 
 	}
