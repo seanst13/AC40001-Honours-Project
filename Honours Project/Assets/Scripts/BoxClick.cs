@@ -79,13 +79,15 @@ public class BoxClick : MonoBehaviour {
 		if (ValidationManager.RowTotal(row, column) != PieceManager.instance.returnPieceValue()){
 			total = ValidationManager.RowTotal(row, column);
 			// Secondary Column Checks
-			if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-				|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-					secondtotal = ValidationManager.columnTotal(row,column);
-				}
-			total = total + secondtotal; 
+			if(row+1 <BoxSpawner.gridArray.GetUpperBound(0)){
+				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
+					|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+						secondtotal = ValidationManager.columnTotal(row,column);
+					}
+					total = total + secondtotal; 
+			}
 		} else {
-			total = ValidationManager.columnTotal(row, column);
+				total = ValidationManager.columnTotal(row, column);
 		}
 
 		Debug.Log("TOTAL SCORE: " + total);
