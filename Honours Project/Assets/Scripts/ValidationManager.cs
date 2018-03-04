@@ -8,15 +8,15 @@ public class ValidationManager : MonoBehaviour {
 #region Positioning Validation
 public static bool PositioningValidation(int row, int column){
 		//If the piece lies in the rows; 
-		if ((row > 0 && row < 4)  && (column >=0 && column <=4)){
-			if (column+1 >4){
+		if ((row > 0 && row < BoxSpawner.gridArray.GetUpperBound(0))  && (column >=0 && column <=BoxSpawner.gridArray.GetUpperBound(1))){
+			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
 				if(		BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
 						return true; 
 					}
 				else { return false; }
-			} else if (column -1 < 0) {
+			} else if (column -1 < BoxSpawner.gridArray.GetLowerBound(1)) {
 				if(		BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
@@ -35,8 +35,8 @@ public static bool PositioningValidation(int row, int column){
 				}
 			}
 		//If the piece lies in the top row
-		} else if (row == 0 && (column >= 0 && column <=4)){
-			if (column+1 > 4){
+		} else if (row == BoxSpawner.gridArray.GetLowerBound(0) && (column >= 0 && column <=BoxSpawner.gridArray.GetUpperBound(1))){
+			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
 				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
 					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
 						return true; 
@@ -44,7 +44,7 @@ public static bool PositioningValidation(int row, int column){
 				else {
 					return false; 
 				}	
-			} else if (column-1 < 0 ){
+			} else if (column-1 < BoxSpawner.gridArray.GetLowerBound(1) ){
 					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
 							return true; 
@@ -62,9 +62,9 @@ public static bool PositioningValidation(int row, int column){
 					return false; 
 				}
 			}
-		} else if (row == 4 && (column >= 0 && column <= 4))
+		} else if (row == BoxSpawner.gridArray.GetUpperBound(0) && (column >= 0 && column <= BoxSpawner.gridArray.GetUpperBound(1)))
 		{
-			if (column+1 > 4){
+			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
 				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
 					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
 						return true; 
@@ -72,7 +72,7 @@ public static bool PositioningValidation(int row, int column){
 				else {
 					return false; 
 				}	
-			} else if (column-1 < 0 ){
+			} else if (column-1 < BoxSpawner.gridArray.GetLowerBound(1) ){
 					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
 						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
 							return true; 
