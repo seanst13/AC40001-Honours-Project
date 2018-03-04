@@ -79,9 +79,19 @@ public class BoxClick : MonoBehaviour {
 		if (ValidationManager.RowTotal(row, column) != PieceManager.instance.returnPieceValue()){
 			total = ValidationManager.RowTotal(row, column);
 			// Secondary Column Checks
-			if(row+1 <BoxSpawner.gridArray.GetUpperBound(0)){
+			if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
 				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
 					|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+						secondtotal = ValidationManager.columnTotal(row,column);
+					}
+					total = total + secondtotal; 
+			} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
+				if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+						secondtotal = ValidationManager.columnTotal(row,column);
+					}
+					total = total + secondtotal; 
+			} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
+				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
 						secondtotal = ValidationManager.columnTotal(row,column);
 					}
 					total = total + secondtotal; 
