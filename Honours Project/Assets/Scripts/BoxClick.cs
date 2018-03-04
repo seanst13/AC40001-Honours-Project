@@ -23,11 +23,6 @@ public class BoxClick : MonoBehaviour {
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
-					// if(PieceManager.instance.firstmove){
-					// 	PieceManager.instance.firstmove = false;
-					// 	addPiece();
-					// 	addScore(row,column);  
-					// }else 
 					if (ValidationManager.RowValidation(row, column) ) {
 						addPiece(row, column); 
 						addScore(row,column);

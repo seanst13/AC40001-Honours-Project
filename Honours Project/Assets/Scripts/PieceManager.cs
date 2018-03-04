@@ -102,7 +102,15 @@ public class PieceManager : MonoBehaviour {
 				Debug.Log(pieceArray[index].name + " has been selected.");
 			} else if (selected){
 				selected = false; 
-				Debug.Log(pieceArray[index].name + " has been deselected.");
+				if (index == val){
+					pieceArray[index].GetComponent<Image>().color = Color.white;
+					Debug.Log(pieceArray[index].name + " has been deselected.");
+				} else if (index != val){
+					pieceArray[index].GetComponent<Image>().color = Color.white;
+					index = val; 
+					Debug.Log(pieceArray[index].name + " has been selected.");
+					selected = true; 
+				}
 				// index = -5;
 			}
 		} else if (swapSelected){
