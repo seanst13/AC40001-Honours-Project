@@ -18,18 +18,12 @@ public class BoxClick : MonoBehaviour {
 				string objectname = this.name;
 				Debug.Log(objectname + " has been clicked.");
 
-				int row = int.Parse(this.name.Substring(0,1)); 
-				int column = int.Parse(this.name.Substring(2,1));
+				int row = int.Parse(objectname.Substring(0,1)); 
+				int column = int.Parse(objectname.Substring(2,1));
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
-					if (ValidationManager.RowValidation(row, column) ) {
-						addPiece(row, column); 
-						addScore(row,column);
-					} else {
-						PieceManager.instance.selected = false; 
-						ErrorManagement.instance.ShowError("Error: Please ensure that the total value is an odd number");
-					}
+					tempAddPiece(row,column);
 
 				} else{
 					ErrorManagement.instance.ShowError("Error: Piece must be placed next to an existing piece.");
@@ -58,47 +52,12 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
-
-	void addPiece(int row, int column){
+	void tempAddPiece(int row, int column){
+		PieceManager.instance.placedPieces.Add(new Piece{
+			position = this.name,
+			index = PieceManager.instance.returnIndex()
+		});
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
-
-		PieceManager.instance.pieceClicked(PieceManager.instance.returnIndex()); 
-		GetComponent<Collider2D>().enabled = false;
-		PieceManager.instance.setPieceValue(PieceManager.instance.returnIndex());
 	}
-
-	void addScore(int row, int column){
-		int total = 0;
-		int secondtotal = 0; 
-
-		if (ValidationManager.RowTotal(row, column) != PieceManager.instance.returnPieceValue()){
-			total = ValidationManager.RowTotal(row, column);
-			// Secondary Column Checks
-			if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-					|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			}
-		} else {
-				total = ValidationManager.columnTotal(row, column);
-		}
-
-		Debug.Log("TOTAL SCORE: " + total);
-		ScoreManager.instance.setPlayerScore(total);
-
-	}
-
 
 }

@@ -4,24 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PieceManager : MonoBehaviour {
-	#region Variables
-	[Header("Piece Array Related")]	
-		public static GameObject[] pieceArray; 
-		public GameObject playingPiece;   
+#region Variables
+	[Header("Piece Array Related")]			
+	public static GameObject[] pieceArray; 
+	public GameObject playingPiece;   
 		
-		public int index; 
-		public static PieceManager instance;
-		[Header("Boolean Values")]
-		public bool selected; 
-		public bool firstmove = true; 
-		[Space]
-		[Header("Swapping Pieces Related Variables")]
-		private bool swapSelected = false; 
-		private string swap; 
+	public int index; 
+	public static PieceManager instance;
+	[Header("Boolean Values")]
+	public bool selected; 
+	public bool firstmove = true; 
+	[Space]
+	[Header("Swapping Pieces Related Variables")]
+	private bool swapSelected = false; 
+	private string swap; 
+	[Space]
+	[Header("Multiple Piece Related")]
+	public List<Piece> placedPieces; 
+	public string placedIndex;  	
+
 #endregion
-#region Set UP
+#region Set Up
 	void Start () {
 		pieceArray = new GameObject[3]; 
+		placedPieces = new List<Piece>(); 
 		instance = this; 
 		generatePieces();
 		for (int i = 0; i < pieceArray.Length; i++){
@@ -32,7 +38,7 @@ public class PieceManager : MonoBehaviour {
 
 
 	public void generatePieces(){
-		int xposition = 350;
+		int xposition = 450;
 		for(int i = 0; i < pieceArray.Length; i++){
 			pieceArray[i] = Instantiate(playingPiece,new Vector3(xposition,110,0), Quaternion.identity,instance.transform);
 			pieceArray[i].transform.name = "P_" + i; 
@@ -165,5 +171,4 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
-
 }
