@@ -23,6 +23,7 @@ public class BoxClick : MonoBehaviour {
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
+					tempAddPiece(row,column);
 					if (ValidationManager.RowValidation(row, column) ) {
 						addPiece(row, column); 
 						addScore(row,column);
@@ -58,6 +59,11 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
+	void tempAddPiece(int row, int column){
+		PieceManager.instance.placedPieces.Add(this.name);
+		PieceManager.instance.count++; 
+		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
+	}
 
 	void addPiece(int row, int column){
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
@@ -66,6 +72,7 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Collider2D>().enabled = false;
 		PieceManager.instance.setPieceValue(PieceManager.instance.returnIndex());
 	}
+	
 
 	void addScore(int row, int column){
 		int total = 0;
