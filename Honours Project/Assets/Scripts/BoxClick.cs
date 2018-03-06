@@ -53,8 +53,10 @@ public class BoxClick : MonoBehaviour {
 	}
 
 	void tempAddPiece(int row, int column){
-		PieceManager.instance.placedPieces.Add(this.name);
-		PieceManager.instance.count++; 
+		PieceManager.instance.placedPieces.Add(new Piece{
+			position = this.name,
+			index = PieceManager.instance.returnIndex()
+		});
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
 	}
 
