@@ -6,26 +6,36 @@ using UnityEngine.UI;
 public class TurnManagement : MonoBehaviour {
 
 
-	void checkIfValid(){
+	public void checkIfValid(){
 		int validplays = 0; 
+		int row = 0;
+		int column = 0;
 		foreach(string position in PieceManager.instance.placedPieces){
-			int row = int.Parse(position.Substring(0,1));
-			int column = int.Parse(position.Substring(2,1));  
+			row = int.Parse(position.Substring(0,1));
+			column = int.Parse(position.Substring(2,1));  
 
 			if (OddCheck(row,column)){
 				validplays++;
 			}
 		}
-		if (validplays == PieceManager.instance.placedPieces.Count){
+		if (validplays == PieceManager.instance.count){
 			foreach(string position in PieceManager.instance.placedPieces){
-				int row = int.Parse(position.Substring(0,1));
-				int column = int.Parse(position.Substring(2,1)); 
+				row = int.Parse(position.Substring(0,1));
+				column = int.Parse(position.Substring(2,1)); 
 
 				addPiece(row,column);
 				addScore(row,column); //Might need to add this outside the loop. 
 
 
 			}	
+			PieceManager.instance.placedPieces.Clear(); 
+		} else {
+			foreach (string position in PieceManager.instance.placedPieces){
+				row = int.Parse(position.Substring(0,1));
+				column = int.Parse(position.Substring(2,1)); 
+
+				BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = ""; 
+			}
 		}
 	}
 
@@ -39,7 +49,7 @@ public class TurnManagement : MonoBehaviour {
 		//BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
 
 		PieceManager.instance.pieceClicked(PieceManager.instance.returnIndex()); 
-		GetComponent<Collider2D>().enabled = false;
+		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 		PieceManager.instance.setPieceValue(PieceManager.instance.returnIndex());
 	}
 	

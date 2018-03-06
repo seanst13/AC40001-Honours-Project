@@ -102,7 +102,7 @@ public static bool ColumnValidation(int row, int column){
 
 		total = columnTotal(row, column);
 
-		total = total + PieceManager.instance.returnPieceValue();
+		//total = total + PieceManager.instance.returnPieceValue();
 		Debug.Log("Column Total:  " + total);
 
 		// if (total != PieceManager.instance.returnPieceValue()){
@@ -120,7 +120,7 @@ public static bool ColumnValidation(int row, int column){
 		// int lastpos = findLastHortizontalPosition(row,column);
 
 		total = RowTotal(row, column); 
-		total = total + PieceManager.instance.returnPieceValue();
+		//total = total + PieceManager.instance.returnPieceValue();
 		Debug.Log("Row Total:  " + total);
 
 		if (total != PieceManager.instance.returnPieceValue()){
