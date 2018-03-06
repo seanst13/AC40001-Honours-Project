@@ -18,10 +18,18 @@ public class PieceManager : MonoBehaviour {
 		[Header("Swapping Pieces Related Variables")]
 		private bool swapSelected = false; 
 		private string swap; 
+
+		[Space]
+		[Header("Multiple Piece Related")]
+		public List<string> placedPieces; 
+		public int count; 
+	
+
 #endregion
-#region Set UP
+#region Set Up
 	void Start () {
 		pieceArray = new GameObject[3]; 
+		placedPieces = new List<string>(); 
 		instance = this; 
 		generatePieces();
 		for (int i = 0; i < pieceArray.Length; i++){

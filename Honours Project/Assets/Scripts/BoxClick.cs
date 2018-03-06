@@ -18,8 +18,8 @@ public class BoxClick : MonoBehaviour {
 				string objectname = this.name;
 				Debug.Log(objectname + " has been clicked.");
 
-				int row = int.Parse(this.name.Substring(0,1)); 
-				int column = int.Parse(this.name.Substring(2,1));
+				int row = int.Parse(objectname.Substring(0,1)); 
+				int column = int.Parse(objectname.Substring(2,1));
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
