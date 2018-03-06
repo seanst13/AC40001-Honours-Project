@@ -38,7 +38,7 @@ public class PieceManager : MonoBehaviour {
 
 
 	public void generatePieces(){
-		int xposition = 350;
+		int xposition = 450;
 		for(int i = 0; i < pieceArray.Length; i++){
 			pieceArray[i] = Instantiate(playingPiece,new Vector3(xposition,110,0), Quaternion.identity,instance.transform);
 			pieceArray[i].transform.name = "P_" + i; 

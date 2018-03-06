@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnManagement : MonoBehaviour {
+	public GameObject EndTurn; 
 	public void checkIfValid(){
 		int validplays = 0; 
 		int row = 0;
@@ -25,7 +26,14 @@ public class TurnManagement : MonoBehaviour {
 				index = placement.index; 
 				addPiece(row,column, index);				
 			}	
-			addScore(row,column); //Might need to add this outside the loop. 
+			addScore(row,column); // Need to figure out where I'm placing this and looping. 
+
+			//Ideas - 
+			
+// 			Do something different if list is size one.
+// 			
+// 			
+// 			 
 			PieceManager.instance.placedPieces.Clear(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
@@ -89,6 +97,14 @@ public class TurnManagement : MonoBehaviour {
 		Debug.Log("TOTAL SCORE: " + total);
 		ScoreManager.instance.setPlayerScore(total);
 
+	}
+
+	private void Update() {
+		if (PieceManager.instance.placedPieces.Count == 0){
+			EndTurn.GetComponent<Button>().interactable = false; 
+		} else if (PieceManager.instance.placedPieces.Count > 0){
+			EndTurn.GetComponent<Button>().interactable = true; 
+		}
 	}
 
 }
