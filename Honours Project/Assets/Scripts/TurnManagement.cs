@@ -20,19 +20,63 @@ public class TurnManagement : MonoBehaviour {
 			}
 		}
 		if (validplays == PieceManager.instance.placedPieces.Count){
-			foreach(Piece placement in PieceManager.instance.placedPieces){
-				row = int.Parse(placement.position.Substring(0,1));
-				column = int.Parse(placement.position.Substring(2,1)); 
-				index = placement.index; 
-				addPiece(row,column, index);				
+			if (validplays == 1){
+				foreach(Piece placement in PieceManager.instance.placedPieces){
+					row = int.Parse(placement.position.Substring(0,1));
+					column = int.Parse(placement.position.Substring(2,1)); 
+					addPiece(row,column, placement.index);
+					addScore(row,column); 				
+				}
+			} else if (validplays > 1){
+				bool first = true; 
+				int previousrow = 0;
+				int previouscol = 0; 
+				bool rowadded = false; 
+				bool coladded = false;
+
+				foreach (Piece placement in PieceManager.instance.placedPieces){
+					if (first){
+						previousrow = int.Parse(placement.position.Substring(0,1));
+						previouscol = int.Parse(placement.position.Substring(2,1));
+						first = true;
+						addPiece(previousrow,previouscol, placement.index);
+					} else if (previousrow == int.Parse(placement.position.Substring(0,1)) && previouscol != int.Parse(placement.position.Substring(2,1))){
+						column = int.Parse(placement.position.Substring(2,1));
+						addPiece(previousrow,column, placement.index);
+						if (!rowadded){
+							addScore(previousrow,column);
+							rowadded = true; 
+							}
+						
+						previouscol = column; 
+					} else if (previouscol == int.Parse(placement.position.Substring(2,1)) && previousrow != int.Parse(placement.position.Substring(0,1))){
+						row = int.Parse(placement.position.Substring(0,1));
+						addPiece(row,previouscol, placement.index);
+						if (!coladded){
+							addScore(row,previouscol);
+							coladded = true; 
+						}
+
+						
+						previousrow = row; 
+					} else {
+						row = int.Parse(placement.position.Substring(0,1));
+						column = int.Parse(placement.position.Substring(2,1)); 
+						addPiece(row,column, placement.index);
+						addScore(row,column); 	
+					}
+					addScore(previousrow,previouscol);
+				}
+
 			}	
-			addScore(row,column); // Need to figure out where I'm placing this and looping. 
+			
+			// Need to figure out where I'm placing this and looping. 
 
 			//Ideas - 
 			
 // 			Do something different if list is size one.
-// 			
-// 			
+// 			Check if its pieces have already been registered for scoring. 
+// 			If it has block it from scoring? 
 // 			 
 			PieceManager.instance.placedPieces.Clear(); 
 		} else {

@@ -20,8 +20,7 @@ public class PieceManager : MonoBehaviour {
 	private string swap; 
 	[Space]
 	[Header("Multiple Piece Related")]
-	public List<Piece> placedPieces; 
-	public string placedIndex;  	
+	public List<Piece> placedPieces;   	
 
 #endregion
 #region Set Up
