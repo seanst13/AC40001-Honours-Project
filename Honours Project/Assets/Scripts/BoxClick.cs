@@ -24,13 +24,6 @@ public class BoxClick : MonoBehaviour {
 				if (ValidationManager.PositioningValidation(row, column))
 				{
 					tempAddPiece(row,column);
-					if (ValidationManager.RowValidation(row, column) ) {
-						addPiece(row, column); 
-						addScore(row,column);
-					} else {
-						PieceManager.instance.selected = false; 
-						ErrorManagement.instance.ShowError("Error: Please ensure that the total value is an odd number");
-					}
 
 				} else{
 					ErrorManagement.instance.ShowError("Error: Piece must be placed next to an existing piece.");
@@ -64,48 +57,5 @@ public class BoxClick : MonoBehaviour {
 		PieceManager.instance.count++; 
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
 	}
-
-	void addPiece(int row, int column){
-		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
-
-		PieceManager.instance.pieceClicked(PieceManager.instance.returnIndex()); 
-		GetComponent<Collider2D>().enabled = false;
-		PieceManager.instance.setPieceValue(PieceManager.instance.returnIndex());
-	}
-	
-
-	void addScore(int row, int column){
-		int total = 0;
-		int secondtotal = 0; 
-
-		if (ValidationManager.RowTotal(row, column) != PieceManager.instance.returnPieceValue()){
-			total = ValidationManager.RowTotal(row, column);
-			// Secondary Column Checks
-			if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-					|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					total = total + secondtotal; 
-			}
-		} else {
-				total = ValidationManager.columnTotal(row, column);
-		}
-
-		Debug.Log("TOTAL SCORE: " + total);
-		ScoreManager.instance.setPlayerScore(total);
-
-	}
-
 
 }
