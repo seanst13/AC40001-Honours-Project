@@ -25,7 +25,7 @@ public class PieceManager : MonoBehaviour {
 #endregion
 #region Set Up
 	void Start () {
-		pieceArray = new GameObject[3]; 
+		pieceArray = new GameObject[2]; 
 		placedPieces = new List<Piece>(); 
 		instance = this; 
 		generatePieces();
