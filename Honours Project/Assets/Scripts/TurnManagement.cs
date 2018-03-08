@@ -29,7 +29,8 @@ public class TurnManagement : MonoBehaviour {
 					row = int.Parse(placement.position.Substring(0,1));
 					column = int.Parse(placement.position.Substring(2,1)); 
 					addPiece(row,column, placement.index);
-					addScore(row,column); 				
+					addScore(row,column);
+					secondaryTotalCheck(row, column); 				
 				}
 			} else if (validplays > 1){
 					foreach(Piece placement in PieceManager.instance.placedPieces){
@@ -44,12 +45,16 @@ public class TurnManagement : MonoBehaviour {
 							if (previousrow == row && previouscol != column){
 								addPiece(previousrow,column,placement.index);
 								addScore(previousrow,column);
+								secondaryTotalCheck(previousrow,previouscol);
+								secondaryTotalCheck(row, column);
 
 								//DO SECONDARY FIELD CHECKS HERE
 
 							} else if (previousrow != row && previouscol == column){
 								addPiece(row,previouscol,placement.index);
 								addScore(row,previouscol);
+								secondaryTotalCheck(previousrow,previouscol);
+								secondaryTotalCheck(row, column);
 
 								//DO SECONDARY FIELD CHECKS HERE
 
@@ -57,7 +62,10 @@ public class TurnManagement : MonoBehaviour {
 								//need to fix the indexing and turn on placement. 
 								addPiece(row,column,placement.index);
 								addScore(previousrow,previouscol);
+								secondaryTotalCheck(previousrow,previouscol);
+								secondaryTotalCheck(row, column);
 								addScore(row,column);
+								
 
 								//DO SECONDARY FIELD CHECKS HERE
 							}
@@ -104,9 +112,6 @@ public class TurnManagement : MonoBehaviour {
 			Debug.Log("Row Total: " + total);
 			
 			//TO MOVE INTO ITS OWN SCORE METHOD.
-				if(secondaryColumnCheck(row, column)){
-					secondtotal = ValidationManager.columnTotal(row,column); 
-				}
 
 				Debug.Log("Second Column Total: " + secondtotal);
 				total = total + secondtotal; 
@@ -120,6 +125,13 @@ public class TurnManagement : MonoBehaviour {
 		ScoreManager.instance.setPlayerScore(total);
 
 	}
+
+	void secondaryTotalCheck(int row, int column){
+		if(secondaryColumnCheck(row, column)){
+			ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column));
+		}
+	}
+
 
 	bool secondaryColumnCheck(int row, int column){
 
