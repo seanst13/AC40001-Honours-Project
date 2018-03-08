@@ -39,6 +39,7 @@ public class TurnManagement : MonoBehaviour {
 							previousrow = row;
 							previouscol = column;
 							first = false; 
+							addPiece(row,column,placement.index);
 						} else {
 							if (previousrow == row && previouscol != column){
 								addPiece(previousrow,column,placement.index);
@@ -53,6 +54,8 @@ public class TurnManagement : MonoBehaviour {
 								//DO SECONDARY FIELD CHECKS HERE
 
 							} else {
+								//need to fix the indexing and turn on placement. 
+								addPiece(row,column,placement.index);
 								addScore(previousrow,previouscol);
 								addScore(row,column);
 
