@@ -9,7 +9,9 @@ public class TurnManagement : MonoBehaviour {
 		int validplays = 0; 
 		int row = 0;
 		int column = 0;
-		int index = 0; 
+		bool first = true; 
+		int previousrow = 0;
+		int previouscol = 0; 	
 
 		foreach(Piece placement in PieceManager.instance.placedPieces){
 			row = int.Parse(placement.position.Substring(0,1));
@@ -20,27 +22,65 @@ public class TurnManagement : MonoBehaviour {
 			}
 		}
 		if (validplays == PieceManager.instance.placedPieces.Count){
-			foreach(Piece placement in PieceManager.instance.placedPieces){
-				row = int.Parse(placement.position.Substring(0,1));
-				column = int.Parse(placement.position.Substring(2,1)); 
-				index = placement.index; 
-				addPiece(row,column, index);				
-			}	
-			addScore(row,column); // Need to figure out where I'm placing this and looping. 
+			if (validplays == 1){
+				foreach(Piece placement in PieceManager.instance.placedPieces){
+					row = int.Parse(placement.position.Substring(0,1));
+					column = int.Parse(placement.position.Substring(2,1)); 
+					addPiece(row,column, placement.index);
+					addScore(row,column);
+					secondaryTotalCheck(row, column, "row"); 				
+				}
+			} else if (validplays > 1){
+					foreach(Piece placement in PieceManager.instance.placedPieces){
+						row = int.Parse(placement.position.Substring(0,1));
+						column = int.Parse(placement.position.Substring(2,1)); 
+						if (first){
+							previousrow = row;
+							previouscol = column;
+							first = false; 
+							addPiece(row,column,placement.index);
+						} else {
+							//If the pieces are in the same row. 
+							if (previousrow == row && previouscol != column){
+								addPiece(previousrow,column,placement.index);
+								addScore(previousrow,column);
+								secondaryTotalCheck(previousrow,previouscol, "row");
+								secondaryTotalCheck(row, column, "row");
 
-			//Ideas - 
-			
-// 			Do something different if list is size one.
-// 			
-// 			
-// 			 
+								//DO SECONDARY FIELD CHECKS HERE
+
+								//If the pieces are in the same column. 
+							} else if (previousrow != row && previouscol == column){
+								addPiece(row,previouscol,placement.index);
+								addScore(row,previouscol);
+								secondaryTotalCheck(previousrow,previouscol, "col");
+								secondaryTotalCheck(row, column, "col");
+
+								//DO SECONDARY FIELD CHECKS HERE
+
+							} else {
+								//need to fix the indexing and turn on placement. 
+								addPiece(row,column,placement.index);
+								addScore(previousrow,previouscol);
+								// secondaryTotalCheck(previousrow,previouscol);
+								// secondaryTotalCheck(row, column);
+								addScore(row,column);
+								
+
+								//DO SECONDARY FIELD CHECKS HERE
+							}
+
+						}
+					}
+			}	 			 
 			PieceManager.instance.placedPieces.Clear(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
 				row = int.Parse(placement.position.Substring(0,1));
-				column = int.Parse(placement.position.Substring(2,1)); 
+				column = int.Parse(placement.position.Substring(2,1));  
 
 				BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = ""; 
+				PieceManager.pieceArray[placement.index].SetActive(true);
 			}
 			PieceManager.instance.placedPieces.Clear(); 
 		}
@@ -57,6 +97,7 @@ public class TurnManagement : MonoBehaviour {
 
 		PieceManager.instance.pieceClicked(index); 
 		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
+		PieceManager.pieceArray[index].SetActive(true);
 		PieceManager.instance.setPieceValue(index);
 	}
 	
@@ -68,27 +109,12 @@ public class TurnManagement : MonoBehaviour {
 		if (ValidationManager.RowTotal(row, column) != int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
 			total = ValidationManager.RowTotal(row, column);
 			Debug.Log("Row Total: " + total);
-			// Secondary Column Checks
-			if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-					|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					Debug.Log("Second Column Total[STATMENT 1]: " + secondtotal);
-					total = total + secondtotal; 
-			} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
-				if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					Debug.Log("Second Column Total[STATEMENT 2]: " + secondtotal);
-					total = total + secondtotal; 
-			} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
-				if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
-						secondtotal = ValidationManager.columnTotal(row,column);
-					}
-					Debug.Log("Second Column Total[STATEMENT 3]: " + secondtotal);
-					total = total + secondtotal; 
-			}
+			
+			//TO MOVE INTO ITS OWN SCORE METHOD.
+
+				Debug.Log("Second Column Total: " + secondtotal);
+				total = total + secondtotal; 
+			
 		} else {
 				total = ValidationManager.columnTotal(row, column);
 				Debug.Log("Column Total: " + total);
@@ -98,6 +124,59 @@ public class TurnManagement : MonoBehaviour {
 		ScoreManager.instance.setPlayerScore(total);
 
 	}
+
+	void secondaryTotalCheck(int row, int column, string type){
+		if (type == "row"){
+			if(secondaryColumnCheck(row, column)){
+				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column));
+			}
+		} else if (type == "col"){
+			if(secondaryRowCheck(row,column)){
+				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column));
+			}
+		}
+	}
+
+
+	bool secondaryColumnCheck(int row, int column){
+
+	if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
+		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
+			|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
+		if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
+		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
+				return true; 
+			}
+	} else { return false; }
+	return false; 
+	}
+
+	bool secondaryRowCheck(int row, int column){
+
+	if( column-1 >= BoxSpawner.gridArray.GetLowerBound(1) && column+1 <= BoxSpawner.gridArray.GetUpperBound(1)){
+		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !=""
+			|| BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
+		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(column-1 < BoxSpawner.gridArray.GetLowerBound(1)){
+		if (BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !=""){
+				return true; 
+			}
+	} else { return false; }
+	return false; 
+	}
+
+
 
 	private void Update() {
 		if (PieceManager.instance.placedPieces.Count == 0){
