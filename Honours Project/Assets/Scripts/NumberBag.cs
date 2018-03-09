@@ -21,8 +21,4 @@ public class NumberBag : MonoBehaviour {
 			number++; 
 		}
 	}
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

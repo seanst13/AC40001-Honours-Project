@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BoxSpawner : MonoBehaviour {
+	[Header("Grid Attributes")]
 	public int gridSize; 
 	bool BoxWhite = true; 
+	[Space]
+	[Header("Game Objects")]
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;
@@ -45,7 +48,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			if (column == middleSquare && row == middleSquare)
 				{
 					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
 			BoxWhite = false;			
@@ -56,7 +59,7 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			if (column == middleSquare && row == middleSquare)
 				{
 					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
 			BoxWhite = true;
