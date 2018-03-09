@@ -54,7 +54,7 @@ public class TurnManagement : MonoBehaviour {
 								addPiece(row,previouscol,placement.index);
 								addScore(row,previouscol);
 								secondaryTotalCheck(previousrow,previouscol, "col");
-								//secondaryTotalCheck(row, column);
+								secondaryTotalCheck(row, column, "col");
 
 								//DO SECONDARY FIELD CHECKS HERE
 
@@ -69,7 +69,6 @@ public class TurnManagement : MonoBehaviour {
 
 								//DO SECONDARY FIELD CHECKS HERE
 							}
-
 
 						}
 					}
