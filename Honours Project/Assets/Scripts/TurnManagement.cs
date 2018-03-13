@@ -4,7 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnManagement : MonoBehaviour {
+	private int turnCounter; 
 	public GameObject EndTurn; 
+	public GameObject turnText; 
+
+	private void Start() {
+		turnCounter = 0; 
+		incrementTurn(); 
+	}
+
 	public void checkIfValid(){
 		int validplays = 0; 
 		int row = 0;
@@ -74,6 +82,7 @@ public class TurnManagement : MonoBehaviour {
 					}
 			}	 			 
 			PieceManager.instance.placedPieces.Clear(); 
+			incrementTurn(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
 				row = int.Parse(placement.position.Substring(0,1));
@@ -184,6 +193,12 @@ public class TurnManagement : MonoBehaviour {
 		} else if (PieceManager.instance.placedPieces.Count > 0){
 			EndTurn.GetComponent<Button>().interactable = true; 
 		}
+	}
+
+	void incrementTurn(){
+		turnCounter++;
+		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
+
 	}
 
 }
