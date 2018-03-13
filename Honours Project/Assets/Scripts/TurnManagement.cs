@@ -9,9 +9,13 @@ public class TurnManagement : MonoBehaviour {
 	public GameObject turnText; 
 	public GameObject timerText; 
 	private int Time; 
+	private int playerNumber; 
+	
+
 
 	private void Start() {
 		turnCounter = 0; 
+		playerNumber = 0; 
 		incrementTurn(); 
 	}
 
@@ -132,18 +136,18 @@ public class TurnManagement : MonoBehaviour {
 		}
 
 		Debug.Log("TOTAL SCORE: " + total);
-		ScoreManager.instance.setPlayerScore(total);
+		ScoreManager.instance.setPlayerScore(total,playerNumber);
 
 	}
 
 	void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
 			if(secondaryColumnCheck(row, column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column));
+				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
 			}
 		} else if (type == "col"){
 			if(secondaryRowCheck(row,column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column));
+				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column),playerNumber);
 			}
 		}
 	}
@@ -199,6 +203,7 @@ public class TurnManagement : MonoBehaviour {
 
 	void incrementTurn(){
 		StopAllCoroutines();
+		ChangePlayer(); 
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		StartCoroutine(countdown(60));
@@ -213,8 +218,20 @@ public class TurnManagement : MonoBehaviour {
 			Time--; 
 		}
 
+		if (Time == 0)
+			incrementTurn(); 
+
 
 	}
 
+	void ChangePlayer(){
+		if (playerNumber == 0){
+			playerNumber = 1;
+		} else if (playerNumber == 1){
+			playerNumber = 2;
+		} else if (playerNumber == 2){
+			playerNumber = 1; 
+		}
+	}
 
 }
