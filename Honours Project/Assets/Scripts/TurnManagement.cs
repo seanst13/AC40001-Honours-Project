@@ -7,6 +7,8 @@ public class TurnManagement : MonoBehaviour {
 	private int turnCounter; 
 	public GameObject EndTurn; 
 	public GameObject turnText; 
+	public GameObject timerText; 
+	private int Time; 
 
 	private void Start() {
 		turnCounter = 0; 
@@ -196,9 +198,23 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	void incrementTurn(){
+		StopAllCoroutines();
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
+		StartCoroutine(countdown(60));
+		//countdown(60);
+	}
+
+	public IEnumerator countdown(int value){
+		Time = value; 
+		while (Time > 0){
+			timerText.GetComponent<Text>().text = Time.ToString();
+			yield return new WaitForSeconds(1.0f);
+			Time--; 
+		}
+
 
 	}
+
 
 }
