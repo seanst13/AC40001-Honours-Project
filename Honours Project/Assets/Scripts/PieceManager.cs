@@ -15,18 +15,21 @@ public class PieceManager : MonoBehaviour {
 	public bool selected; 
 	public bool firstmove = true; 
 	[Space]
+	[Header("Multiple Piece Related")]
+	public List<Piece> placedPieces; 
+	public List<StoredPiece> storedPieces; 
+	[Space]
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
-	[Space]
-	[Header("Multiple Piece Related")]
-	public List<Piece> placedPieces;   	
+	  	
 
 #endregion
 #region Set Up
 	void Start () {
 		pieceArray = new GameObject[2]; 
-		placedPieces = new List<Piece>(); 
+		placedPieces = new List<Piece>();
+		storedPieces = new List<StoredPiece>();  
 		instance = this; 
 		generatePieces();
 		for (int i = 0; i < pieceArray.Length; i++){
@@ -79,6 +82,32 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
+
+	public void swapStored(){
+		for (int i = 0; i < pieceArray.Length; i++){
+			if (storedPieces == null){
+				setPieceValue(i);
+				storedPieces.Add(new StoredPiece{
+				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+				playerNumber = TurnManagement.playerNumber });  
+			} else if (TurnManagement.playerNumber == 1 && storedPieces[i].playerNumber == 2) {
+				Debug.Log("PRINTING PLAYER NUMBERS");
+				pieceArray[i].GetComponentInChildren<Text>().text = storedPieces[i].pieceValue;
+				storedPieces.RemoveAt(i);
+				storedPieces.Add(new StoredPiece{
+				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+				playerNumber = TurnManagement.playerNumber }); 
+			} else if (TurnManagement.playerNumber == 2 && storedPieces[i].playerNumber == 1){
+				pieceArray[i].GetComponentInChildren<Text>().text = storedPieces[i].pieceValue;
+				storedPieces.RemoveAt(i);
+				storedPieces.Add(new StoredPiece{
+				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+				playerNumber = TurnManagement.playerNumber }); 
+			}
+		}
+	}
+
+
 #region Return Methods
 	public int returnIndex(){
 		return index; 

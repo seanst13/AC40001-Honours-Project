@@ -9,7 +9,7 @@ public class TurnManagement : MonoBehaviour {
 	public GameObject turnText; 
 	public GameObject timerText; 
 	private int Time; 
-	private int playerNumber; 
+	public static int playerNumber; 
 	
 
 
@@ -203,7 +203,10 @@ public class TurnManagement : MonoBehaviour {
 
 	void incrementTurn(){
 		StopAllCoroutines();
+			if (playerNumber != 0){
+			PieceManager.instance.swapStored();} 
 		ChangePlayer(); 
+
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		StartCoroutine(countdown(60));
