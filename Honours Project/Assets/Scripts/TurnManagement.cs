@@ -203,8 +203,7 @@ public class TurnManagement : MonoBehaviour {
 
 	void incrementTurn(){
 		StopAllCoroutines();
-			if (playerNumber != 0){
-			PieceManager.instance.swapStored();} 
+		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
 		ChangePlayer(); 
 
 		turnCounter++;

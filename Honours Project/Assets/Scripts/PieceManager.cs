@@ -83,26 +83,60 @@ public class PieceManager : MonoBehaviour {
 	}
 #endregion
 
-	public void swapStored(){
-		for (int i = 0; i < pieceArray.Length; i++){
-			if (storedPieces == null){
-				setPieceValue(i);
+	public void swapPreviousPlayersVals(){
+		if (storedPieces.Count == 0){
+			for(int i = 0; i < pieceArray.Length; i++){
 				storedPieces.Add(new StoredPiece{
-				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-				playerNumber = TurnManagement.playerNumber });  
-			} else if (TurnManagement.playerNumber == 1 && storedPieces[i].playerNumber == 2) {
-				Debug.Log("PRINTING PLAYER NUMBERS");
-				pieceArray[i].GetComponentInChildren<Text>().text = storedPieces[i].pieceValue;
-				storedPieces.RemoveAt(i);
-				storedPieces.Add(new StoredPiece{
-				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-				playerNumber = TurnManagement.playerNumber }); 
-			} else if (TurnManagement.playerNumber == 2 && storedPieces[i].playerNumber == 1){
-				pieceArray[i].GetComponentInChildren<Text>().text = storedPieces[i].pieceValue;
-				storedPieces.RemoveAt(i);
-				storedPieces.Add(new StoredPiece{
-				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-				playerNumber = TurnManagement.playerNumber }); 
+					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+					playerNumber = TurnManagement.playerNumber
+				});
+				setPieceValue(i); 
+			}
+		} else if (storedPieces.Count != 0){
+			if (TurnManagement.playerNumber == 1){
+			 string indexes = ""; 
+				foreach (StoredPiece piece in storedPieces){
+					if (piece.playerNumber == 2){
+						indexes += storedPieces.IndexOf(piece).ToString();
+					}
+				}
+				if (indexes ==""){
+					for(int i = 0; i < pieceArray.Length; i++){
+						setPieceValue(i);
+					}
+				} else if (indexes != ""){
+					foreach (char i in indexes){
+						int val = int.Parse(i.ToString());
+						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
+						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
+						storedPieces.RemoveAt(val); 
+					}
+				}
+				storedPieces.Clear(); 
+			} else if (TurnManagement.playerNumber == 2) {
+			 string indexes = ""; 
+				foreach (StoredPiece piece in storedPieces){
+					if (piece.playerNumber == 1){
+						indexes += storedPieces.IndexOf(piece).ToString();
+					}
+				}
+				if (indexes ==""){
+					for(int i = 0; i < pieceArray.Length; i++){
+						setPieceValue(i);
+					}
+				} else if (indexes != ""){
+					Debug.Log(indexes);
+					foreach (char i in indexes){
+						int val = int.Parse(i.ToString());
+						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
+						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue.ToString();	
+					}
+					storedPieces.Clear();  
+				}
+
+
 			}
 		}
 	}
