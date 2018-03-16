@@ -10,10 +10,12 @@ public class TurnManagement : MonoBehaviour {
 	public GameObject timerText; 
 	private int Time; 
 	public static int playerNumber; 
+	public static TurnManagement instance; 
 	
 
 
 	private void Start() {
+		instance = this; 
 		turnCounter = 0; 
 		playerNumber = 0; 
 		incrementTurn(); 

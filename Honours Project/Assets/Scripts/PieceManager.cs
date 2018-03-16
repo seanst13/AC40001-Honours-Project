@@ -237,6 +237,7 @@ public class PieceManager : MonoBehaviour {
 			}
 			swapSelected = false; 
 			swap = ""; 
+			TurnManagement.instance.skipTurn(); 
 		} else if (!swapSelected){
 			pieceArray[index].GetComponent<Image>().color = Color.white;
 			selected = false; 

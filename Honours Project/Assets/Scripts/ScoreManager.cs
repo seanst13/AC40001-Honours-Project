@@ -21,7 +21,7 @@ public class ScoreManager : MonoBehaviour {
 	public void setPlayerScore(int value, int player){
 
 		if (player == 1){
-			playerOneScore = playerOneScore + value; 
+			playerOneScore += value; 
 			score1.GetComponent<Text>().text = playerOneScore.ToString();
 		} else if (player == 2){
 			playerTwoScore += value; 
