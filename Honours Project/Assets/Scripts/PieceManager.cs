@@ -93,6 +93,14 @@ public class PieceManager : MonoBehaviour {
 				setPieceValue(i); 
 			}
 		} else if (storedPieces.Count != 0){
+
+			for(int i = 0; i < pieceArray.Length; i++){
+				storedPieces.Add(new StoredPiece{
+					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+					playerNumber = TurnManagement.playerNumber
+				});
+			}
+
 			if (TurnManagement.playerNumber == 1){
 			 string indexes = ""; 
 				foreach (StoredPiece piece in storedPieces){
@@ -110,10 +118,12 @@ public class PieceManager : MonoBehaviour {
 						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
 						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
 						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
-						storedPieces.RemoveAt(val); 
+					}
+					for(int i = indexes.Length-1; i >= 0; i--){
+						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
 					}
 				}
-				storedPieces.Clear(); 
+				
 			} else if (TurnManagement.playerNumber == 2) {
 			 string indexes = ""; 
 				foreach (StoredPiece piece in storedPieces){
@@ -133,7 +143,9 @@ public class PieceManager : MonoBehaviour {
 						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
 						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue.ToString();	
 					}
-					storedPieces.Clear();  
+					for(int i = indexes.Length-1; i >= 0; i--){
+						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
+					}
 				}
 
 
