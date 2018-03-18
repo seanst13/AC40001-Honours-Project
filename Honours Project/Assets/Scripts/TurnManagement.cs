@@ -4,7 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnManagement : MonoBehaviour {
+	private int turnCounter; 
 	public GameObject EndTurn; 
+	public GameObject turnText; 
+	public GameObject timerText; 
+	private int Time; 
+	public static int playerNumber; 
+	public static TurnManagement instance; 
+	
+
+
+	private void Start() {
+		instance = this; 
+		turnCounter = 0; 
+		playerNumber = 0; 
+		incrementTurn(); 
+	}
+
 	public void checkIfValid(){
 		int validplays = 0; 
 		int row = 0;
@@ -74,6 +90,7 @@ public class TurnManagement : MonoBehaviour {
 					}
 			}	 			 
 			PieceManager.instance.placedPieces.Clear(); 
+			incrementTurn(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
 				row = int.Parse(placement.position.Substring(0,1));
@@ -121,18 +138,18 @@ public class TurnManagement : MonoBehaviour {
 		}
 
 		Debug.Log("TOTAL SCORE: " + total);
-		ScoreManager.instance.setPlayerScore(total);
+		ScoreManager.instance.setPlayerScore(total,playerNumber);
 
 	}
 
 	void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
 			if(secondaryColumnCheck(row, column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column));
+				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
 			}
 		} else if (type == "col"){
 			if(secondaryRowCheck(row,column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column));
+				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column),playerNumber);
 			}
 		}
 	}
@@ -185,5 +202,53 @@ public class TurnManagement : MonoBehaviour {
 			EndTurn.GetComponent<Button>().interactable = true; 
 		}
 	}
+
+	void incrementTurn(){
+		StopAllCoroutines();
+		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
+		ChangePlayer(); 
+
+		turnCounter++;
+		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
+		StartCoroutine(countdown(60));
+		//countdown(60);
+	}
+
+	public IEnumerator countdown(int value){
+		Time = value; 
+		while (Time > 0){
+			timerText.GetComponent<Text>().text = Time.ToString();
+			yield return new WaitForSeconds(1.0f);
+			Time--; 
+		}
+
+		if (Time == 0)
+			incrementTurn(); 
+
+
+	}
+
+	void ChangePlayer(){
+		if (playerNumber == 0){
+			playerNumber = 1;
+		} else if (playerNumber == 1){
+			playerNumber = 2;
+		} else if (playerNumber == 2){
+			playerNumber = 1; 
+		}
+	}
+
+	public void skipTurn(){
+		foreach (Piece p in PieceManager.instance.placedPieces){
+			int row = int.Parse(p.position.Substring(0,1));
+			int column = int.Parse(p.position.Substring(2,1)); 
+
+			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
+			PieceManager.pieceArray[p.index].SetActive(true);
+		}
+		PieceManager.instance.placedPieces.Clear(); 
+		incrementTurn(); 
+	}
+
 
 }
