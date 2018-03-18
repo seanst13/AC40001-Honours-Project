@@ -66,7 +66,7 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
-	void tempAddPiece(int row, int column){
+	public void tempAddPiece(int row, int column){
 		PieceManager.instance.placedPieces.Add(new Piece{
 			position = this.name,
 			index = PieceManager.instance.returnIndex()

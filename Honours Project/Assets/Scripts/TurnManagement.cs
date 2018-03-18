@@ -142,7 +142,7 @@ public class TurnManagement : MonoBehaviour {
 
 	}
 
-	void secondaryTotalCheck(int row, int column, string type){
+	public void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
 			if(secondaryColumnCheck(row, column)){
 				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
@@ -155,7 +155,7 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 
-	bool secondaryColumnCheck(int row, int column){
+	public bool secondaryColumnCheck(int row, int column){
 
 	if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
 		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
@@ -174,7 +174,7 @@ public class TurnManagement : MonoBehaviour {
 	return false; 
 	}
 
-	bool secondaryRowCheck(int row, int column){
+	public bool secondaryRowCheck(int row, int column){
 
 	if( column-1 >= BoxSpawner.gridArray.GetLowerBound(1) && column+1 <= BoxSpawner.gridArray.GetUpperBound(1)){
 		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !=""
@@ -207,6 +207,10 @@ public class TurnManagement : MonoBehaviour {
 		StopAllCoroutines();
 		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
 		ChangePlayer(); 
+
+		if (playerNumber ==2){
+			AI_Player.instance.checkPossibleMoves(); 
+		}
 
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
