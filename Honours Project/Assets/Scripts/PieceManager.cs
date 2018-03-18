@@ -15,18 +15,21 @@ public class PieceManager : MonoBehaviour {
 	public bool selected; 
 	public bool firstmove = true; 
 	[Space]
+	[Header("Multiple Piece Related")]
+	public List<Piece> placedPieces; 
+	public List<StoredPiece> storedPieces; 
+	[Space]
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
-	[Space]
-	[Header("Multiple Piece Related")]
-	public List<Piece> placedPieces;   	
+	  	
 
 #endregion
 #region Set Up
 	void Start () {
 		pieceArray = new GameObject[2]; 
-		placedPieces = new List<Piece>(); 
+		placedPieces = new List<Piece>();
+		storedPieces = new List<StoredPiece>();  
 		instance = this; 
 		generatePieces();
 		for (int i = 0; i < pieceArray.Length; i++){
@@ -79,6 +82,78 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
+
+	public void swapPreviousPlayersVals(){
+		if (storedPieces.Count == 0){
+			for(int i = 0; i < pieceArray.Length; i++){
+				storedPieces.Add(new StoredPiece{
+					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+					playerNumber = TurnManagement.playerNumber
+				});
+				setPieceValue(i); 
+			}
+		} else if (storedPieces.Count != 0){
+
+			for(int i = 0; i < pieceArray.Length; i++){
+				storedPieces.Add(new StoredPiece{
+					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+					playerNumber = TurnManagement.playerNumber
+				});
+			}
+
+			if (TurnManagement.playerNumber == 1){
+			 string indexes = ""; 
+				foreach (StoredPiece piece in storedPieces){
+					if (piece.playerNumber == 2){
+						indexes += storedPieces.IndexOf(piece).ToString();
+					}
+				}
+				if (indexes ==""){
+					for(int i = 0; i < pieceArray.Length; i++){
+						setPieceValue(i);
+					}
+				} else if (indexes != ""){
+					foreach (char i in indexes){
+						int val = int.Parse(i.ToString());
+						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
+						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
+					}
+					for(int i = indexes.Length-1; i >= 0; i--){
+						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
+					}
+				}
+				
+			} else if (TurnManagement.playerNumber == 2) {
+			 string indexes = ""; 
+				foreach (StoredPiece piece in storedPieces){
+					if (piece.playerNumber == 1){
+						indexes += storedPieces.IndexOf(piece).ToString();
+					}
+				}
+				if (indexes ==""){
+					for(int i = 0; i < pieceArray.Length; i++){
+						setPieceValue(i);
+					}
+				} else if (indexes != ""){
+					Debug.Log(indexes);
+					foreach (char i in indexes){
+						int val = int.Parse(i.ToString());
+						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
+						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue.ToString();	
+					}
+					for(int i = indexes.Length-1; i >= 0; i--){
+						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
+					}
+				}
+
+
+			}
+		}
+	}
+
+
 #region Return Methods
 	public int returnIndex(){
 		return index; 
@@ -162,6 +237,7 @@ public class PieceManager : MonoBehaviour {
 			}
 			swapSelected = false; 
 			swap = ""; 
+			TurnManagement.instance.skipTurn(); 
 		} else if (!swapSelected){
 			pieceArray[index].GetComponent<Image>().color = Color.white;
 			selected = false; 
