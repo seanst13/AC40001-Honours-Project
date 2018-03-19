@@ -18,7 +18,7 @@ public void checkPossibleMoves(){
 		for (int i = 0; i < 5; i++){
 			for(int j = 0; j < 5; j++){
 				Debug.Log("Piece: " + p + "\nRow: " + i + " Column: " + j);
-				if (ValidationManager.PositioningValidation(i,j)){
+				if (ValidationManager.PositioningValidation(i,j) && BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
 					if (ValidationManager.RowValidation(i,j)){
 						Debug.Log("VALID MOVE FOUND"); 
 						BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
@@ -47,7 +47,7 @@ public void checkPossibleMoves(){
 }
 
 public int returnTotalScore(int row,int column){
-		Debug.Log("WE HAVE REACHED THE RETURN TOTAL SCORE"); 
+ 
 	int total = ValidationManager.RowTotal(row,column);
 	if (total == int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
 		total = ValidationManager.columnTotal(row,column);
