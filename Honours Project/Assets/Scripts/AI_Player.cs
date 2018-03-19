@@ -37,12 +37,30 @@ public void checkPossibleMoves(){
 			}
 		}
 
-		//possiblemoves.Sort();
+		// possiblemoves.Sort();
 
-	foreach(Move m in possiblemoves){
-		Debug.Log("Position: " + m.row +"_"+ m.column + " Total Score: " + m.totalScore); 
-		Debug.Log("Piece Value: " + m.pieceValue);
+	int minscore = 100;
+	int maxscore = 0;
+	int min = 0;
+	int max = 0; 
+	int index = 0;   
+
+
+	if (possiblemoves.Count !=0){
+		foreach(Move m in possiblemoves){
+			Debug.Log("Position: " + m.row +"_"+ m.column + " Total Score: " + m.totalScore); 
+			Debug.Log("Piece Value: " + m.pieceValue);
+
+			if (minscore > m.totalScore) {min = index; minscore = m.totalScore;}
+			if (maxscore < m.totalScore) {max = index; maxscore = m.totalScore;}
+			index++;
+		}
 	}
+
+	Debug.Log("Min Score = " + minscore + " at position " + min);
+	Debug.Log("Max Score = " + maxscore + " at position " + max);	
+
+
 	}
 }
 
