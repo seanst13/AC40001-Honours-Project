@@ -66,9 +66,9 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
-	public void tempAddPiece(int row, int column){
+	public static void tempAddPiece(int row, int column){
 		PieceManager.instance.placedPieces.Add(new Piece{
-			position = this.name,
+			position = row+"_"+column,
 			index = PieceManager.instance.returnIndex()
 		});
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();

@@ -100,10 +100,14 @@ public class TurnManagement : MonoBehaviour {
 				PieceManager.pieceArray[placement.index].SetActive(true);
 			}
 			PieceManager.instance.placedPieces.Clear(); 
+			if(playerNumber == 2){
+				incrementTurn(); 
+			}
+
 		}
 	}
 
-	bool OddCheck(int row, int column){
+public bool OddCheck(int row, int column){
 	
 		return ValidationManager.RowValidation(row, column); 
 	
@@ -203,18 +207,20 @@ public class TurnManagement : MonoBehaviour {
 		}
 	}
 
-	void incrementTurn(){
+	public void incrementTurn(){
 		StopAllCoroutines();
 		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
 		ChangePlayer(); 
 
-		if (playerNumber ==2){
-			AI_Player.instance.checkPossibleMoves(); 
-		}
+		
 
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
+		if (playerNumber ==2){
+			AI_Player.instance.checkPossibleMoves(); 
+		}
 		StartCoroutine(countdown(60));
+		
 		//countdown(60);
 	}
 
