@@ -16,27 +16,27 @@ public class AI_Player : MonoBehaviour {
 public void checkPossibleMoves(){
 	if (TurnManagement.playerNumber % 2 == 0 && TurnManagement.playerNumber == 2){	
 		for(int p = 0; p < PieceManager.pieceArray.Length; p++){
-		PieceManager.instance.pieceClicked(p);	
-		for (int i = 0; i < 5; i++){
-			for(int j = 0; j < 5; j++){
-				// Debug.Log("Piece: " + p + "\nRow: " + i + " Column: " + j);
-				if (ValidationManager.PositioningValidation(i,j) && BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
-					if(BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
-						// Debug.Log("VALID MOVE FOUND"); 
-						BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
-						possiblemoves.Add(
-							new Move {
-								row = i, 
-								column = j, 
-								pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
-								pieceIndex = p,
-								totalScore = this.returnTotalScore(i,j)
-							}
-						);
-						BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = ""; 
+			PieceManager.instance.pieceClicked(p);	
+			for (int i = 0; i < 5; i++){
+				for(int j = 0; j < 5; j++){
+					// Debug.Log("Piece: " + p + "\nRow: " + i + " Column: " + j);
+					if (ValidationManager.PositioningValidation(i,j) && BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
+						if(BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
+							// Debug.Log("VALID MOVE FOUND"); 
+							BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
+							possiblemoves.Add(
+								new Move {
+									row = i, 
+									column = j, 
+									pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
+									pieceIndex = p,
+									totalScore = this.returnTotalScore(i,j)
+								}
+							);
+							BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = ""; 
+						}
 					}
 				}
-			}
 		}
 
 		possiblemoves.Sort(delegate(Move a , Move b){
@@ -56,6 +56,62 @@ public void checkPossibleMoves(){
 		}
 	}
 }
+
+public void GetPossibleMoves(){
+//For Each Piece
+	for (int p = 0; p < PieceManager.pieceArray.Length; p++){
+//Loop through the Rows & Columns		
+		for (int i = 0; i < 5; i++){
+			for (int j = 0; j < 5; j++){
+//Check if the Current position is Empty
+				if (BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
+//Add to the List of Possible Moves
+					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
+					possiblemoves.Add(
+								new Move {
+									row = i, 
+									column = j, 
+									pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
+									pieceIndex = p,
+									totalScore = returnTotalScore(i,j)
+								}
+					);
+					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = "";
+				}
+			}
+		}
+	}
+//Check if the Move Is Valid
+	removeInValidPlacements();
+//Filter Out the Even Totals	
+	removeEvenTotals(); 
+
+//Sort to lowest > highest
+	possiblemoves.Sort(delegate(Move a , Move b){
+		return a.totalScore.CompareTo(b.totalScore);
+	});
+
+	if (possiblemoves.Count != 0){
+		placeMove(); 
+	} else if (possiblemoves.Count == 0){
+		Debug.Log("WE HAVE FOUND NO MOVES. Switching back to Human Player.");
+			TurnManagement.instance.skipTurn(); 
+	}
+
+	
+}
+
+void removeInValidPlacements(){
+	List<Move> removedInvalids = new List<Move>();
+	foreach (Move m in possiblemoves){
+		if (ValidationManager.PositioningValidation(m.row,m.column)){
+			removedInvalids.Add(m); 
+		}
+	}
+	possiblemoves.Clear();
+	possiblemoves.AddRange(removedInvalids);
+}
+
 
 public int returnTotalScore(int row,int column){
  

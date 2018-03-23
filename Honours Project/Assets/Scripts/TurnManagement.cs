@@ -211,13 +211,10 @@ public bool OddCheck(int row, int column){
 		StopAllCoroutines();
 		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
 		ChangePlayer(); 
-
-		
-
 		turnCounter++;
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		if (playerNumber ==2){
-			AI_Player.instance.checkPossibleMoves(); 
+			AI_Player.instance.GetPossibleMoves(); 
 		}
 		StartCoroutine(countdown(60));
 		
