@@ -73,6 +73,7 @@ public class BoxClick : MonoBehaviour {
 		});
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
 		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
+		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
 	}
 
 }
