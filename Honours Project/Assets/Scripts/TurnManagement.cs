@@ -89,7 +89,8 @@ public class TurnManagement : MonoBehaviour {
 						}
 					}
 			}	 			 
-			PieceManager.instance.placedPieces.Clear(); 
+			PieceManager.instance.placedPieces.Clear();
+			Debug.Log("INCREMENT TURN - CLEARED LIST"); 
 			incrementTurn(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
@@ -101,6 +102,7 @@ public class TurnManagement : MonoBehaviour {
 			}
 			PieceManager.instance.placedPieces.Clear(); 
 			if(playerNumber == 2){
+				Debug.Log("INCREMENT TURN - NO VALID PLACEMENT");
 				incrementTurn(); 
 			}
 
@@ -210,16 +212,14 @@ public bool OddCheck(int row, int column){
 	public void incrementTurn(){
 		StopAllCoroutines();
 		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
-		ChangePlayer(); 
-
-		
-
+		ChangePlayer(); 	
 		turnCounter++;
+		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
-		if (playerNumber ==2){
+		if (playerNumber == 2 && turnCounter %2 == 0){
 			AI_Player.instance.checkPossibleMoves(); 
-		}
-		StartCoroutine(countdown(60));
+		} else{StartCoroutine(countdown(60));}
+		
 		
 		//countdown(60);
 	}
@@ -232,9 +232,11 @@ public bool OddCheck(int row, int column){
 			Time--; 
 		}
 
-		if (Time == 0)
-			incrementTurn(); 
-
+		if (Time == 0){
+			Debug.Log("INCREMENT TURN - TIME = 0");
+			//incrementTurn(); 
+			
+		}
 
 	}
 

@@ -13,11 +13,11 @@ public class BoxSpawner : MonoBehaviour {
 	public GameObject whiteSquare;
 	public GameObject greySquare;
 	private int middleSquare;
-	public static GameObject[,] gridArray;
+	public static GameObject[,] gridArray {get; set;}
 
 	public static BoxSpawner instance; 
 
-	void Start(){
+	public void Start(){
 		instance = this; 
 	//Set up Array and Middle Square Values
 		gridArray = new GameObject[gridSize,gridSize];
@@ -67,5 +67,18 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 		}
 
 }
+
+
+public string returnNameAtPosition(int row, int col){
+	return gridArray[row,col].transform.name; 
+}
+
+public GameObject[,] returnGridArray(){
+	return gridArray;
+}
+
+
+
+
 
 }

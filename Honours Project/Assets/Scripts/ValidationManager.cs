@@ -142,7 +142,7 @@ public static bool ColumnValidation(int row, int column){
 		for (int i = column; i >= 0; i--){
 			if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
 				total = total + int.Parse(BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
-				Debug.Log("Row Total["+i+","+column+"]:" + total );
+				// Debug.Log("Row Total["+i+","+column+"]:" + total );
 			} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text == "" && i != column){
 				break; 
 			}
@@ -151,7 +151,7 @@ public static bool ColumnValidation(int row, int column){
 		for(int i = column+1; i <= 4; i++){
 			if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text != ""){
 				total = total + int.Parse(BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text);
-				Debug.Log("Row Total["+i+","+column+"]:" + total );
+				// Debug.Log("Row Total["+i+","+column+"]:" + total );
 			} else if (BoxSpawner.gridArray[row,i].GetComponentInChildren<Text>().text == "" && i != column){
 				break; 
 			}
@@ -165,7 +165,7 @@ public static bool ColumnValidation(int row, int column){
 		for (int i = row; i >= 0; i--){
 			if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
 				total = total + int.Parse(BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
-				Debug.Log("Column Total["+row+","+i+"]:" + total );
+				// Debug.Log("Column Total["+row+","+i+"]:" + total );
 			} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text == "" && i != row){
 				break; 
 			}
@@ -174,7 +174,7 @@ public static bool ColumnValidation(int row, int column){
 		for(int i = row+1; i <=4; i++){
 			if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text != ""){
 				total = total + int.Parse(BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text);
-				Debug.Log("Column Total["+row+","+i+"]:" + total );
+				// Debug.Log("Column Total["+row+","+i+"]:" + total );
 			} else if (BoxSpawner.gridArray[i,column].GetComponentInChildren<Text>().text == "" && i != row){
 				break; 
 			}
