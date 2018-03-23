@@ -114,8 +114,6 @@ public bool OddCheck(int row, int column){
 	}
 
 	void addPiece(int row, int column, int index){
-		//BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
-
 		PieceManager.instance.pieceClicked(index); 
 		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 		PieceManager.pieceArray[index].SetActive(true);
