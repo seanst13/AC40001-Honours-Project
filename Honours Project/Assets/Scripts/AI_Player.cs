@@ -6,56 +6,16 @@ using UnityEngine.UI;
 public class AI_Player : MonoBehaviour {
 	public List<Move> possiblemoves; 
 	public static AI_Player instance;
+
+	private int ShuffleCounter; 
 	
 
 	void Start(){
 		possiblemoves = new List<Move>(); 
 		instance = this; 
-	}
+		ShuffleCounter = 0; 
 
-public void checkPossibleMoves(){
-	if (TurnManagement.playerNumber % 2 == 0 && TurnManagement.playerNumber == 2){	
-		for(int p = 0; p < PieceManager.pieceArray.Length; p++){
-			PieceManager.instance.pieceClicked(p);	
-			for (int i = 0; i < 5; i++){
-				for(int j = 0; j < 5; j++){
-					// Debug.Log("Piece: " + p + "\nRow: " + i + " Column: " + j);
-					if (ValidationManager.PositioningValidation(i,j) && BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
-						if(BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
-							// Debug.Log("VALID MOVE FOUND"); 
-							BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
-							possiblemoves.Add(
-								new Move {
-									row = i, 
-									column = j, 
-									pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
-									pieceIndex = p,
-									totalScore = this.returnTotalScore(i,j)
-								}
-							);
-							BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = ""; 
-						}
-					}
-				}
-		}
-
-		possiblemoves.Sort(delegate(Move a , Move b){
-			return a.totalScore.CompareTo(b.totalScore);
-		});
-		removeEvenTotals(); 
-
-	if (possiblemoves.Count !=0){
-		// foreach(Move m in possiblemoves){
-		// 	Debug.Log(m.totalScore);
-		// }
-		placeMove(); 
-	} else if (possiblemoves.Count == 0) {
-		Debug.Log("NO POSSIBLE MOVES FOUND"); 
-		TurnManagement.instance.skipTurn(); 
 	}
-		}
-	}
-}
 
 public void GetPossibleMoves(){
 //For Each Piece
@@ -68,13 +28,13 @@ public void GetPossibleMoves(){
 //Add to the List of Possible Moves
 					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
 					possiblemoves.Add(
-								new Move {
-									row = i, 
-									column = j, 
-									pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
-									pieceIndex = p,
-									totalScore = returnTotalScore(i,j)
-								}
+						new Move {
+							row = i, 
+							column = j, 
+							pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text), 
+							pieceIndex = p,
+							totalScore = returnTotalScore(i,j)
+						}
 					);
 					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = "";
 				}
@@ -95,10 +55,12 @@ public void GetPossibleMoves(){
 		placeMove(); 
 	} else if (possiblemoves.Count == 0){
 		Debug.Log("WE HAVE FOUND NO MOVES. Switching back to Human Player.");
-			TurnManagement.instance.skipTurn(); 
-	}
-
-	
+		ShuffleCounter++;
+		if (ShuffleCounter == 2){
+			ShuffleCounter = 0; 
+			PieceManager.instance.SwapPieces(Random.Range(0,PieceManager.pieceArray.Length-1));	
+		} else{	TurnManagement.instance.skipTurn();	}		 
+	}	
 }
 
 void removeInValidPlacements(){

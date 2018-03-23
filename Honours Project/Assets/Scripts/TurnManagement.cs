@@ -216,7 +216,6 @@ public bool OddCheck(int row, int column){
 		if (playerNumber ==2){
 			AI_Player.instance.GetPossibleMoves(); 
 		}
-		StartCoroutine(countdown(60));
 		
 		//countdown(60);
 	}
