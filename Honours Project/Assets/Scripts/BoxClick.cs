@@ -29,8 +29,22 @@ public class BoxClick : MonoBehaviour {
 					ErrorManagement.instance.ShowError("Error: Piece must be placed next to an existing piece.");
 				}
 			} else if (PieceManager.instance.selected && GetComponentInChildren<Text>().text != "") {
-				PieceManager.instance.selected = false; 
-				ErrorManagement.instance.ShowError("Error: Piece cannot be placed ontop of an existing piece.");
+
+				if (!GetComponent<Collider2D>().enabled){
+					PieceManager.instance.selected = false; 
+					ErrorManagement.instance.ShowError("Error: Piece cannot be placed ontop of an existing piece.");
+				} else if (GetComponent<Collider2D>().enabled){
+					PieceManager.instance.selected = false;
+					GetComponentInChildren<Text>().text = "";
+					foreach(Piece p in PieceManager.instance.placedPieces){
+						if (p.position == this.name){
+							PieceManager.pieceArray[p.index].SetActive(true);
+							PieceManager.instance.placedPieces.RemoveAt(PieceManager.instance.placedPieces.IndexOf(p));
+						}
+					}
+				}
+
+				
 			} else if (!PieceManager.instance.selected) {
 				Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name + "is " + PieceManager.instance.selected);
 				PieceManager.instance.selected = false; 
@@ -59,6 +73,7 @@ public class BoxClick : MonoBehaviour {
 		});
 		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
 		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
+		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
 	}
 
 }

@@ -41,14 +41,18 @@ public class BoxSpawner : MonoBehaviour {
 }
 // Spawns A White or Grey Box and adds them to the array
 public void SpawnBox(int row, int column, int xpos, int ypos){
+		// int val = (int) NumberBag.numbers[NumberBag.numbers.Count-1];
+		// Debug.Log(val);
+
 		if (BoxWhite){
 			gridArray[row,column] = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
 			gridArray[row,column].transform.SetParent(this.transform,false);
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
 				{
-					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
+					NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
+					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
 			BoxWhite = false;			
@@ -58,8 +62,9 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 			// Middle of Grid Check
 			if (column == middleSquare && row == middleSquare)
 				{
-					gridArray[row,column].GetComponentInChildren<Text>().text = "5";
-					// gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
+					NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
+					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
 				}
 			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
 			BoxWhite = true;
