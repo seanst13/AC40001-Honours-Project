@@ -12,15 +12,13 @@ public class BoxSpawner : MonoBehaviour {
 	[Header("Game Objects")]
 	public GameObject whiteSquare;
 	public GameObject greySquare;
-	private int middleSquare;
+	private int middleSquare {get; set;}
 	public static GameObject[,] gridArray {get; set;}
 
 	public static BoxSpawner instance; 
 
 	public void Start(){
-		setUp(gridSize);
-		DisplayBoard(); 
-		
+		SetUp(gridSize);	 		
 	}
 
 	public void DisplayBoard(){
@@ -74,13 +72,26 @@ public GameObject[,] returnGridArray(){
 	return gridArray;
 }
 
-public void setUp(int size){
+public void SetUp(int size){
 	gridArray = new GameObject[size,size];
 	instance = this; 
+	setMiddleValue(size);
+	DisplayBoard();
+}
+
+public string returnValueAtPosition(int row, int col){
+	return gridArray[row,col].GetComponentInChildren<Text>().text;
+}
+
+public void setvalueAtPosition(int row,int col, int val){
+	gridArray[row,col].GetComponentInChildren<Text>().text = val.ToString();
+}
+
+public void setMiddleValue(int size){
 	middleSquare = Mathf.RoundToInt(size/2);
 }
 
-
-
-
+public int getMiddleValue(){
+	return middleSquare;
+}
 }
