@@ -15,10 +15,14 @@ public class TurnManagement : MonoBehaviour {
 
 
 	private void Start() {
+		setUp(); 
+	}
+
+	public void setUp(){
 		instance = this; 
 		turnCounter = 0; 
 		playerNumber = 0; 
-		incrementTurn(); 
+		incrementTurn();
 	}
 
 	public void checkIfValid(){
@@ -262,5 +266,8 @@ public bool OddCheck(int row, int column){
 		incrementTurn(); 
 	}
 
+	public int returnPlayerNumber(){
+		return playerNumber; 
+	}
 
 }
