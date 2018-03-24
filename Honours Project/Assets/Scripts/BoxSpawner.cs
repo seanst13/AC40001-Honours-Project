@@ -18,10 +18,7 @@ public class BoxSpawner : MonoBehaviour {
 	public static BoxSpawner instance; 
 
 	public void Start(){
-		instance = this; 
-	//Set up Array and Middle Square Values
-		gridArray = new GameObject[gridSize,gridSize];
-		middleSquare = Mathf.RoundToInt(gridSize/2);
+		setUp(gridSize);
 		DisplayBoard(); 
 		
 	}
@@ -77,6 +74,11 @@ public GameObject[,] returnGridArray(){
 	return gridArray;
 }
 
+public void setUp(int size){
+	gridArray = new GameObject[size,size];
+	instance = this; 
+	middleSquare = Mathf.RoundToInt(size/2);
+}
 
 
 
