@@ -101,7 +101,8 @@ public class TurnManagement : MonoBehaviour {
 			}
 			PieceManager.instance.placedPieces.Clear(); 
 			if(playerNumber == 2){
-				incrementTurn(); 
+				Debug.Log("Your move is still some how completely invalid. Explain plz.");
+				AI_Player.instance.returnToHumanPlayer(); 
 			}
 
 		}
