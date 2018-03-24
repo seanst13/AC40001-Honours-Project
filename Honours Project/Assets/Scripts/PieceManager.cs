@@ -55,7 +55,7 @@ public class PieceManager : MonoBehaviour {
 		int value = -1; 
 		int numindex = 9; 
 	//Retrieves a random value from the number bag and adds it to the list. 
-		if(NumberBag.numbers != null){
+		if(NumberBag.numbers.Count !=0){
 			if (!firstmove){
 				numindex = Random.Range(0,NumberBag.numbers.Count-1);
 				value = (int) NumberBag.numbers[numindex];
@@ -77,7 +77,8 @@ public class PieceManager : MonoBehaviour {
 				NumberBag.numbers.RemoveAt(numindex); 
 				firstmove = false;
 			}
-		} else {
+		} else if (NumberBag.numbers.Count == 0){
+			pieceArray[pieceIndex].SetActive(false);
 			Debug.Log("The list is Null. ");
 		}
 	}
@@ -171,6 +172,22 @@ public class PieceManager : MonoBehaviour {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 			}
 		}
+
+		if (NumberBag.numbers.Count == 0){
+			int usedpieces = 0; 
+			for(int i = 0; i < pieceArray.Length; i++){
+				if (!pieceArray[i].activeInHierarchy)
+					usedpieces++;
+
+			}
+
+			if (usedpieces == pieceArray.Length-1){
+				ErrorManagement.instance.ShowError("YOU HAVE ENDED THE GAME");
+			}
+		}
+
+
+
 	}
 #endregion
 

@@ -24,7 +24,7 @@ public void GetPossibleMoves(){
 		for (int i = 0; i < 5; i++){
 			for (int j = 0; j < 5; j++){
 //Check if the Current position is Empty
-				if (BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == ""){
+				if (BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == "" && BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
 //Add to the List of Possible Moves
 					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text; 
 					possiblemoves.Add(
@@ -54,14 +54,20 @@ public void GetPossibleMoves(){
 	if (possiblemoves.Count != 0){
 		placeMove(); 
 	} else if (possiblemoves.Count == 0){
-		Debug.Log("WE HAVE FOUND NO MOVES. Switching back to Human Player.");
-		ShuffleCounter++;
+			returnToHumanPlayer(); 
+	}	
+}
+
+
+public void returnToHumanPlayer(){
+	Debug.Log("WE HAVE FOUND NO MOVES. Switching back to Human Player.");
+	ShuffleCounter++;
 		if (ShuffleCounter == 2){
 			ShuffleCounter = 0; 
 			PieceManager.instance.SwapPieces(Random.Range(0,PieceManager.pieceArray.Length-1));	
-		} else{	TurnManagement.instance.skipTurn();	}		 
-	}	
+		} else{	TurnManagement.instance.skipTurn();	}	
 }
+
 
 void removeInValidPlacements(){
 	List<Move> removedInvalids = new List<Move>();
