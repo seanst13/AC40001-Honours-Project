@@ -27,6 +27,10 @@ public class PieceManager : MonoBehaviour {
 #endregion
 #region Set Up
 	void Start () {
+		setUp();
+	}
+
+	public void setUp(){
 		pieceArray = new GameObject[2]; 
 		placedPieces = new List<Piece>();
 		storedPieces = new List<StoredPiece>();  
@@ -37,7 +41,6 @@ public class PieceManager : MonoBehaviour {
 		} 
 		swap = ""; 
 	}
-
 
 	public void generatePieces(){
 		int xposition = 450;
@@ -171,6 +174,10 @@ public class PieceManager : MonoBehaviour {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 			}
 		}
+	}
+
+	public GameObject[] returnPieceArray(){
+		return pieceArray; 
 	}
 #endregion
 

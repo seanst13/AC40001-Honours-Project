@@ -13,7 +13,7 @@ public class NumberBag : MonoBehaviour {
 	}
 
 // Declare all the numbers that will be used them in the game for the playing pieces and add them to a list.
-	void GenerateNumbers(){
+	public void GenerateNumbers(){
 		for (int i = 0; i < amountToPool; i++) {
 			for (int j = 0; j < amountToPool; j++){
 				numbers.Add(number);
