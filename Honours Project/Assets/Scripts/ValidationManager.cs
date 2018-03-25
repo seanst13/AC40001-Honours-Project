@@ -7,92 +7,12 @@ public class ValidationManager : MonoBehaviour {
 
 #region Positioning Validation
 public static bool PositioningValidation(int row, int column){
-		//If the piece lies in the rows; 
-		if ((row > 0 && row < BoxSpawner.gridArray.GetUpperBound(0))  && (column >=0 && column <=BoxSpawner.gridArray.GetUpperBound(1))){
-			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
-				if(		BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else { return false; }
-			} else if (column -1 < BoxSpawner.gridArray.GetLowerBound(1)) {
-				if(		BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else { return false; }
-			} else {
-				if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
+			if( !BoxSpawner.instance.IsPositionEmpty(row,column-1) || !BoxSpawner.instance.IsPositionEmpty(row-1,column) ||
+				!BoxSpawner.instance.IsPositionEmpty(row,column+1) || !BoxSpawner.instance.IsPositionEmpty(row+1,column)){
+					return true; 
+				} else {
 					return false; 
 				}
-			}
-		//If the piece lies in the top row
-		} else if (row == BoxSpawner.gridArray.GetLowerBound(0) && (column >= 0 && column <=BoxSpawner.gridArray.GetUpperBound(1))){
-			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
-				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
-					return false; 
-				}	
-			} else if (column-1 < BoxSpawner.gridArray.GetLowerBound(1) ){
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			} else {
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row+1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			}
-		} else if (row == BoxSpawner.gridArray.GetUpperBound(0) && (column >= 0 && column <= BoxSpawner.gridArray.GetUpperBound(1)))
-		{
-			if (column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
-				if( BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-					BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-						return true; 
-					}
-				else {
-					return false; 
-				}	
-			} else if (column-1 < BoxSpawner.gridArray.GetLowerBound(1) ){
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			} else {
-					if( BoxSpawner.gridArray[row, column+1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row, column-1].GetComponentInChildren<Text>().text != "" ||
-						BoxSpawner.gridArray[row-1, column].GetComponentInChildren<Text>().text != ""){
-							return true; 
-					}
-				else {
-					return false; 
-				}
-			}
-		} else {
-			return false; 
-		}
 	}
 #endregion
 #region Row & Column Validation

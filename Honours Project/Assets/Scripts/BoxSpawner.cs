@@ -34,69 +34,81 @@ public class BoxSpawner : MonoBehaviour {
 			ypos = ypos-60; 
          }
 }
-// Spawns A White or Grey Box and adds them to the array
-public void SpawnBox(int row, int column, int xpos, int ypos){
-		// int val = (int) NumberBag.numbers[NumberBag.numbers.Count-1];
-		// Debug.Log(val);
+	// Spawns A White or Grey Box and adds them to the array
+	public void SpawnBox(int row, int column, int xpos, int ypos){
+			// int val = (int) NumberBag.numbers[NumberBag.numbers.Count-1];
+			// Debug.Log(val);
 
-		if (BoxWhite){
-			gridArray[row,column] = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
-			gridArray[row,column].transform.SetParent(this.transform,false);
-			// Middle of Grid Check
-			if (column == middleSquare && row == middleSquare)
-				{
-					gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
-					NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
-				}
-			gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
-			BoxWhite = false;			
-		} else if (!BoxWhite){
-			gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
-			gridArray[row,column].transform.SetParent(this.transform,false);
-			// Middle of Grid Check
-			if (column == middleSquare && row == middleSquare)
-				{
-					gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
-					NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
-					gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
-				}
-			gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
-			BoxWhite = true;
-			
+			if (BoxWhite){
+				gridArray[row,column] = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+				gridArray[row,column].transform.SetParent(this.transform,false);
+				// Middle of Grid Check
+				if (column == middleSquare && row == middleSquare)
+					{
+						gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
+						NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
+						gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					}
+				gridArray[row,column].transform.name = (row + "_" + column).ToString(); 
+				BoxWhite = false;			
+			} else if (!BoxWhite){
+				gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
+				gridArray[row,column].transform.SetParent(this.transform,false);
+				// Middle of Grid Check
+				if (column == middleSquare && row == middleSquare)
+					{
+						gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
+						NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
+						gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+					}
+				gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
+				BoxWhite = true;
+				
+			}
+
+	}
+
+
+	public string returnNameAtPosition(int row, int col){
+		return gridArray[row,col].transform.name; 
+	}
+
+	public GameObject[,] returnGridArray(){
+		return gridArray;
+	}
+
+	public void SetUp(int size){
+		gridArray = new GameObject[size,size];
+		instance = this; 
+		setMiddleValue(size);
+		DisplayBoard();
+	}
+
+	public string returnValueAtPosition(int row, int col){
+		return gridArray[row,col].GetComponentInChildren<Text>().text;
+	}
+
+	public void setvalueAtPosition(int row,int col, int val){
+		gridArray[row,col].GetComponentInChildren<Text>().text = val.ToString();
+	}
+
+	public void setMiddleValue(int size){
+		middleSquare = Mathf.RoundToInt(size/2);
+	}
+
+	public int getMiddleValue(){
+		return middleSquare;
+	}
+
+	public bool IsPositionEmpty(int row, int column){
+		if ((row < 0 || row > gridArray.GetUpperBound(0) ) || (column < 0 || column > gridArray.GetUpperBound(1))){
+			return true;
+		} else {
+			if (gridArray[row,column].GetComponentInChildren<Text>().text == ""){
+				return true;
+			} else { 
+				return false; 
+			}
 		}
-
-}
-
-
-public string returnNameAtPosition(int row, int col){
-	return gridArray[row,col].transform.name; 
-}
-
-public GameObject[,] returnGridArray(){
-	return gridArray;
-}
-
-public void SetUp(int size){
-	gridArray = new GameObject[size,size];
-	instance = this; 
-	setMiddleValue(size);
-	DisplayBoard();
-}
-
-public string returnValueAtPosition(int row, int col){
-	return gridArray[row,col].GetComponentInChildren<Text>().text;
-}
-
-public void setvalueAtPosition(int row,int col, int val){
-	gridArray[row,col].GetComponentInChildren<Text>().text = val.ToString();
-}
-
-public void setMiddleValue(int size){
-	middleSquare = Mathf.RoundToInt(size/2);
-}
-
-public int getMiddleValue(){
-	return middleSquare;
-}
+	}
 }
