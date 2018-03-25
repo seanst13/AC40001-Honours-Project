@@ -270,4 +270,7 @@ public bool OddCheck(int row, int column){
 		return playerNumber; 
 	}
 
+	public int returnTurnCounter(){
+		return turnCounter; 
+	}
 }
