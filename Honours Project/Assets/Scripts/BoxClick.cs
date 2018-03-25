@@ -67,12 +67,10 @@ public class BoxClick : MonoBehaviour {
 	}
 
 	public static void tempAddPiece(int row, int column){
-		PieceManager.instance.placedPieces.Add(new Piece{
-			position = row+"_"+column,
-			index = PieceManager.instance.returnIndex()
-		});
-		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
+		PieceManager.instance.addPieceToList(row,column);
+		BoxSpawner.instance.setvalueAtPosition(row, column, PieceManager.instance.returnPieceValue());
 		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
+		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
 	}
 
 }

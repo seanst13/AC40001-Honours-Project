@@ -11,6 +11,10 @@ public class AI_Player : MonoBehaviour {
 	
 
 	void Start(){
+		setup(); 
+	}
+
+	public void setup(){
 		possiblemoves = new List<Move>(); 
 		instance = this; 
 		ShuffleCounter = 0; 
