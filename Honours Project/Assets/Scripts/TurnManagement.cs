@@ -154,55 +154,15 @@ public bool OddCheck(int row, int column){
 
 	public void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
-			if(secondaryColumnCheck(row, column)){
+			if(ValidationManager.secondaryColumnCheck(row, column)){
 				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
 			}
 		} else if (type == "col"){
-			if(secondaryRowCheck(row,column)){
+			if(ValidationManager.secondaryRowCheck(row,column)){
 				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column),playerNumber);
 			}
 		}
 	}
-
-
-	public bool secondaryColumnCheck(int row, int column){
-
-	if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
-		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-			|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
-		if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
-		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
-				return true; 
-			}
-	} else { return false; }
-	return false; 
-	}
-
-	public bool secondaryRowCheck(int row, int column){
-
-	if( column-1 >= BoxSpawner.gridArray.GetLowerBound(1) && column+1 <= BoxSpawner.gridArray.GetUpperBound(1)){
-		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !=""
-			|| BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
-		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(column-1 < BoxSpawner.gridArray.GetLowerBound(1)){
-		if (BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !=""){
-				return true; 
-			}
-	} else { return false; }
-	return false; 
-	}
-
 
 
 	private void Update() {

@@ -136,6 +136,46 @@ public static bool ColumnValidation(int row, int column){
 		return total %2 !=0; 
 	}
 #endregion
+#region Secondary Positioning Checks
+
+	public static bool secondaryColumnCheck(int row, int column){
+
+	if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
+		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
+			|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
+		if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
+		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
+				return true; 
+			}
+	} else { return false; }
+	return false; 
+	}
+
+	public static bool secondaryRowCheck(int row, int column){
+
+	if( column-1 >= BoxSpawner.gridArray.GetLowerBound(1) && column+1 <= BoxSpawner.gridArray.GetUpperBound(1)){
+		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !=""
+			|| BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
+		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !="" ){
+				return true; 
+			}
+	} else if(column-1 < BoxSpawner.gridArray.GetLowerBound(1)){
+		if (BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !=""){
+				return true; 
+			}
+	} else { return false; }
+	return false; 
+	}
+#endregion
 #region Total Generation
 	public static int RowTotal(int row, int column){
 		int total = 0; 
