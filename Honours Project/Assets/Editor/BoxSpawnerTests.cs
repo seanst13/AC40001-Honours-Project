@@ -50,4 +50,9 @@ public class BoxSpawnerTests {
 		
 		Assert.AreEqual(value.ToString(),Box.GetComponent<BoxSpawner>().returnValueAtPosition(3,3));
 	}
+
+	[TearDown]
+	public void TearDown(){
+		GameObject.DestroyImmediate(Box);
+	}
 }

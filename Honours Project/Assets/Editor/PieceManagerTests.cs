@@ -37,4 +37,9 @@ public class PieceManagerTests {
 		Manager.GetComponent<PieceManager>().pieceClicked(0);
 		Assert.AreNotEqual(true, Manager.GetComponent<PieceManager>().selected);
 	}
+
+	[TearDown]
+	public void TearDown(){
+		GameObject.DestroyImmediate(Manager);
+	}
 }
