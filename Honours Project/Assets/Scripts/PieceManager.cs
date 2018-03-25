@@ -27,6 +27,10 @@ public class PieceManager : MonoBehaviour {
 #endregion
 #region Set Up
 	void Start () {
+		setUp();
+	}
+
+	public void setUp(){
 		pieceArray = new GameObject[2]; 
 		placedPieces = new List<Piece>();
 		storedPieces = new List<StoredPiece>();  
@@ -37,7 +41,6 @@ public class PieceManager : MonoBehaviour {
 		} 
 		swap = ""; 
 	}
-
 
 	public void generatePieces(){
 		int xposition = 450;
@@ -80,6 +83,30 @@ public class PieceManager : MonoBehaviour {
 		} else {
 			Debug.Log("The list is Null. ");
 		}
+	}
+#endregion
+
+#region Placed Pieces Related Methods
+	public void addPieceToList(int row, int col){
+		placedPieces.Add(new Piece{
+			position = row+"_"+col,
+			index = returnIndex()}
+			);
+	}
+
+	public List<Piece> returnPlacedPieces(){
+		return placedPieces; 
+	}
+
+	public void ClearPlacedPieces(){
+		foreach (Piece p in placedPieces){
+			int row = int.Parse(p.position.Substring(0,1));
+			int column = int.Parse(p.position.Substring(2,1)); 
+
+			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
+			PieceManager.pieceArray[p.index].SetActive(true);
+		}
+		PieceManager.instance.placedPieces.Clear(); 
 	}
 #endregion
 
@@ -172,57 +199,63 @@ public class PieceManager : MonoBehaviour {
 			}
 		}
 	}
+
+	public GameObject[] returnPieceArray(){
+		return pieceArray; 
+	}
 #endregion
 
 	public void pieceClicked(int val){
 		if(!swapSelected){
-			if(!selected){
-				selected = true; 
-				index =  val;
-				Debug.Log(pieceArray[index].name + " has been selected.");
-			} else if (selected){
-				selected = false; 
-				if (index == val){
-					pieceArray[index].GetComponent<Image>().color = Color.white;
-					Debug.Log(pieceArray[index].name + " has been deselected.");
-				} else if (index != val){
-					pieceArray[index].GetComponent<Image>().color = Color.white;
-					index = val; 
-					Debug.Log(pieceArray[index].name + " has been selected.");
-					selected = true; 
-				}
-				// index = -5;
-			}
+			checkIfSelected(val);
 		} else if (swapSelected){
 			if (swap.Length != pieceArray.Length){
 				if(!swap.Contains(val.ToString())){
 					swap = swap + val.ToString();
 					pieceArray[val].GetComponent<Image>().color = Color.magenta;
 				} else if (swap.Contains(val.ToString())){
-					int p = 0; 
-					foreach (char i in swap){
-						if (i.ToString() == val.ToString())
-							{Debug.Log("match found at index: " + p);
-							swap = swap.Remove(p,1);}
-						p++; 
-					}
-					pieceArray[val].GetComponent<Image>().color = Color.white;
+					removeElementsFromSwap(val);
 				}
 			}else if (swap.Length == pieceArray.Length){
 				if (swap.Contains(val.ToString())){
-					int p = 0; 
-					foreach (char i in swap){
-						if (i.ToString() == val.ToString())
-							{Debug.Log("match found at index: " + p);
-							swap = swap.Remove(p,1);}
-						p++; 
-					}
-					pieceArray[val].GetComponent<Image>().color = Color.white;
+					removeElementsFromSwap(val);
 				}
 			}
 		} 
 	}
+
+	void checkIfSelected(int val){
+		if(!selected){
+			selected = true; 
+			index =  val;
+			Debug.Log(pieceArray[index].name + " has been selected.");
+		} else if (selected){
+			selected = false; 
+			if (index == val){
+				pieceArray[index].GetComponent<Image>().color = Color.white;
+				Debug.Log(pieceArray[index].name + " has been deselected.");
+			} else if (index != val){
+				pieceArray[index].GetComponent<Image>().color = Color.white;
+				index = val; 
+				Debug.Log(pieceArray[index].name + " has been selected.");
+				selected = true; 
+				}
+		}
+	}
+
 #region Piece Swapping Related
+	 void removeElementsFromSwap(int val)
+	{
+		int p = 0; 
+		foreach (char i in swap){
+			if (i.ToString() == val.ToString())
+				{Debug.Log("match found at index: " + p);
+				swap = swap.Remove(p,1);}
+			p++; 
+		}
+		pieceArray[val].GetComponent<Image>().color = Color.white;
+	}
+
 	public void SwapPieces(int index){
 		NumberBag.numbers.Add(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
 		setPieceValue(index);

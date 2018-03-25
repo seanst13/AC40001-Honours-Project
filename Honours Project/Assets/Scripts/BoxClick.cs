@@ -66,12 +66,9 @@ public class BoxClick : MonoBehaviour {
 		GetComponent<Image>().color = defaultColour; 
 	}
 
-	void tempAddPiece(int row, int column){
-		PieceManager.instance.placedPieces.Add(new Piece{
-			position = this.name,
-			index = PieceManager.instance.returnIndex()
-		});
-		BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = PieceManager.instance.returnPieceValue().ToString();
+	public static void tempAddPiece(int row, int column){
+		PieceManager.instance.addPieceToList(row,column);
+		BoxSpawner.instance.setvalueAtPosition(row, column, PieceManager.instance.returnPieceValue());
 		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
 		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
 	}
