@@ -52,7 +52,12 @@ public class TurnManagementTests {
 		Manager.GetComponent<TurnManagement>().skipTurn(); 
 
 		Assert.IsEmpty(Manager.GetComponent<PieceManager>().returnPlacedPieces());
-
-
 	} 
+
+	[TearDown]
+	public void TearDown(){
+		GameObject.DestroyImmediate(Manager);
+	}
+
+	
 }
