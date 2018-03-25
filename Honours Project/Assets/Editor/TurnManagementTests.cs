@@ -39,4 +39,18 @@ public class TurnManagementTests {
 		Manager.GetComponent<TurnManagement>().incrementTurn();
 		Assert.GreaterOrEqual(Manager.GetComponent<TurnManagement>().returnTurnCounter(), 1);
 	}
+
+	[Test]
+	public void CheckIfSkipTurnClearsArrayOnSkip(){
+		Manager.GetComponent<PieceManager>().index = 0; 
+		Manager.GetComponent<PieceManager>().addPieceToList(0,0);
+		Manager.GetComponent<PieceManager>().index = 1; 
+		Manager.GetComponent<PieceManager>().addPieceToList(0,1);
+
+		Manager.GetComponent<TurnManagement>().skipTurn(); 
+
+		Assert.IsEmpty(Manager.GetComponent<PieceManager>().returnPlacedPieces());
+
+
+	} 
 }

@@ -255,14 +255,7 @@ public bool OddCheck(int row, int column){
 	}
 
 	public void skipTurn(){
-		foreach (Piece p in PieceManager.instance.placedPieces){
-			int row = int.Parse(p.position.Substring(0,1));
-			int column = int.Parse(p.position.Substring(2,1)); 
-
-			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
-			PieceManager.pieceArray[p.index].SetActive(true);
-		}
-		PieceManager.instance.placedPieces.Clear(); 
+		PieceManager.instance.ClearPlacedPieces(); 
 		incrementTurn(); 
 	}
 

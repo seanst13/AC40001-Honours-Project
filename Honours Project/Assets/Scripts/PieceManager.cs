@@ -86,6 +86,30 @@ public class PieceManager : MonoBehaviour {
 	}
 #endregion
 
+#region Placed Pieces Related Methods
+	public void addPieceToList(int row, int col){
+		placedPieces.Add(new Piece{
+			position = row+"_"+col,
+			index = returnIndex()}
+			);
+	}
+
+	public List<Piece> returnPlacedPieces(){
+		return placedPieces; 
+	}
+
+	public void ClearPlacedPieces(){
+		foreach (Piece p in placedPieces){
+			int row = int.Parse(p.position.Substring(0,1));
+			int column = int.Parse(p.position.Substring(2,1)); 
+
+			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
+			PieceManager.pieceArray[p.index].SetActive(true);
+		}
+		PieceManager.instance.placedPieces.Clear(); 
+	}
+#endregion
+
 	public void swapPreviousPlayersVals(){
 		if (storedPieces.Count == 0){
 			for(int i = 0; i < pieceArray.Length; i++){
