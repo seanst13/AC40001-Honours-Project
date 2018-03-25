@@ -15,10 +15,14 @@ public class TurnManagement : MonoBehaviour {
 
 
 	private void Start() {
+		setUp(); 
+	}
+
+	public void setUp(){
 		instance = this; 
 		turnCounter = 0; 
 		playerNumber = 0; 
-		incrementTurn(); 
+		incrementTurn();
 	}
 
 	public void checkIfValid(){
@@ -89,7 +93,8 @@ public class TurnManagement : MonoBehaviour {
 						}
 					}
 			}	 			 
-			PieceManager.instance.placedPieces.Clear(); 
+			PieceManager.instance.placedPieces.Clear();
+			Debug.Log("INCREMENT TURN - CLEARED LIST"); 
 			incrementTurn(); 
 		} else {
 			foreach(Piece placement in PieceManager.instance.placedPieces){
@@ -100,10 +105,15 @@ public class TurnManagement : MonoBehaviour {
 				PieceManager.pieceArray[placement.index].SetActive(true);
 			}
 			PieceManager.instance.placedPieces.Clear(); 
+			if(playerNumber == 2){
+				Debug.Log("INCREMENT TURN - NO VALID PLACEMENT");
+				incrementTurn(); 
+			}
+
 		}
 	}
 
-	bool OddCheck(int row, int column){
+public bool OddCheck(int row, int column){
 	
 		return ValidationManager.RowValidation(row, column); 
 	
@@ -142,57 +152,17 @@ public class TurnManagement : MonoBehaviour {
 
 	}
 
-	void secondaryTotalCheck(int row, int column, string type){
+	public void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
-			if(secondaryColumnCheck(row, column)){
+			if(ValidationManager.secondaryColumnCheck(row, column)){
 				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
 			}
 		} else if (type == "col"){
-			if(secondaryRowCheck(row,column)){
+			if(ValidationManager.secondaryRowCheck(row,column)){
 				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column),playerNumber);
 			}
 		}
 	}
-
-
-	bool secondaryColumnCheck(int row, int column){
-
-	if( row-1 >= BoxSpawner.gridArray.GetLowerBound(0) && row+1 <= BoxSpawner.gridArray.GetUpperBound(0)){
-		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""
-			|| BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(row+1 > BoxSpawner.gridArray.GetUpperBound(0)){
-		if (BoxSpawner.gridArray[row-1,column].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(row-1 < BoxSpawner.gridArray.GetLowerBound(0)){
-		if (BoxSpawner.gridArray[row+1,column].GetComponentInChildren<Text>().text !=""){
-				return true; 
-			}
-	} else { return false; }
-	return false; 
-	}
-
-	bool secondaryRowCheck(int row, int column){
-
-	if( column-1 >= BoxSpawner.gridArray.GetLowerBound(1) && column+1 <= BoxSpawner.gridArray.GetUpperBound(1)){
-		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !=""
-			|| BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(column+1 > BoxSpawner.gridArray.GetUpperBound(1)){
-		if (BoxSpawner.gridArray[row,column-1].GetComponentInChildren<Text>().text !="" ){
-				return true; 
-			}
-	} else if(column-1 < BoxSpawner.gridArray.GetLowerBound(1)){
-		if (BoxSpawner.gridArray[row,column+1].GetComponentInChildren<Text>().text !=""){
-				return true; 
-			}
-	} else { return false; }
-	return false; 
-	}
-
 
 
 	private void Update() {
@@ -203,14 +173,18 @@ public class TurnManagement : MonoBehaviour {
 		}
 	}
 
-	void incrementTurn(){
+	public void incrementTurn(){
 		StopAllCoroutines();
 		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();} 
-		ChangePlayer(); 
-
+		ChangePlayer(); 	
 		turnCounter++;
+		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
-		StartCoroutine(countdown(60));
+		if (playerNumber == 2 && turnCounter %2 == 0){
+			AI_Player.instance.checkPossibleMoves(); 
+		} else{StartCoroutine(countdown(60));}
+		
+		
 		//countdown(60);
 	}
 
@@ -222,9 +196,11 @@ public class TurnManagement : MonoBehaviour {
 			Time--; 
 		}
 
-		if (Time == 0)
-			incrementTurn(); 
-
+		if (Time == 0){
+			Debug.Log("INCREMENT TURN - TIME = 0");
+			//incrementTurn(); 
+			
+		}
 
 	}
 
@@ -239,16 +215,15 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	public void skipTurn(){
-		foreach (Piece p in PieceManager.instance.placedPieces){
-			int row = int.Parse(p.position.Substring(0,1));
-			int column = int.Parse(p.position.Substring(2,1)); 
-
-			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
-			PieceManager.pieceArray[p.index].SetActive(true);
-		}
-		PieceManager.instance.placedPieces.Clear(); 
+		PieceManager.instance.ClearPlacedPieces(); 
 		incrementTurn(); 
 	}
 
+	public int returnPlayerNumber(){
+		return playerNumber; 
+	}
 
+	public int returnTurnCounter(){
+		return turnCounter; 
+	}
 }

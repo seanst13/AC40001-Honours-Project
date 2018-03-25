@@ -27,6 +27,10 @@ public class PieceManager : MonoBehaviour {
 #endregion
 #region Set Up
 	void Start () {
+		setUp();
+	}
+
+	public void setUp(){
 		pieceArray = new GameObject[2]; 
 		placedPieces = new List<Piece>();
 		storedPieces = new List<StoredPiece>();  
@@ -37,7 +41,6 @@ public class PieceManager : MonoBehaviour {
 		} 
 		swap = ""; 
 	}
-
 
 	public void generatePieces(){
 		int xposition = 450;
@@ -80,6 +83,30 @@ public class PieceManager : MonoBehaviour {
 		} else {
 			Debug.Log("The list is Null. ");
 		}
+	}
+#endregion
+
+#region Placed Pieces Related Methods
+	public void addPieceToList(int row, int col){
+		placedPieces.Add(new Piece{
+			position = row+"_"+col,
+			index = returnIndex()}
+			);
+	}
+
+	public List<Piece> returnPlacedPieces(){
+		return placedPieces; 
+	}
+
+	public void ClearPlacedPieces(){
+		foreach (Piece p in placedPieces){
+			int row = int.Parse(p.position.Substring(0,1));
+			int column = int.Parse(p.position.Substring(2,1)); 
+
+			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
+			PieceManager.pieceArray[p.index].SetActive(true);
+		}
+		PieceManager.instance.placedPieces.Clear(); 
 	}
 #endregion
 
@@ -171,6 +198,10 @@ public class PieceManager : MonoBehaviour {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 			}
 		}
+	}
+
+	public GameObject[] returnPieceArray(){
+		return pieceArray; 
 	}
 #endregion
 

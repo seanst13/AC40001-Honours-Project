@@ -12,18 +12,13 @@ public class BoxSpawner : MonoBehaviour {
 	[Header("Game Objects")]
 	public GameObject whiteSquare;
 	public GameObject greySquare;
-	private int middleSquare;
-	public static GameObject[,] gridArray;
+	private int middleSquare {get; set;}
+	public static GameObject[,] gridArray {get; set;}
 
 	public static BoxSpawner instance; 
 
-	void Start(){
-		instance = this; 
-	//Set up Array and Middle Square Values
-		gridArray = new GameObject[gridSize,gridSize];
-		middleSquare = Mathf.RoundToInt(gridSize/2);
-		DisplayBoard(); 
-		
+	public void Start(){
+		SetUp(gridSize);	 		
 	}
 
 	public void DisplayBoard(){
@@ -73,4 +68,35 @@ public void SpawnBox(int row, int column, int xpos, int ypos){
 
 }
 
+
+public string returnNameAtPosition(int row, int col){
+	return gridArray[row,col].transform.name; 
+}
+
+public GameObject[,] returnGridArray(){
+	return gridArray;
+}
+
+public void SetUp(int size){
+	gridArray = new GameObject[size,size];
+	instance = this; 
+	setMiddleValue(size);
+	DisplayBoard();
+}
+
+public string returnValueAtPosition(int row, int col){
+	return gridArray[row,col].GetComponentInChildren<Text>().text;
+}
+
+public void setvalueAtPosition(int row,int col, int val){
+	gridArray[row,col].GetComponentInChildren<Text>().text = val.ToString();
+}
+
+public void setMiddleValue(int size){
+	middleSquare = Mathf.RoundToInt(size/2);
+}
+
+public int getMiddleValue(){
+	return middleSquare;
+}
 }
