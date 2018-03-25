@@ -90,12 +90,12 @@ public int returnTotalScore(int row,int column){
 	int total = ValidationManager.RowTotal(row,column);
 	if (total == int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
 		total = ValidationManager.columnTotal(row,column);
-		if (TurnManagement.instance.secondaryRowCheck(row,column)){
+		if (ValidationManager.secondaryRowCheck(row,column)){
 			total += ValidationManager.RowTotal(row,column);
 		}
 	} 
 	else {
-		if (TurnManagement.instance.secondaryColumnCheck(row,column)){
+		if (ValidationManager.secondaryColumnCheck(row,column)){
 			total += ValidationManager.columnTotal(row,column);
 		}
 	}
