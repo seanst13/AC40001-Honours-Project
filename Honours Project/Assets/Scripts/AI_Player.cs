@@ -28,17 +28,17 @@ public void GetPossibleMoves(){
 //Check if the Current position is Empty
 				if (BoxSpawner.instance.IsPositionEmpty(i,j) && BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
 //Add to the List of Possible Moves
-					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text;
+					// BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text;
 					possiblemoves.Add(
 						new Move {
 							row = i,
 							column = j,
-							pieceValue = int.Parse(BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text),
+							pieceValue = int.Parse(PieceManager.pieceArray[p].GetComponentInChildren<Text>().text),
 							pieceIndex = p,
-							totalScore = returnTotalScore(i,j)
+							totalScore = returnTotalScore(i,j,int.Parse(PieceManager.pieceArray[p].GetComponentInChildren<Text>().text))
 						}
 					);
-					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = "";
+					// BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = "";
 				}
 			}
 		}
@@ -85,20 +85,20 @@ void removeInValidPlacements(){
 }
 
 
-public int returnTotalScore(int row,int column){
+public int returnTotalScore(int row,int column, int valOfPiece){
 
-	int total = ValidationManager.RowTotal(row,column);
-	if (total == int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
-		total = ValidationManager.columnTotal(row,column);
-		if (ValidationManager.secondaryRowCheck(row,column)){
-			total += ValidationManager.RowTotal(row,column);
-		}
+	int total = ValidationManager.RowTotal(row,column) + valOfPiece;
+	if (total == valOfPiece){
+		total = ValidationManager.columnTotal(row,column) + valOfPiece;
+		//if (ValidationManager.secondaryRowCheck(row,column)){
+		//	total += ValidationManager.RowTotal(row,column);
+		//}
 	}
-	else {
-		if (ValidationManager.secondaryColumnCheck(row,column)){
-			total += ValidationManager.columnTotal(row,column);
-		}
-	}
+	// else {
+	// 	if (ValidationManager.secondaryColumnCheck(row,column)){
+	// 		total += ValidationManager.columnTotal(row,column);
+	// 	}
+	// }
 
 	// Debug.Log("TOTAL SCORE OF THE THING:" + total);
 	return total;

@@ -126,8 +126,8 @@ public class TurnManagement : MonoBehaviour {
 		int total = 0;
 		int secondtotal = 0;
 
-		if (ValidationManager.RowTotal(row, column) != int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
-			total = ValidationManager.RowTotal(row, column);
+		if ((ValidationManager.RowTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)) ) != int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
+			total = ValidationManager.RowTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
 			Debug.Log("Row Total: " + total);
 
 			//TO MOVE INTO ITS OWN SCORE METHOD.
@@ -136,7 +136,7 @@ public class TurnManagement : MonoBehaviour {
 			total = total + secondtotal;
 
 		} else {
-			total = ValidationManager.columnTotal(row, column);
+			total = ValidationManager.columnTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
 			Debug.Log("Column Total: " + total);
 		}
 
@@ -148,11 +148,11 @@ public class TurnManagement : MonoBehaviour {
 	public void secondaryTotalCheck(int row, int column, string type){
 		if (type == "row"){
 			if(ValidationManager.secondaryColumnCheck(row, column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column),playerNumber);
+				ScoreManager.instance.setPlayerScore(ValidationManager.columnTotal(row,column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)),playerNumber);
 			}
 		} else if (type == "col"){
 			if(ValidationManager.secondaryRowCheck(row,column)){
-				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column),playerNumber);
+				ScoreManager.instance.setPlayerScore(ValidationManager.RowTotal(row,column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)),playerNumber);
 			}
 		}
 	}
