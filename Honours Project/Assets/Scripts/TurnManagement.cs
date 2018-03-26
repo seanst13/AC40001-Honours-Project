@@ -167,7 +167,7 @@ public bool OddCheck(int row, int column){
 		} else if (playerNumber == 0) {
 			ChangePlayer();
 			// PieceManager.instance.swapPreviousPlayersVals();
-			}
+		}
 		
 		turnCounter++;
 		Debug.Log("TURN COUNTER " + turnCounter);
