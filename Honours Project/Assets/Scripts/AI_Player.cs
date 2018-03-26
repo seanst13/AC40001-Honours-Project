@@ -67,7 +67,9 @@ public void returnToHumanPlayer(){
 		if (ShuffleCounter == 2){
 			ShuffleCounter = 0;
 			PieceManager.instance.SwapPieces(Random.Range(0,PieceManager.pieceArray.Length-1));
-		} else{	TurnManagement.instance.skipTurn();	}
+		} else {	
+			TurnManagement.instance.skipTurn();	
+		}
 }
 
 

@@ -160,17 +160,23 @@ public bool OddCheck(int row, int column){
 
 	public void incrementTurn(){
 		StopAllCoroutines();
-		if (playerNumber != 0){ PieceManager.instance.swapPreviousPlayersVals();}
-		ChangePlayer();
+		if (playerNumber != 0){
+			PieceManager.instance.addToStoredPieces();
+			ChangePlayer(); 
+			PieceManager.instance.swapPreviousPlayersVals();
+		} else if (playerNumber == 0) {
+			ChangePlayer();
+			// PieceManager.instance.swapPreviousPlayersVals();
+			}
+		
 		turnCounter++;
 		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		if (playerNumber ==2){
 			AI_Player.instance.GetPossibleMoves();
+		} else {
+			StartCoroutine(countdown(60));
 		}
-		else {StartCoroutine(countdown(60));}
-
-		//countdown(60);
 	}
 
 	public IEnumerator countdown(int value){
@@ -183,7 +189,7 @@ public bool OddCheck(int row, int column){
 
 		if (Time == 0){
 			Debug.Log("INCREMENT TURN - TIME = 0");
-			//incrementTurn();
+			skipTurn();
 
 		}
 
