@@ -32,7 +32,9 @@ public class TurnManagement : MonoBehaviour {
 			row = int.Parse(placement.position.Substring(0,1));
 			column = int.Parse(placement.position.Substring(2,1));
 
+			Debug.Log("Attempting to place " + PieceManager.pieceArray[placement.index].GetComponentInChildren<Text>().text +" AT: ["+row+","+column+"]");
 			if (OddCheck(row,column)){
+				Debug.Log("This is valid");
 				validplays++;
 			}
 		}
@@ -44,6 +46,12 @@ public class TurnManagement : MonoBehaviour {
 					addPiece(row,column, placement.index);
 					addScore(row,column);
 					secondaryTotalCheck(row, column, "row");
+
+					if (playerNumber == 2){
+						Debug.Log("AI PLAYER PLACED "+PieceManager.pieceArray[placement.index].GetComponentInChildren<Text>().text +" AT: ["+row+","+column+"]");
+					} else{
+						Debug.Log("HUMAN PLAYER PLACED "+PieceManager.pieceArray[placement.index].GetComponentInChildren<Text>().text +" AT: ["+row+","+column+"]");
+					}
 				}
 			} else if (validplays > 1){
 				compareMultiplePieces(row,column);
@@ -102,8 +110,8 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 
-public bool OddCheck(int row, int column){
-		return ValidationManager.RowValidation(row, column);
+	public bool OddCheck(int row, int column){
+		return ValidationManager.newRowValidation(row, column) && ValidationManager.newColValidation(row,column);
 	}
 
 	void addPiece(int row, int column, int index){
@@ -174,9 +182,9 @@ public bool OddCheck(int row, int column){
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		if (playerNumber ==2){
 			AI_Player.instance.GetPossibleMoves();
-		} else {
+		} 
 			StartCoroutine(countdown(60));
-		}
+		
 	}
 
 	public IEnumerator countdown(int value){
