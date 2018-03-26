@@ -26,7 +26,7 @@ public void GetPossibleMoves(){
 		for (int i = 0; i < 5; i++){
 			for (int j = 0; j < 5; j++){
 //Check if the Current position is Empty
-				if (BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text == "" && BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
+				if (BoxSpawner.instance.IsPositionEmpty(i,j) && BoxSpawner.gridArray[i,j].GetComponent<Collider2D>().enabled){
 //Add to the List of Possible Moves
 					BoxSpawner.gridArray[i,j].GetComponentInChildren<Text>().text = PieceManager.pieceArray[p].GetComponentInChildren<Text>().text;
 					possiblemoves.Add(

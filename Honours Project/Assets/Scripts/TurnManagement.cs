@@ -12,8 +12,6 @@ public class TurnManagement : MonoBehaviour {
 	public static int playerNumber;
 	public static TurnManagement instance;
 
-
-
 	private void Start() {
 		setUp();
 	}
@@ -29,9 +27,6 @@ public class TurnManagement : MonoBehaviour {
 		int validplays = 0;
 		int row = 0;
 		int column = 0;
-		bool first = true;
-		int previousrow = 0;
-		int previouscol = 0;
 
 		foreach(Piece placement in PieceManager.instance.placedPieces){
 			row = int.Parse(placement.position.Substring(0,1));
@@ -51,60 +46,13 @@ public class TurnManagement : MonoBehaviour {
 					secondaryTotalCheck(row, column, "row");
 				}
 			} else if (validplays > 1){
-					foreach(Piece placement in PieceManager.instance.placedPieces){
-						row = int.Parse(placement.position.Substring(0,1));
-						column = int.Parse(placement.position.Substring(2,1));
-						if (first){
-							previousrow = row;
-							previouscol = column;
-							first = false;
-							addPiece(row,column,placement.index);
-						} else {
-							//If the pieces are in the same row.
-							if (previousrow == row && previouscol != column){
-								addPiece(previousrow,column,placement.index);
-								addScore(previousrow,column);
-								secondaryTotalCheck(previousrow,previouscol, "row");
-								secondaryTotalCheck(row, column, "row");
-
-								//DO SECONDARY FIELD CHECKS HERE
-
-								//If the pieces are in the same column.
-							} else if (previousrow != row && previouscol == column){
-								addPiece(row,previouscol,placement.index);
-								addScore(row,previouscol);
-								secondaryTotalCheck(previousrow,previouscol, "col");
-								secondaryTotalCheck(row, column, "col");
-
-								//DO SECONDARY FIELD CHECKS HERE
-
-							} else {
-								//need to fix the indexing and turn on placement.
-								addPiece(row,column,placement.index);
-								addScore(previousrow,previouscol);
-								// secondaryTotalCheck(previousrow,previouscol);
-								// secondaryTotalCheck(row, column);
-								addScore(row,column);
-
-
-								//DO SECONDARY FIELD CHECKS HERE
-							}
-
-						}
-					}
+				compareMultiplePieces(row,column);
 			}
 			PieceManager.instance.placedPieces.Clear();
 			Debug.Log("INCREMENT TURN - CLEARED LIST");
 			incrementTurn();
-		} else {
-			foreach(Piece placement in PieceManager.instance.placedPieces){
-				row = int.Parse(placement.position.Substring(0,1));
-				column = int.Parse(placement.position.Substring(2,1));
-
-				BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
-				PieceManager.pieceArray[placement.index].SetActive(true);
-			}
-			PieceManager.instance.placedPieces.Clear();
+		} else if (validplays == 0) {
+			PieceManager.instance.ClearPlacedPieces(); 
 			if(playerNumber == 2){
 				Debug.Log("Your move is still some how completely invalid. Explain plz.");
 				AI_Player.instance.returnToHumanPlayer();
@@ -114,10 +62,48 @@ public class TurnManagement : MonoBehaviour {
 		}
 	}
 
+	void compareMultiplePieces(int row, int column){
+		bool first = true;
+		int previousrow = 0;
+		int previouscol = 0;
+			foreach(Piece placement in PieceManager.instance.placedPieces){
+				row = int.Parse(placement.position.Substring(0,1));
+				column = int.Parse(placement.position.Substring(2,1));
+				if (first){
+					previousrow = row;
+					previouscol = column;
+					first = false;
+					addPiece(row,column,placement.index);
+				} else {
+					//If the pieces are in the same row.
+					if (previousrow == row && previouscol != column){
+						addPiece(previousrow,column,placement.index);
+						addScore(previousrow,column);
+						secondaryTotalCheck(previousrow,previouscol, "row");
+						secondaryTotalCheck(row, column, "row");
+
+						//If the pieces are in the same column.
+					} else if (previousrow != row && previouscol == column){
+						addPiece(row,previouscol,placement.index);
+						addScore(row,previouscol);
+						secondaryTotalCheck(previousrow,previouscol, "col");
+						secondaryTotalCheck(row, column, "col");
+
+					} else {
+					//need to fix the indexing and turn on placement.
+						addPiece(row,column,placement.index);
+						addScore(previousrow,previouscol);
+						// secondaryTotalCheck(previousrow,previouscol);
+						// secondaryTotalCheck(row, column);
+						addScore(row,column);
+					}
+				}
+			}
+	}
+
+
 public bool OddCheck(int row, int column){
-
 		return ValidationManager.RowValidation(row, column);
-
 	}
 
 	void addPiece(int row, int column, int index){
@@ -138,12 +124,12 @@ public bool OddCheck(int row, int column){
 
 			//TO MOVE INTO ITS OWN SCORE METHOD.
 
-				Debug.Log("Second Column Total: " + secondtotal);
-				total = total + secondtotal;
+			Debug.Log("Second Column Total: " + secondtotal);
+			total = total + secondtotal;
 
 		} else {
-				total = ValidationManager.columnTotal(row, column);
-				Debug.Log("Column Total: " + total);
+			total = ValidationManager.columnTotal(row, column);
+			Debug.Log("Column Total: " + total);
 		}
 
 		Debug.Log("TOTAL SCORE: " + total);
