@@ -51,6 +51,23 @@ public class BoxSpawnerTests {
 		Assert.AreEqual(value.ToString(),Box.GetComponent<BoxSpawner>().returnValueAtPosition(3,3));
 	}
 
+	[Test]
+	public void CheckEmptyPiecesFail(){
+		Box.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,4);
+		Assert.False(Box.GetComponent<BoxSpawner>().IsPositionEmpty(2,1));
+	}
+
+	[Test]
+	public void CheckEmptyPiecesPasses(){
+		Box.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,4);
+		Assert.True(Box.GetComponent<BoxSpawner>().IsPositionEmpty(2,0));
+	}
+
+	[Test]
+	public void CheckEmptyOutOfBounds(){
+		Assert.True(Box.GetComponent<BoxSpawner>().IsPositionEmpty(-1,10));
+	}
+
 	[TearDown]
 	public void TearDown(){
 		GameObject.DestroyImmediate(Box);
