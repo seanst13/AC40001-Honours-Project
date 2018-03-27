@@ -29,4 +29,40 @@ public class ValidationTests {
 	public void CheckInvalidPositioning(){
 		Assert.AreNotEqual(true, ValidationManager.PositioningValidation(0,0));
 	}
+
+	 [Test]
+	public void checkIfRowValidation(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
+		Assert.True(ValidationManager.newRowValidation(2,3,4));
+	}
+
+	[Test]
+	public void CheckIfRowValidationCatchesError(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,3);
+		Assert.False(ValidationManager.newRowValidation(2,3,3));
+	}
+
+	[Test]
+	public void CheckColumnValidation(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,2,4);
+		Assert.True(ValidationManager.newColValidation(1,2,4));
+	}
+
+	[Test]
+	public void CheckColValidationCatchesError(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,2,3);
+		Assert.False(ValidationManager.newColValidation(1,2,3));
+	}
+
+	[Test]
+	public void checkRowTotal(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
+		Assert.AreEqual(9, (ValidationManager.RowTotal(2,3) + 4));
+	}
+
+	[Test]
+	public void CheckColumnTotal(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,2,4);
+		Assert.AreEqual(9, (ValidationManager.columnTotal(1,2) + 4));
+	}
 }

@@ -1,0 +1,7 @@
+- name: csharp
+  production:
+    exclude:
+      - .*/Editor/.*\.cs
+  test:
+    include:
+      - .*/Editor/.*\.cs
