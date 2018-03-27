@@ -4,5 +4,7 @@ languages:
 - name: csharp
   production:
     exclude:
+      - ./.*/Assets/Editor/.*\.cs
   test:
     include:
+      - ./.*/Assets/Editor/.*\.cs
