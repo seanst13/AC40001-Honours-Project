@@ -20,6 +20,9 @@ public class AI_Player : MonoBehaviour {
 	}
 
 public void GetPossibleMoves(){
+	for(int i = 0; i < PieceManager.pieceArray.Length; i++){
+		Debug.Log("Piece" + PieceManager.pieceArray[i].GetComponentInChildren<Text>().text);
+	}
 //For Each Piece
 	for (int p = 0; p < PieceManager.pieceArray.Length; p++){
 //Loop through the Rows & Columns
@@ -87,7 +90,9 @@ void removeInValidPlacements(){
 	foreach (Move m in possiblemoves){
 		if (ValidationManager.PositioningValidation(m.row,m.column) && BoxSpawner.instance.IsPositionEmpty(m.row,m.column)){
 			if (ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && ValidationManager.newColValidation(m.row,m.column, m.pieceValue)){
-			removedInvalids.Add(m);
+				if (m.pieceValue == int.Parse(PieceManager.pieceArray[m.pieceIndex].GetComponentInChildren<Text>().text)){
+					removedInvalids.Add(m);
+				}
 			}
 		}
 	}
@@ -129,7 +134,7 @@ void removeEvenTotals(){
 
 
 void placeMove(){
-	int max = possiblemoves.Count -1;
+	int max = possiblemoves.Count-1;
 
 	PieceManager.instance.pieceClicked(possiblemoves[max].pieceIndex);
 	BoxClick.tempAddPiece(possiblemoves[max].row,possiblemoves[max].column);

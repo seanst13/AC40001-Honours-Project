@@ -116,10 +116,11 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	void addPiece(int row, int column, int index){
-		PieceManager.instance.pieceClicked(index);
+		
 		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 		PieceManager.pieceArray[index].SetActive(true);
 		PieceManager.instance.setPieceValue(index);
+		PieceManager.instance.pieceClicked(index);
 	}
 
 
