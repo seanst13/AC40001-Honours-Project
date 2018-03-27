@@ -21,9 +21,9 @@ public class TurnManagementTests {
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
 		Manager.GetComponent<PieceManager>().setUp();
-		Manager.GetComponent<BoxSpawner>().gridSize = 5;
-		Manager.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		Manager.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
+		// Manager.GetComponent<BoxSpawner>().gridSize = 5;
+		// Manager.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
+		// Manager.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
 		Manager.GetComponent<ScoreManager>().score1 = GameObject.Find("PlayerScore"); 
 		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
 		Manager.GetComponent<ScoreManager>().setup();  

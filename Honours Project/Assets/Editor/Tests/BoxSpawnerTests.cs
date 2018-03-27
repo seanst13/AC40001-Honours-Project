@@ -14,9 +14,9 @@ public class BoxSpawnerTests {
 		Box.AddComponent<BoxSpawner>(); 
 		Box.AddComponent<NumberBag>();
 
-		Box.GetComponent<BoxSpawner>().gridSize = 5;
-		Box.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		Box.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
+		// Box.GetComponent<BoxSpawner>().gridSize = 5;
+		// Box.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
+		// Box.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
 		Box.GetComponent<NumberBag>().amountToPool = 5; 
 		
 		Box.GetComponent<NumberBag>().GenerateNumbers();
