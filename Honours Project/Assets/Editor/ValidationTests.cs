@@ -65,4 +65,47 @@ public class ValidationTests {
 		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,2,4);
 		Assert.AreEqual(9, (ValidationManager.columnTotal(1,2) + 4));
 	}
+
+	[Test]
+	public void CheckOddValidationPasses(){
+		Assert.True(ValidationManager.oddTotalValidation(11));
+	}
+	[Test]
+	public void checkOddValidationFails(){
+		Assert.False(ValidationManager.oddTotalValidation(50));
+	}
+
+	[Test]
+	public void CheckSecondaryColumnsPass(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,4,4);
+		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
+	}
+
+	[Test]
+	public void CheckSecondaryColumnsFails(){
+		// Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
+		Assert.False(ValidationManager.secondaryColumnCheck(2,3));
+	}
+
+	[Test]
+	public void CheckSecondaryRowsPass(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
+		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
+	}
+
+		[Test]
+	public void CheckSecondaryRowsFail(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		// Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
+		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
+	}
+
+	[TearDown]
+	public void TearDown(){
+		GameObject.DestroyImmediate(Validator);
+	}
+	
 }

@@ -62,7 +62,7 @@ public static bool PositioningValidation(int row, int column){
 	}	
 
 //Check if the total score for the row is an odd number.
-	static bool oddTotalValidation(int total){
+public static bool oddTotalValidation(int total){
 		return total %2 !=0;
 	}
 #endregion
