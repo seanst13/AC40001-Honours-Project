@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class BoxSpawner : MonoBehaviour {
 	[Header("Grid Attributes")]
-	public int gridSize; 
-	bool BoxWhite = true; 
+	public int gridSize;
+	bool BoxWhite = true;
 	[Space]
 	[Header("Game Objects")]
 	public GameObject whiteSquare;
@@ -15,15 +15,15 @@ public class BoxSpawner : MonoBehaviour {
 	private int middleSquare {get; set;}
 	public static GameObject[,] gridArray {get; set;}
 
-	public static BoxSpawner instance; 
+	public static BoxSpawner instance;
 
 	public void Start(){
-		SetUp(gridSize);	 		
+		SetUp(gridSize);
 	}
 
 	public void DisplayBoard(){
 		int xpos = -285;
-		int ypos = 185; 
+		int ypos = 185;
 		for (var row = 0; row < this.gridSize; row++){
         	for (var column = 0; column < this.gridSize; column++){
 				SpawnBox(row,column,xpos,ypos);
@@ -31,14 +31,14 @@ public class BoxSpawner : MonoBehaviour {
             }
 		//Reset Row Back to the Start
 			xpos = -285;
-			ypos = ypos-60; 
+			ypos = ypos-60;
          }
 }
 	// Spawns A White or Grey Box and adds them to the array
 	public void SpawnBox(int row, int column, int xpos, int ypos){
 		if (BoxWhite){
 			gridArray[row,column] = Instantiate(whiteSquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
-			BoxWhite = false;	
+			BoxWhite = false;
 		} else if (!BoxWhite){
 			gridArray[row,column] = Instantiate(greySquare, new Vector3(xpos, ypos, 0), Quaternion.identity);
 			BoxWhite = true;
@@ -48,16 +48,16 @@ public class BoxSpawner : MonoBehaviour {
 		if (column == middleSquare && row == middleSquare)
 			{
 				gridArray[row,column].GetComponentInChildren<Text>().text = NumberBag.numbers[NumberBag.numbers.Count-1].ToString();
-				NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1); 
-				gridArray[row,column].GetComponent<Collider2D>().enabled = false; 	
+				NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1);
+				gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 			}
-		gridArray[row,column].transform.name = (row + "_"+ column).ToString();	
-		
+		gridArray[row,column].transform.name = (row + "_"+ column).ToString();
+
 	}
 
 
 	public string returnNameAtPosition(int row, int col){
-		return gridArray[row,col].transform.name; 
+		return gridArray[row,col].transform.name;
 	}
 
 	public GameObject[,] returnGridArray(){
@@ -66,7 +66,7 @@ public class BoxSpawner : MonoBehaviour {
 
 	public void SetUp(int size){
 		gridArray = new GameObject[size,size];
-		instance = this; 
+		instance = this;
 		setMiddleValue(size);
 		DisplayBoard();
 	}
@@ -93,8 +93,8 @@ public class BoxSpawner : MonoBehaviour {
 		} else {
 			if (gridArray[row,column].GetComponentInChildren<Text>().text == ""){
 				return true;
-			} else { 
-				return false; 
+			} else {
+				return false;
 			}
 		}
 	}
