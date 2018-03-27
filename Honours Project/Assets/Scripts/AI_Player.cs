@@ -43,6 +43,7 @@ public void GetPossibleMoves(){
 			}
 		}
 	}
+	Debug.Log("Total Possible Moves before filtering:" + possiblemoves.Count);
 //Check if the Move Is Valid
 	removeInValidPlacements();
 //Filter Out the Even Totals
@@ -53,13 +54,21 @@ public void GetPossibleMoves(){
 		return a.totalScore.CompareTo(b.totalScore);
 	});
 
+	Debug.Log("Total Possible Moves after filtering:" + possiblemoves.Count);
 	if (possiblemoves.Count != 0){
+		DisplayPossibleMoves();
 		placeMove();
 	} else if (possiblemoves.Count == 0){
+			Debug.Log("No Possible Moves. ");
 			returnToHumanPlayer();
 	}
 }
 
+public void DisplayPossibleMoves(){
+	foreach(Move m in possiblemoves){
+		Debug.Log("Possible Move: " + m.pieceValue + " at [" + m.row + "," + m.column + "], scoring: " + m.totalScore); 
+	}
+}
 
 public void returnToHumanPlayer(){
 	Debug.Log("WE HAVE FOUND NO MOVES. Switching back to Human Player.");
@@ -76,8 +85,10 @@ public void returnToHumanPlayer(){
 void removeInValidPlacements(){
 	List<Move> removedInvalids = new List<Move>();
 	foreach (Move m in possiblemoves){
-		if (ValidationManager.PositioningValidation(m.row,m.column)){
+		if (ValidationManager.PositioningValidation(m.row,m.column) && BoxSpawner.instance.IsPositionEmpty(m.row,m.column)){
+			if (ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && ValidationManager.newColValidation(m.row,m.column, m.pieceValue)){
 			removedInvalids.Add(m);
+			}
 		}
 	}
 	possiblemoves.Clear();

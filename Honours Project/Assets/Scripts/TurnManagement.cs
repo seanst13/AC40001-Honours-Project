@@ -111,7 +111,8 @@ public class TurnManagement : MonoBehaviour {
 
 
 	public bool OddCheck(int row, int column){
-		return ValidationManager.newRowValidation(row, column) && ValidationManager.newColValidation(row,column);
+		return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
+		 && ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
 	}
 
 	void addPiece(int row, int column, int index){

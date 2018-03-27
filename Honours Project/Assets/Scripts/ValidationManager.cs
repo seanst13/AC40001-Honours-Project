@@ -37,11 +37,11 @@ public static bool PositioningValidation(int row, int column){
 		}
 	}
 
-	public static bool newRowValidation(int row, int column){
+	public static bool newRowValidation(int row, int column, int valueofPlacement){
 		if ((!BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
 		|| (BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
 		|| (!BoxSpawner.instance.IsPositionEmpty(row,column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1))){
-			return oddTotalValidation(RowTotal(row,column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+			return oddTotalValidation(RowTotal(row,column) + valueofPlacement);
 		} else if (BoxSpawner.instance.IsPositionEmpty(row,column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1)){
 			return true;
 		} else{
@@ -49,11 +49,11 @@ public static bool PositioningValidation(int row, int column){
 		}
 	}
 
-	public static bool newColValidation(int row, int column){
+	public static bool newColValidation(int row, int column, int valueofPlacement){
 		if ((!BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
 		|| (BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
 		|| (!BoxSpawner.instance.IsPositionEmpty(row+1,column) && BoxSpawner.instance.IsPositionEmpty(row-1,column))){
-			return oddTotalValidation(columnTotal(row,column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+			return oddTotalValidation(columnTotal(row,column) + valueofPlacement);
 		} else if (BoxSpawner.instance.IsPositionEmpty(row+1,column) && BoxSpawner.instance.IsPositionEmpty(row-1,column)){
 			return true;
 		} else{
