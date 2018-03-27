@@ -15,6 +15,7 @@ public class TurnManagementTests {
 		Manager.AddComponent<TurnManagement>();
 		Manager.AddComponent<ValidationManager>(); 
 		Manager.AddComponent<AI_Player>();
+		Manager.AddComponent<ScoreManager>(); 
 
 		Manager.GetComponent<NumberBag>().amountToPool = 5; 
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
@@ -23,6 +24,9 @@ public class TurnManagementTests {
 		Manager.GetComponent<BoxSpawner>().gridSize = 5;
 		Manager.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
 		Manager.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
+		Manager.GetComponent<ScoreManager>().score1 = GameObject.Find("PlayerScore"); 
+		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
+		Manager.GetComponent<ScoreManager>().setup();  
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
 		Manager.GetComponent<AI_Player>().setup();
 

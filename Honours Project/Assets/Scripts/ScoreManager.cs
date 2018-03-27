@@ -12,12 +12,17 @@ public class ScoreManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		playerOneScore = 0; 
+		setup();
+	}
+	
+	public void setup(){
+		playerOneScore = 0;
+		playerTwoScore = 0;  
 		instance = this;
 		setPlayerScore(playerOneScore, 1);
 		setPlayerScore(playerOneScore, 2);
 	}
-	
+
 	public void setPlayerScore(int value, int player){
 
 		if (player == 1){

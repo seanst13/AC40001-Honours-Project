@@ -7,8 +7,7 @@ public class PieceManager : MonoBehaviour {
 #region Variables
 	[Header("Piece Array Related")]			
 	public static GameObject[] pieceArray; 
-	public GameObject playingPiece;   
-		
+	public GameObject playingPiece;   		
 	public int index; 
 	public static PieceManager instance;
 	[Header("Boolean Values")]
@@ -22,8 +21,6 @@ public class PieceManager : MonoBehaviour {
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
-	  	
-
 #endregion
 #region Set Up
 	void Start () {
@@ -36,9 +33,9 @@ public class PieceManager : MonoBehaviour {
 		storedPieces = new List<StoredPiece>();  
 		instance = this; 
 		generatePieces();
-		for (int i = 0; i < pieceArray.Length; i++){
-			setPieceValue(i);
-		} 
+		// for (int i = 0; i < pieceArray.Length; i++){
+		// 	setPieceValue(i);
+		// } 
 		swap = ""; 
 	}
 
@@ -50,6 +47,7 @@ public class PieceManager : MonoBehaviour {
 			pieceArray[i].transform.SetParent(this.transform, true);
 			xposition = xposition + 80;
 			Debug.Log(pieceArray[i].name + " has been instantiated.");
+			setPieceValue(i);
 		}
 
 	}
@@ -58,7 +56,7 @@ public class PieceManager : MonoBehaviour {
 		int value = -1; 
 		int numindex = 9; 
 	//Retrieves a random value from the number bag and adds it to the list. 
-		if(NumberBag.numbers != null){
+		if(NumberBag.numbers.Count !=0){
 			if (!firstmove){
 				numindex = Random.Range(0,NumberBag.numbers.Count-1);
 				value = (int) NumberBag.numbers[numindex];
@@ -80,7 +78,8 @@ public class PieceManager : MonoBehaviour {
 				NumberBag.numbers.RemoveAt(numindex); 
 				firstmove = false;
 			}
-		} else {
+		} else if (NumberBag.numbers.Count == 0){
+			pieceArray[pieceIndex].SetActive(false);
 			Debug.Log("The list is Null. ");
 		}
 	}
@@ -102,7 +101,6 @@ public class PieceManager : MonoBehaviour {
 		foreach (Piece p in placedPieces){
 			int row = int.Parse(p.position.Substring(0,1));
 			int column = int.Parse(p.position.Substring(2,1)); 
-
 			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
 			PieceManager.pieceArray[p.index].SetActive(true);
 		}
@@ -110,72 +108,72 @@ public class PieceManager : MonoBehaviour {
 	}
 #endregion
 
+
+	public void addToStoredPieces(){
+		for(int i = 0; i < pieceArray.Length; i++){
+			storedPieces.Add(new StoredPiece{
+				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
+				playerNumber = TurnManagement.playerNumber,
+				pieceArrayIndex = i
+				}
+			);
+		}
+	}
+
 	public void swapPreviousPlayersVals(){
 		if (storedPieces.Count == 0){
-			for(int i = 0; i < pieceArray.Length; i++){
-				storedPieces.Add(new StoredPiece{
-					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-					playerNumber = TurnManagement.playerNumber
-				});
-				setPieceValue(i); 
+			for (int i = 0; i < pieceArray.Length; i++)
+			{
+					addToStoredPieces();
+					setPieceValue(i); 
 			}
 		} else if (storedPieces.Count != 0){
+			checkIfStoredPiecesMatch(); 					
+		}
+	}
 
-			for(int i = 0; i < pieceArray.Length; i++){
-				storedPieces.Add(new StoredPiece{
-					pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-					playerNumber = TurnManagement.playerNumber
-				});
+
+	public void checkIfStoredPiecesMatch(){
+		string indexes = ""; 
+		foreach (StoredPiece piece in storedPieces){
+			if (piece.playerNumber == TurnManagement.playerNumber){
+				indexes += storedPieces.IndexOf(piece).ToString();
 			}
-
-			if (TurnManagement.playerNumber == 1){
-			 string indexes = ""; 
-				foreach (StoredPiece piece in storedPieces){
-					if (piece.playerNumber == 2){
-						indexes += storedPieces.IndexOf(piece).ToString();
-					}
+		}
+		if (indexes == ""){
+			for(int i = 0; i < pieceArray.Length; i++){
+				setPieceValue(i);
+			}
+		} else if (indexes != ""){
+			if (indexes.Length == pieceArray.Length){
+				Debug.Log("Indexes: " + indexes); 
+				foreach (char i in indexes){
+					int val = int.Parse(i.ToString());
+					Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+					Debug.Log("Text Value at: ["+storedPieces[val].pieceArrayIndex+"]"+ pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text);
+					pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
 				}
-				if (indexes ==""){
-					for(int i = 0; i < pieceArray.Length; i++){
+				for(int i = indexes.Length-1; i >= 0; i--){
+					storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
+				}
+			} else if (indexes.Length != pieceArray.Length){
+				string pieceIndexes = ""; 
+				foreach (char i in indexes){
+				int val = int.Parse(i.ToString());
+					Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
+					Debug.Log("Text Value at: ["+storedPieces[val].pieceArrayIndex+"]"+ pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text);
+					pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
+					pieceIndexes += storedPieces[val].pieceArrayIndex.ToString(); 
+				}
+				for(int i = indexes.Length-1; i >= 0; i--){
+					storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
+				}	
+
+				for (int i = 0; i < pieceArray.Length; i++){
+					if (!pieceIndexes.Contains(i.ToString())){
 						setPieceValue(i);
 					}
-				} else if (indexes != ""){
-					foreach (char i in indexes){
-						int val = int.Parse(i.ToString());
-						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
-						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
-						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
-					}
-					for(int i = indexes.Length-1; i >= 0; i--){
-						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
-					}
 				}
-				
-			} else if (TurnManagement.playerNumber == 2) {
-			 string indexes = ""; 
-				foreach (StoredPiece piece in storedPieces){
-					if (piece.playerNumber == 1){
-						indexes += storedPieces.IndexOf(piece).ToString();
-					}
-				}
-				if (indexes ==""){
-					for(int i = 0; i < pieceArray.Length; i++){
-						setPieceValue(i);
-					}
-				} else if (indexes != ""){
-					Debug.Log(indexes);
-					foreach (char i in indexes){
-						int val = int.Parse(i.ToString());
-						Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
-						Debug.Log("Text Value at: ["+val+"]"+ pieceArray[val].GetComponentInChildren<Text>().text);
-						pieceArray[val].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue.ToString();	
-					}
-					for(int i = indexes.Length-1; i >= 0; i--){
-						storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
-					}
-				}
-
-
 			}
 		}
 	}
@@ -196,6 +194,19 @@ public class PieceManager : MonoBehaviour {
 				pieceArray[index].GetComponent<Image>().color = Color.yellow;
 			} else if (!selected) {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
+			}
+		}
+
+		if (NumberBag.numbers.Count == 0){
+			int usedpieces = 0; 
+			for(int i = 0; i < pieceArray.Length; i++){
+				if (!pieceArray[i].activeInHierarchy)
+					usedpieces++;
+
+			}
+
+			if (usedpieces == pieceArray.Length-1){
+				ErrorManagement.instance.ShowError("YOU HAVE ENDED THE GAME");
 			}
 		}
 	}
