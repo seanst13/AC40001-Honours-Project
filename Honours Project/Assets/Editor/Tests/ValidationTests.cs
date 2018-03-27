@@ -15,9 +15,6 @@ public class ValidationTests {
 		Validator.GetComponent<NumberBag>().GenerateNumbers();
 		Validator.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
 		Validator.GetComponent<PieceManager>().setUp();
-		// Validator.GetComponent<BoxSpawner>().gridSize = 5;
-		// Validator.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		// Validator.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
 		Validator.GetComponent<BoxSpawner>().SetUp(5);
 	}
 	[Test]

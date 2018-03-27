@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TurnManagement : MonoBehaviour {
 	private int turnCounter;
 	public GameObject EndTurn;
-	public GameObject turnText;
-	public GameObject timerText;
+	private GameObject turnText;
+	private GameObject timerText;
 	private int Time;
 	public static int playerNumber;
 	public static TurnManagement instance;
@@ -17,6 +17,8 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	public void setUp(){
+		timerText= GameObject.Find("Timer");
+		turnText = GameObject.Find("TurnCounter");	
 		instance = this;
 		turnCounter = 0;
 		playerNumber = 0;
@@ -206,13 +208,11 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	void ChangePlayer(){
-		if (playerNumber == 0){
+		if (playerNumber != 1){
 			playerNumber = 1;
 		} else if (playerNumber == 1){
 			playerNumber = 2;
-		} else if (playerNumber == 2){
-			playerNumber = 1;
-		}
+		} 
 	}
 
 	public void skipTurn(){
