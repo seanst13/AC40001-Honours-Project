@@ -58,4 +58,9 @@ public class PlacedPieceTests {
 
 		Assert.IsTrue(Manager.GetComponent<PieceManager>().IsElementActive(0));
 	}
+
+	[TearDown]
+	public void TearDown(){
+		GameObject.DestroyImmediate(Manager);
+	}
 }
