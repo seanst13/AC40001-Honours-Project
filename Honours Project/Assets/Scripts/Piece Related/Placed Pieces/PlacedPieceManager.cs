@@ -23,6 +23,9 @@ public class PlacedPieceManager : MonoBehaviour {
 			position = row+"_"+col,
 			index = PieceManager.instance.returnIndex()}
 			);
+		BoxSpawner.instance.setvalueAtPosition(row, col, PieceManager.instance.returnPieceValue());
+		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
+		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
 	}
 
 	public List<Piece> returnPlacedPieces(){
@@ -39,15 +42,17 @@ public class PlacedPieceManager : MonoBehaviour {
 		placedPieces.Clear(); 
 	}
 
-	public void reactivatePiece(){
-		foreach(Piece p in placedPieces){
-			int row = int.Parse(p.position.Substring(0,1));
-			int column = int.Parse(p.position.Substring(2,1));
+	public void reactivatePiece(int row, int column){
+		List<Piece> pieces = new List<Piece>();
+		pieces.AddRange(placedPieces);
+		foreach(Piece p in pieces){
 			if (p.position == BoxSpawner.instance.returnNameAtPosition(row,column)){
 				PieceManager.pieceArray[p.index].SetActive(true);
-				placedPieces.RemoveAt(placedPieces.IndexOf(p));
+				placedPieces.RemoveAt(pieces.IndexOf(p));
 			}
 		}
-	}
 
+		placedPieces.Clear();
+		placedPieces.AddRange(pieces);
+	}	
 }
