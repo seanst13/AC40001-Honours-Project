@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI; 
 
 public class StoredPieceManager : MonoBehaviour {
-
 	private List<StoredPiece> stored; 
 	public static  StoredPieceManager instance; 
 
@@ -82,4 +81,17 @@ public void addToStoredPieces(){
 				stored.RemoveAt(int.Parse(indexes[i].ToString()));
 		}
 	}
+
+	public List<StoredPiece> returnStoredPieces(){
+		return stored; 
+	}
+
+	public bool piecesAreSwapped(){
+		foreach (StoredPiece p in stored){
+			if (p.playerNumber == TurnManagement.playerNumber){
+				return false; 
+			}
+		}
+		return true; 
+	} 
 }
