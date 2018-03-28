@@ -36,20 +36,12 @@ public class BoxClick : MonoBehaviour {
 				} else if (GetComponent<Collider2D>().enabled){
 					PieceManager.instance.selected = false;
 					GetComponentInChildren<Text>().text = "";
-					foreach(Piece p in PieceManager.instance.placedPieces){
-						if (p.position == this.name){
-							PieceManager.pieceArray[p.index].SetActive(true);
-							PieceManager.instance.placedPieces.RemoveAt(PieceManager.instance.placedPieces.IndexOf(p));
-						}
-					}
-				}
-
-				
+					PlacedPieceManager.instance.reactivatePiece(); 	
+				}				
 			} else if (!PieceManager.instance.selected) {
 				Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name + "is " + PieceManager.instance.selected);
 				PieceManager.instance.selected = false; 
-				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");
-			
+				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");	
 		}
 		buttonPressed = true; 	
 		}	
@@ -67,7 +59,7 @@ public class BoxClick : MonoBehaviour {
 	}
 
 	public static void tempAddPiece(int row, int column){
-		PieceManager.instance.addPieceToList(row,column);
+		PlacedPieceManager.instance.addPieceToList(row,column);
 		BoxSpawner.instance.setvalueAtPosition(row, column, PieceManager.instance.returnPieceValue());
 		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
 		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());

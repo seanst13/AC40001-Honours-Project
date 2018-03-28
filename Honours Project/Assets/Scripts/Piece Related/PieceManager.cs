@@ -12,11 +12,7 @@ public class PieceManager : MonoBehaviour {
 	public static PieceManager instance;
 	[Header("Boolean Values")]
 	public bool selected; 
-	public bool firstmove = true; 
-	[Space]
-	[Header("Multiple Piece Related")]
-	public List<Piece> placedPieces; 
-	public List<StoredPiece> storedPieces; 
+	private bool firstmove = true; 
 	[Space]
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
@@ -29,13 +25,8 @@ public class PieceManager : MonoBehaviour {
 
 	public void setUp(){
 		pieceArray = new GameObject[2]; 
-		placedPieces = new List<Piece>();
-		storedPieces = new List<StoredPiece>();  
 		instance = this; 
 		generatePieces();
-		// for (int i = 0; i < pieceArray.Length; i++){
-		// 	setPieceValue(i);
-		// } 
 		swap = ""; 
 	}
 
@@ -84,101 +75,6 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
-
-#region Placed Pieces Related Methods
-	public void addPieceToList(int row, int col){
-		placedPieces.Add(new Piece{
-			position = row+"_"+col,
-			index = returnIndex()}
-			);
-	}
-
-	public List<Piece> returnPlacedPieces(){
-		return placedPieces; 
-	}
-
-	public void ClearPlacedPieces(){
-		foreach (Piece p in placedPieces){
-			int row = int.Parse(p.position.Substring(0,1));
-			int column = int.Parse(p.position.Substring(2,1)); 
-			BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text = "";
-			PieceManager.pieceArray[p.index].SetActive(true);
-		}
-		PieceManager.instance.placedPieces.Clear(); 
-	}
-#endregion
-
-
-	public void addToStoredPieces(){
-		for(int i = 0; i < pieceArray.Length; i++){
-			storedPieces.Add(new StoredPiece{
-				pieceValue = pieceArray[i].GetComponentInChildren<Text>().text,
-				playerNumber = TurnManagement.playerNumber,
-				pieceArrayIndex = i
-				}
-			);
-		}
-	}
-
-	public void swapPreviousPlayersVals(){
-		if (storedPieces.Count == 0){
-			for (int i = 0; i < pieceArray.Length; i++)
-			{
-					addToStoredPieces();
-					setPieceValue(i); 
-			}
-		} else if (storedPieces.Count != 0){
-			checkIfStoredPiecesMatch(); 					
-		}
-	}
-
-
-	public void checkIfStoredPiecesMatch(){
-		string indexes = ""; 
-		foreach (StoredPiece piece in storedPieces){
-			if (piece.playerNumber == TurnManagement.playerNumber){
-				indexes += storedPieces.IndexOf(piece).ToString();
-			}
-		}
-		if (indexes == ""){
-			for(int i = 0; i < pieceArray.Length; i++){
-				setPieceValue(i);
-			}
-		} else if (indexes != ""){
-			if (indexes.Length == pieceArray.Length){
-				Debug.Log("Indexes: " + indexes); 
-				foreach (char i in indexes){
-					int val = int.Parse(i.ToString());
-					Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
-					Debug.Log("Text Value at: ["+storedPieces[val].pieceArrayIndex+"]"+ pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text);
-					pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
-				}
-				for(int i = indexes.Length-1; i >= 0; i--){
-					storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
-				}
-			} else if (indexes.Length != pieceArray.Length){
-				string pieceIndexes = ""; 
-				foreach (char i in indexes){
-				int val = int.Parse(i.ToString());
-					Debug.Log("Stored Value at ["+val+"]: " + storedPieces[val].pieceValue);
-					Debug.Log("Text Value at: ["+storedPieces[val].pieceArrayIndex+"]"+ pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text);
-					pieceArray[storedPieces[val].pieceArrayIndex].GetComponentInChildren<Text>().text = storedPieces[val].pieceValue;
-					pieceIndexes += storedPieces[val].pieceArrayIndex.ToString(); 
-				}
-				for(int i = indexes.Length-1; i >= 0; i--){
-					storedPieces.RemoveAt(int.Parse(indexes[i].ToString()));
-				}	
-
-				for (int i = 0; i < pieceArray.Length; i++){
-					if (!pieceIndexes.Contains(i.ToString())){
-						setPieceValue(i);
-					}
-				}
-			}
-		}
-	}
-
-
 #region Return Methods
 	public int returnIndex(){
 		return index; 

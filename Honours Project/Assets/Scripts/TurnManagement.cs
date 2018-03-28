@@ -30,7 +30,7 @@ public class TurnManagement : MonoBehaviour {
 		int row = 0;
 		int column = 0;
 
-		foreach(Piece placement in PieceManager.instance.placedPieces){
+		foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 			row = int.Parse(placement.position.Substring(0,1));
 			column = int.Parse(placement.position.Substring(2,1));
 
@@ -40,9 +40,9 @@ public class TurnManagement : MonoBehaviour {
 				validplays++;
 			}
 		}
-		if (validplays == PieceManager.instance.placedPieces.Count){
+		if (validplays == PlacedPieceManager.instance.returnPlacedPieces().Count){
 			if (validplays == 1){
-				foreach(Piece placement in PieceManager.instance.placedPieces){
+				foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 					row = int.Parse(placement.position.Substring(0,1));
 					column = int.Parse(placement.position.Substring(2,1));
 					addPiece(row,column, placement.index);
@@ -58,11 +58,11 @@ public class TurnManagement : MonoBehaviour {
 			} else if (validplays > 1){
 				compareMultiplePieces(row,column);
 			}
-			PieceManager.instance.placedPieces.Clear();
+			PlacedPieceManager.instance.returnPlacedPieces().Clear();
 			Debug.Log("INCREMENT TURN - CLEARED LIST");
 			incrementTurn();
 		} else if (validplays == 0) {
-			PieceManager.instance.ClearPlacedPieces(); 
+			PlacedPieceManager.instance.ClearPlacedPieces(); 
 			if(playerNumber == 2){
 				Debug.Log("Your move is still some how completely invalid. Explain plz.");
 				AI_Player.instance.returnToHumanPlayer();
@@ -76,7 +76,7 @@ public class TurnManagement : MonoBehaviour {
 		bool first = true;
 		int previousrow = 0;
 		int previouscol = 0;
-			foreach(Piece placement in PieceManager.instance.placedPieces){
+			foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 				row = int.Parse(placement.position.Substring(0,1));
 				column = int.Parse(placement.position.Substring(2,1));
 				if (first){
@@ -163,9 +163,9 @@ public class TurnManagement : MonoBehaviour {
 
 
 	private void Update() {
-		if (PieceManager.instance.placedPieces.Count == 0){
+		if (PlacedPieceManager.instance.returnPlacedPieces().Count == 0){
 			EndTurn.GetComponent<Button>().interactable = false;
-		} else if (PieceManager.instance.placedPieces.Count > 0){
+		} else if (PlacedPieceManager.instance.returnPlacedPieces().Count > 0){
 			EndTurn.GetComponent<Button>().interactable = true;
 		}
 	}
@@ -173,12 +173,11 @@ public class TurnManagement : MonoBehaviour {
 	public void incrementTurn(){
 		StopAllCoroutines();
 		if (playerNumber != 0){
-			PieceManager.instance.addToStoredPieces();
+			StoredPieceManager.instance.addToStoredPieces();
 			ChangePlayer(); 
-			PieceManager.instance.swapPreviousPlayersVals();
+			StoredPieceManager.instance.swapPreviousPlayersVals();
 		} else if (playerNumber == 0) {
 			ChangePlayer();
-			// PieceManager.instance.swapPreviousPlayersVals();
 		}
 		
 		turnCounter++;
@@ -216,7 +215,7 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	public void skipTurn(){
-		PieceManager.instance.ClearPlacedPieces();
+		PlacedPieceManager.instance.ClearPlacedPieces();
 		incrementTurn();
 	}
 

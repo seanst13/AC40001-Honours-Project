@@ -10,6 +10,8 @@ public class TurnManagementTests {
 	public void SetUp(){
 		Manager = new GameObject();
 		Manager.AddComponent<PieceManager>();
+		Manager.AddComponent<StoredPieceManager>(); 
+		Manager.AddComponent<PlacedPieceManager>(); 
 		Manager.AddComponent<NumberBag>();
 		Manager.AddComponent<BoxSpawner>(); 
 		Manager.AddComponent<TurnManagement>();
@@ -21,6 +23,8 @@ public class TurnManagementTests {
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
 		Manager.GetComponent<PieceManager>().setUp();
+		Manager.GetComponent<StoredPieceManager>().SetUp(); 
+		Manager.GetComponent<PlacedPieceManager>().SetUp(); 
 		Manager.GetComponent<ScoreManager>().score1 = GameObject.Find("PlayerScore"); 
 		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
 		Manager.GetComponent<ScoreManager>().setup();  
@@ -43,13 +47,13 @@ public class TurnManagementTests {
 	[Test]
 	public void CheckIfSkipTurnClearsArrayOnSkip(){
 		Manager.GetComponent<PieceManager>().index = 0; 
-		Manager.GetComponent<PieceManager>().addPieceToList(0,0);
+		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,0);
 		Manager.GetComponent<PieceManager>().index = 1; 
-		Manager.GetComponent<PieceManager>().addPieceToList(0,1);
+		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,1);
 
 		Manager.GetComponent<TurnManagement>().skipTurn(); 
 
-		Assert.IsEmpty(Manager.GetComponent<PieceManager>().returnPlacedPieces());
+		Assert.IsEmpty(Manager.GetComponent<PlacedPieceManager>().returnPlacedPieces());
 	} 
 
 	[TearDown]
