@@ -163,7 +163,7 @@ public class TurnManagement : MonoBehaviour {
 
 
 	private void Update() {
-		if (PlacedPieceManager.instance.returnPlacedPieces().Count == 0){
+		if (PlacedPieceManager.instance.returnPlacedPieces().Count == 0 ){
 			EndTurn.GetComponent<Button>().interactable = false;
 		} else if (PlacedPieceManager.instance.returnPlacedPieces().Count > 0){
 			EndTurn.GetComponent<Button>().interactable = true;

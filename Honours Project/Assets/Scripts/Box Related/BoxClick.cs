@@ -11,15 +11,17 @@ public class BoxClick : MonoBehaviour {
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;
+			string objectname = this.name;
+			int row = int.Parse(objectname.Substring(0,1)); 
+			int column = int.Parse(objectname.Substring(2,1));
 			// Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name);
 			//Checks if The Piece has been clicked and will place it on the grid if it has. 
 			if (PieceManager.instance.selected && GetComponentInChildren<Text>().text == ""){
 				GetComponent<Image>().color = Color.cyan;
-				string objectname = this.name;
+				
 				Debug.Log(objectname + " has been clicked.");
 
-				int row = int.Parse(objectname.Substring(0,1)); 
-				int column = int.Parse(objectname.Substring(2,1));
+				
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
@@ -36,7 +38,7 @@ public class BoxClick : MonoBehaviour {
 				} else if (GetComponent<Collider2D>().enabled){
 					PieceManager.instance.selected = false;
 					GetComponentInChildren<Text>().text = "";
-					PlacedPieceManager.instance.reactivatePiece(); 	
+					PlacedPieceManager.instance.reactivatePiece(row,column); 	
 				}				
 			} else if (!PieceManager.instance.selected) {
 				Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name + "is " + PieceManager.instance.selected);
@@ -60,9 +62,6 @@ public class BoxClick : MonoBehaviour {
 
 	public static void tempAddPiece(int row, int column){
 		PlacedPieceManager.instance.addPieceToList(row,column);
-		BoxSpawner.instance.setvalueAtPosition(row, column, PieceManager.instance.returnPieceValue());
-		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
-		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
+		
 	}
-
 }

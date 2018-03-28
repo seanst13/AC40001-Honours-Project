@@ -83,6 +83,10 @@ public class PieceManager : MonoBehaviour {
 	public int returnPieceValue(){
 		return(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
 	}
+
+	public bool IsElementActive(int index){
+		return pieceArray[index].activeInHierarchy;
+	}
 	// Update is called once per frame
 	void Update () {
 		if (!swapSelected){

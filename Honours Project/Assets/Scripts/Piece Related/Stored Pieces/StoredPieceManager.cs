@@ -77,10 +77,9 @@ public void addToStoredPieces(){
 				}
 			}
 		}
+		
 		for(int i = indexes.Length-1; i >= 0; i--){
 				stored.RemoveAt(int.Parse(indexes[i].ToString()));
 		}
-
 	}
 }
-
