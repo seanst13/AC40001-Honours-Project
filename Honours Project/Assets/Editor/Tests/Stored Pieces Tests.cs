@@ -7,12 +7,15 @@ public class StoredPiecesTests {
 	[SetUp]
 	public void SetUp(){
 		Manager = new GameObject(); 
-		Manager.AddComponent<StoredPieceManager>();
 		Manager.AddComponent<PieceManager>();
+		Manager.AddComponent<StoredPieceManager>(); 
+		Manager.AddComponent<PlacedPieceManager>(); 
 		Manager.AddComponent<NumberBag>();
+		Manager.AddComponent<BoxSpawner>(); 
 		Manager.AddComponent<TurnManagement>();
+		Manager.AddComponent<ValidationManager>(); 
 		Manager.AddComponent<AI_Player>();
-		Manager.AddComponent<BoxSpawner>();
+		Manager.AddComponent<ScoreManager>(); 
 
 
 		Manager.GetComponent<StoredPieceManager>().SetUp();
@@ -38,6 +41,8 @@ public class StoredPiecesTests {
 
 	[Test]
 	public void piecesAreSwapped(){
+		Debug.Log("THIS IS WHERE THE UNIT TEST IS FAILING");
+		Manager.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,2);
 		Manager.GetComponent<TurnManagement>().incrementTurn();
 		Assert.IsTrue(Manager.GetComponent<StoredPieceManager>().piecesAreSwapped());
 	}

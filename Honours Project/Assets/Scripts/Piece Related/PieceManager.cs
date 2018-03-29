@@ -190,4 +190,8 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
+
+	public void overRideValue(int pos, int val){
+		pieceArray[pos].GetComponentInChildren<Text>().text = val.ToString();
+	}
 }

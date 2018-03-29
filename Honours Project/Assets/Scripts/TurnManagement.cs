@@ -30,6 +30,10 @@ public class TurnManagement : MonoBehaviour {
 		int row = 0;
 		int column = 0;
 
+		if(PlacedPieceManager.instance.returnPlacedPieces().Count == 0){
+			return; 
+		}	
+
 		foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 			row = int.Parse(placement.position.Substring(0,1));
 			column = int.Parse(placement.position.Substring(2,1));
@@ -113,8 +117,12 @@ public class TurnManagement : MonoBehaviour {
 
 
 	public bool OddCheck(int row, int column){
-		return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
-		 && ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+		if (BoxSpawner.instance.returnValueAtPosition(row,column) != ""){
+			return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
+			&& ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+		} else {
+			return false; 
+		}
 	}
 
 	void addPiece(int row, int column, int index){
