@@ -23,18 +23,18 @@ public class PieceManagerTests {
 
 	[Test]
 	public void CheckPieceArrayHasValue(){
-		Manager.GetComponent<PieceManager>().index = 0; 
+		Manager.GetComponent<PieceManager>().setIndex(0);
 		Assert.IsNotNull(Manager.GetComponent<PieceManager>().returnPieceValue());
-		Manager.GetComponent<PieceManager>().index = 1; 
+		Manager.GetComponent<PieceManager>().setIndex(1); 
 		Assert.IsNotNull(Manager.GetComponent<PieceManager>().returnPieceValue());
 	}
 
 	[Test]
 	public void checkIfPieceIsSelected(){
 		Manager.GetComponent<PieceManager>().pieceClicked(0);
-		Assert.AreEqual(true, Manager.GetComponent<PieceManager>().selected);
+		Assert.AreEqual(true, PieceManager.returnSelected());
 		Manager.GetComponent<PieceManager>().pieceClicked(0);
-		Assert.AreNotEqual(true, Manager.GetComponent<PieceManager>().selected);
+		Assert.AreNotEqual(true,PieceManager.returnSelected());
 	}
 
 	[TearDown]

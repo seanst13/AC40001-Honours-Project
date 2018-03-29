@@ -8,10 +8,10 @@ public class PieceManager : MonoBehaviour {
 	[Header("Piece Array Related")]			
 	public static GameObject[] pieceArray; 
 	private GameObject playingPiece;   		
-	public int index; 
+	private int index {get; set;} 
 	public static PieceManager instance;
 	[Header("Boolean Values")]
-	public bool selected; 
+	private static bool selected; 
 	private bool firstmove = true; 
 	[Space]
 	[Header("Swapping Pieces Related Variables")]
@@ -27,6 +27,7 @@ public class PieceManager : MonoBehaviour {
 		playingPiece =(GameObject) Resources.Load("PlayPiece");
 		pieceArray = new GameObject[2]; 
 		instance = this; 
+		selected = false;
 		generatePieces();
 		swap = ""; 
 	}
@@ -56,7 +57,7 @@ public class PieceManager : MonoBehaviour {
 				Debug.Log("THIS IS THE PIECE INDEX: " + pieceIndex);
 				pieceArray[pieceIndex].GetComponentInChildren<Text>().text = value.ToString(); 
 				NumberBag.numbers.RemoveAt(numindex); 
-			} else if(firstmove) {
+			} else {
 				Debug.Log("FIRST MOVE ASSIGNMENT"); 
 				while (value %2 != 0){
 					numindex = Random.Range(1,NumberBag.numbers.Count-1);
@@ -77,6 +78,10 @@ public class PieceManager : MonoBehaviour {
 	}
 #endregion
 #region Return Methods
+	public void setIndex(int val){
+		index = val;
+	}
+
 	public int returnIndex(){
 		return index; 
 	}
@@ -88,6 +93,18 @@ public class PieceManager : MonoBehaviour {
 	public bool IsElementActive(int index){
 		return pieceArray[index].activeInHierarchy;
 	}
+
+	public static void setSelected(bool value){
+		selected = value; 
+	}
+	public static bool returnSelected(){
+		return selected;
+	}
+	public GameObject[] returnPieceArray(){
+		return pieceArray; 
+	}
+
+
 	// Update is called once per frame
 	void Update () {
 		if (!swapSelected){
@@ -112,9 +129,6 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 
-	public GameObject[] returnPieceArray(){
-		return pieceArray; 
-	}
 #endregion
 	public void pieceClicked(int val){
 		if(!swapSelected){
@@ -140,12 +154,12 @@ public class PieceManager : MonoBehaviour {
 			selected = true; 
 			index =  val;
 			Debug.Log(pieceArray[index].name + " has been selected.");
-		} else if (selected){
+		} else {
 			selected = false; 
 			if (index == val){
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 				Debug.Log(pieceArray[index].name + " has been deselected.");
-			} else if (index != val){
+			} else {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 				index = val; 
 				Debug.Log(pieceArray[index].name + " has been selected.");
@@ -173,8 +187,7 @@ public class PieceManager : MonoBehaviour {
 	}
 
 	public void PerformSwap(){
-		if (swapSelected){
-			// index = 0; 
+		if (swapSelected){ 
 			foreach(char i in swap){
 			 SwapPieces(int.Parse(i.ToString()));
 			 pieceArray[int.Parse(i.ToString())].GetComponent<Image>().color = Color.white;
@@ -182,10 +195,9 @@ public class PieceManager : MonoBehaviour {
 			swapSelected = false; 
 			swap = ""; 
 			TurnManagement.instance.skipTurn(); 
-		} else if (!swapSelected){
+		} else {
 			pieceArray[index].GetComponent<Image>().color = Color.white;
 			selected = false; 
-			// index = pieceArray.Length + 1; 
 			swapSelected = true; 
 		}
 	}

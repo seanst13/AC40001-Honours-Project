@@ -15,7 +15,6 @@ public class PlacedPieceTests {
 
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 
-		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
 		Manager.GetComponent<PieceManager>().setUp();
 
 		Manager.GetComponent<PlacedPieceManager>().SetUp();
@@ -31,17 +30,17 @@ public class PlacedPieceTests {
 
 	[Test]
 	public void checkPieceIsAdded(){
-		Manager.GetComponent<PieceManager>().index = 0;
+		Manager.GetComponent<PieceManager>().setIndex(0);
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(1,1);
 		Assert.AreEqual(1, Manager.GetComponent<PlacedPieceManager>().returnPlacedPieces().Count); 
 	}
 
 	[Test]
 	public void checkListIsCleared(){
-		Manager.GetComponent<PieceManager>().index = 0;
+		Manager.GetComponent<PieceManager>().setIndex(0);
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(1,0);
 	
-		Manager.GetComponent<PieceManager>().index = 1;
+		Manager.GetComponent<PieceManager>().setIndex(1);
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(1,1);
 
 		Manager.GetComponent<PlacedPieceManager>().ClearPlacedPieces();
@@ -51,7 +50,7 @@ public class PlacedPieceTests {
 
 	[Test]
 	public void doesPieceArrayReactivate(){
-		Manager.GetComponent<PieceManager>().index = 0;
+		Manager.GetComponent<PieceManager>().setIndex(0);
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(1,0);
 		Manager.GetComponent<PlacedPieceManager>().reactivatePiece(1,0); 
 
