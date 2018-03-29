@@ -14,13 +14,11 @@ public class AITests {
 		Manager.AddComponent<PieceManager>(); 
 		Manager.AddComponent<ValidationManager>();
 
-		
 		Manager.GetComponent<NumberBag>().amountToPool = 5;
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 		Manager.GetComponent<PieceManager>().setUp(); 
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
 		Manager.GetComponent<AI_Player>().SetUp();
-
 	}
 
 	[Test]
@@ -43,20 +41,36 @@ public class AITests {
 		Assert.Less(afterFilter,beforeFilter);
 	}
 
-	
 	[Test]
-	public void EditorTest() {
-		//Arrange
-		var gameObject = new GameObject();
+	public void CheckValidFilterWorks(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
+		Manager.GetComponent<AI_Player>().removeInValidPlacements();
+		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
+		Assert.Less(afterFilter,beforeFilter);
+	}
 
-		//Act
-		//Try to rename the GameObject
-		var newGameObjectName = "My game object";
-		gameObject.name = newGameObjectName;
+	[Test]
+	public void CheckEvenFilterWorks(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
+		Manager.GetComponent<AI_Player>().removeEvenTotals();
+		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
+		Assert.Less(afterFilter,beforeFilter);
+	}
 
-		//Assert
-		//The object has a new name
-		Assert.AreEqual(newGameObjectName, gameObject.name);
+	[Test]
+	public void CheckIfSortingWorks(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		Manager.GetComponent<AI_Player>().filterAndSortMoves();
+		
+		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
+			int min = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
+			int max = Manager.GetComponent<AI_Player>().returnScoreAtPosition(Manager.GetComponent<AI_Player>().returnPossibleMoves().Count-1);
+			Assert.Less(min,max);
+		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
+			Assert.IsEmpty(Manager.GetComponent<AI_Player>().returnPossibleMoves());
+		}		
 	}
 
 	[TearDown]

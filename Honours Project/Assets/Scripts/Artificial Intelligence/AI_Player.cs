@@ -94,7 +94,7 @@ public class AI_Player : MonoBehaviour {
 	}
 
 
-	void removeInValidPlacements(){
+public void removeInValidPlacements(){
 		List<Move> removedInvalids = new List<Move>();
 		foreach (Move m in possiblemoves){
 			if (ValidationManager.PositioningValidation(m.row,m.column) && BoxSpawner.instance.IsPositionEmpty(m.row,m.column)){
@@ -133,7 +133,7 @@ public class AI_Player : MonoBehaviour {
 		return total;
 	}
 
-	void removeEvenTotals(){
+	public void removeEvenTotals(){
 		List<Move> removedEven = new List<Move>();
 		foreach(Move m in possiblemoves){
 			if (m.totalScore % 2 != 0){
@@ -152,6 +152,10 @@ public class AI_Player : MonoBehaviour {
 		PieceManager.instance.pieceClicked(possiblemoves[max].pieceIndex);
 		BoxClick.tempAddPiece(possiblemoves[max].row,possiblemoves[max].column);
 		TurnManagement.instance.checkIfValid();
+	}
+
+	public int returnScoreAtPosition(int pos){
+		return possiblemoves[pos].totalScore;
 	}
 
 
