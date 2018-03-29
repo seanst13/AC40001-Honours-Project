@@ -41,7 +41,6 @@ public class StoredPiecesTests {
 
 	[Test]
 	public void piecesAreSwapped(){
-		Debug.Log("THIS IS WHERE THE UNIT TEST IS FAILING");
 		Manager.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,2);
 		Manager.GetComponent<TurnManagement>().incrementTurn();
 		Assert.IsTrue(Manager.GetComponent<StoredPieceManager>().piecesAreSwapped());
