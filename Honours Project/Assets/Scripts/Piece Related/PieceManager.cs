@@ -151,19 +151,19 @@ public class PieceManager : MonoBehaviour {
 
 	void checkIfSelected(int val){
 		if(!selected){
-			selected = true; 
-			index =  val;
+			setSelected(true); 
+			setIndex(val);
 			Debug.Log(pieceArray[index].name + " has been selected.");
 		} else {
-			selected = false; 
+			setSelected(false); 
 			if (index == val){
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 				Debug.Log(pieceArray[index].name + " has been deselected.");
 			} else {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
-				index = val; 
+				setIndex(val);
 				Debug.Log(pieceArray[index].name + " has been selected.");
-				selected = true; 
+				setSelected(true); 
 				}
 		}
 	}
@@ -197,7 +197,7 @@ public class PieceManager : MonoBehaviour {
 			TurnManagement.instance.skipTurn(); 
 		} else {
 			pieceArray[index].GetComponent<Image>().color = Color.white;
-			selected = false; 
+			setSelected(false);
 			swapSelected = true; 
 		}
 	}
