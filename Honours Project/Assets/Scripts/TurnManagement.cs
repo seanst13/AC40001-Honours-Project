@@ -30,14 +30,9 @@ public class TurnManagement : MonoBehaviour {
 		int row = 0;
 		int column = 0;
 
-		if(PlacedPieceManager.instance.returnPlacedPieces().Count == 0){
-			return; 
-		}	
-
 		foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 			row = int.Parse(placement.position.Substring(0,1));
 			column = int.Parse(placement.position.Substring(2,1));
-
 			Debug.Log("Attempting to place " + PieceManager.pieceArray[placement.index].GetComponentInChildren<Text>().text +" AT: ["+row+","+column+"]");
 			if (OddCheck(row,column)){
 				Debug.Log("This is valid");
@@ -125,8 +120,7 @@ public class TurnManagement : MonoBehaviour {
 		}
 	}
 
-	void addPiece(int row, int column, int index){
-		
+	void addPiece(int row, int column, int index){	
 		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 		PieceManager.pieceArray[index].SetActive(true);
 		PieceManager.instance.setPieceValue(index);
@@ -187,7 +181,6 @@ public class TurnManagement : MonoBehaviour {
 		} else if (playerNumber == 0) {
 			ChangePlayer();
 		}
-		
 		turnCounter++;
 		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
@@ -195,7 +188,7 @@ public class TurnManagement : MonoBehaviour {
 			AI_Player.instance.GetPossibleMoves();
 			AI_Player.instance.makeMove();
 		} 
-			StartCoroutine(countdown(60));
+		StartCoroutine(countdown(60));
 		
 	}
 

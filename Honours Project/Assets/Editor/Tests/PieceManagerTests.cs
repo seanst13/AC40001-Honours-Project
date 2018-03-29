@@ -10,10 +10,9 @@ public class PieceManagerTests {
 		Manager = new GameObject();
 		Manager.AddComponent<PieceManager>();
 		Manager.AddComponent<NumberBag>();
-		Manager.GetComponent<NumberBag>().amountToPool = 5;
-		Manager.GetComponent<NumberBag>().GenerateNumbers();
 
-		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
+		Manager.GetComponent<NumberBag>().GenerateNumbers();
+		
 		Manager.GetComponent<PieceManager>().setUp();
 	}
 

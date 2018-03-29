@@ -17,14 +17,16 @@ public class StoredPiecesTests {
 		Manager.AddComponent<AI_Player>();
 		Manager.AddComponent<ScoreManager>(); 
 
-
 		Manager.GetComponent<StoredPieceManager>().SetUp();
-		Manager.GetComponent<NumberBag>().amountToPool = 5;
+
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
+
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
-		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
-		Manager.GetComponent<PieceManager>().setUp(); 
-		Manager.GetComponent<TurnManagement>().setUp(); 
+
+		Manager.GetComponent<PieceManager>().setUp();
+
+		Manager.GetComponent<TurnManagement>().setUp();
+		 
 		Manager.GetComponent<AI_Player>().SetUp();		  
 	}
 	[Test]

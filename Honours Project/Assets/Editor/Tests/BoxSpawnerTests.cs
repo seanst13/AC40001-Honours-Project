@@ -14,9 +14,8 @@ public class BoxSpawnerTests {
 		Box.AddComponent<BoxSpawner>(); 
 		Box.AddComponent<NumberBag>();
 
-		Box.GetComponent<NumberBag>().amountToPool = 5; 
-		
 		Box.GetComponent<NumberBag>().GenerateNumbers();
+		
 		Box.GetComponent<BoxSpawner>().SetUp(5);
 
 	}

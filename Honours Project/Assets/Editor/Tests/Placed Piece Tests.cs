@@ -13,7 +13,6 @@ public class PlacedPieceTests {
 		Manager.AddComponent<PlacedPieceManager>();
 		Manager.AddComponent<BoxSpawner>();
 
-		Manager.GetComponent<NumberBag>().amountToPool = 5;
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 
 		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");

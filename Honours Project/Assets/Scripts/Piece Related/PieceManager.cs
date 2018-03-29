@@ -7,7 +7,7 @@ public class PieceManager : MonoBehaviour {
 #region Variables
 	[Header("Piece Array Related")]			
 	public static GameObject[] pieceArray; 
-	public GameObject playingPiece;   		
+	private GameObject playingPiece;   		
 	public int index; 
 	public static PieceManager instance;
 	[Header("Boolean Values")]
@@ -116,7 +116,6 @@ public class PieceManager : MonoBehaviour {
 		return pieceArray; 
 	}
 #endregion
-
 	public void pieceClicked(int val){
 		if(!swapSelected){
 			checkIfSelected(val);
@@ -191,8 +190,4 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
-
-	public void overRideValue(int pos, int val){
-		pieceArray[pos].GetComponentInChildren<Text>().text = val.ToString();
-	}
 }

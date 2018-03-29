@@ -14,7 +14,6 @@ public class AITests {
 		Manager.AddComponent<PieceManager>(); 
 		Manager.AddComponent<ValidationManager>();
 
-		Manager.GetComponent<NumberBag>().amountToPool = 5;
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 		Manager.GetComponent<PieceManager>().setUp(); 
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
@@ -67,7 +66,7 @@ public class AITests {
 		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
 			int min = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
 			int max = Manager.GetComponent<AI_Player>().returnScoreAtPosition(Manager.GetComponent<AI_Player>().returnPossibleMoves().Count-1);
-			Assert.Less(min,max);
+			Assert.LessOrEqual(min,max);
 		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
 			Assert.IsEmpty(Manager.GetComponent<AI_Player>().returnPossibleMoves());
 		}		
