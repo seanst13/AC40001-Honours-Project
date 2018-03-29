@@ -16,7 +16,6 @@ public class AI_Player : MonoBehaviour {
 		possiblemoves = new List<Move>();
 		instance = this;
 		ShuffleCounter = 0;
-
 	}
 
 	public void GetPossibleMoves(){
@@ -75,7 +74,6 @@ public class AI_Player : MonoBehaviour {
 		});
 	}
 
-
 	public void DisplayPossibleMoves(){
 		foreach(Move m in possiblemoves){
 			Debug.Log("Possible Move: " + m.pieceValue + " at [" + m.row + "," + m.column + "], scoring: " + m.totalScore); 
@@ -92,7 +90,6 @@ public class AI_Player : MonoBehaviour {
 				TurnManagement.instance.skipTurn();	
 			}
 	}
-
 
 public void removeInValidPlacements(){
 		List<Move> removedInvalids = new List<Move>();
@@ -112,7 +109,6 @@ public void removeInValidPlacements(){
 	public List<Move> returnPossibleMoves(){
 		return possiblemoves; 
 	}
-
 
 	public int returnTotalScore(int row,int column, int valOfPiece){
 
@@ -145,7 +141,6 @@ public void removeInValidPlacements(){
 		possiblemoves.AddRange(removedEven);
 	}
 
-
 	void placeMove(){
 		int max = possiblemoves.Count-1;
 
@@ -157,6 +152,4 @@ public void removeInValidPlacements(){
 	public int returnScoreAtPosition(int pos){
 		return possiblemoves[pos].totalScore;
 	}
-
-
 }
