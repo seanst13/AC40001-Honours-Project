@@ -25,8 +25,7 @@ public class StoredPiecesTests {
 		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
 		Manager.GetComponent<PieceManager>().setUp(); 
 		Manager.GetComponent<TurnManagement>().setUp(); 
-		Manager.GetComponent<AI_Player>().setup();  
-		  
+		Manager.GetComponent<AI_Player>().SetUp();		  
 	}
 	[Test]
 	public void CheckListExists() {

@@ -193,6 +193,7 @@ public class TurnManagement : MonoBehaviour {
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		if (playerNumber ==2){
 			AI_Player.instance.GetPossibleMoves();
+			AI_Player.instance.makeMove();
 		} 
 			StartCoroutine(countdown(60));
 		

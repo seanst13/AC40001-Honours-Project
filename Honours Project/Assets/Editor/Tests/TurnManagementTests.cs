@@ -29,7 +29,7 @@ public class TurnManagementTests {
 		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
 		Manager.GetComponent<ScoreManager>().setup();  
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
-		Manager.GetComponent<AI_Player>().setup();
+		Manager.GetComponent<AI_Player>().SetUp();
 
 		Manager.GetComponent<TurnManagement>().setUp();	
 	}

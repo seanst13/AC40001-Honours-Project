@@ -24,6 +24,7 @@ public class PieceManager : MonoBehaviour {
 	}
 
 	public void setUp(){
+		playingPiece =(GameObject) Resources.Load("PlayPiece");
 		pieceArray = new GameObject[2]; 
 		instance = this; 
 		generatePieces();
