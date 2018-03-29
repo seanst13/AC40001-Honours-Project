@@ -11,15 +11,17 @@ public class BoxClick : MonoBehaviour {
 	public void boxEnter(){
 		if(!buttonPressed){
 			defaultColour = GetComponent<Image>().color;
+			string objectname = this.name;
+			int row = int.Parse(objectname.Substring(0,1)); 
+			int column = int.Parse(objectname.Substring(2,1));
 			// Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name);
 			//Checks if The Piece has been clicked and will place it on the grid if it has. 
-			if (PieceManager.instance.selected && GetComponentInChildren<Text>().text == ""){
+			if (PieceManager.returnSelected() && GetComponentInChildren<Text>().text == ""){
 				GetComponent<Image>().color = Color.cyan;
-				string objectname = this.name;
+				
 				Debug.Log(objectname + " has been clicked.");
 
-				int row = int.Parse(objectname.Substring(0,1)); 
-				int column = int.Parse(objectname.Substring(2,1));
+				
 
 				if (ValidationManager.PositioningValidation(row, column))
 				{
@@ -28,28 +30,18 @@ public class BoxClick : MonoBehaviour {
 				} else{
 					ErrorManagement.instance.ShowError("Error: Piece must be placed next to an existing piece.");
 				}
-			} else if (PieceManager.instance.selected && GetComponentInChildren<Text>().text != "") {
-
+			} else if (!PieceManager.returnSelected() && GetComponentInChildren<Text>().text != "") {
+					PieceManager.setSelected(false);
 				if (!GetComponent<Collider2D>().enabled){
-					PieceManager.instance.selected = false; 
 					ErrorManagement.instance.ShowError("Error: Piece cannot be placed ontop of an existing piece.");
 				} else if (GetComponent<Collider2D>().enabled){
-					PieceManager.instance.selected = false;
 					GetComponentInChildren<Text>().text = "";
-					foreach(Piece p in PieceManager.instance.placedPieces){
-						if (p.position == this.name){
-							PieceManager.pieceArray[p.index].SetActive(true);
-							PieceManager.instance.placedPieces.RemoveAt(PieceManager.instance.placedPieces.IndexOf(p));
-						}
-					}
-				}
-
-				
-			} else if (!PieceManager.instance.selected) {
-				Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name + "is " + PieceManager.instance.selected);
-				PieceManager.instance.selected = false; 
-				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");
-			
+					PlacedPieceManager.instance.reactivatePiece(row,column); 	
+				}				
+			} else if (!PieceManager.returnSelected()) {
+				Debug.Log(PieceManager.pieceArray[PieceManager.instance.returnIndex()].name + "is " + PieceManager.returnSelected());
+				PieceManager.setSelected(false);
+				ErrorManagement.instance.ShowError("Error: Please select a piece before placing on the grid.");	
 		}
 		buttonPressed = true; 	
 		}	
@@ -67,10 +59,7 @@ public class BoxClick : MonoBehaviour {
 	}
 
 	public static void tempAddPiece(int row, int column){
-		PieceManager.instance.addPieceToList(row,column);
-		BoxSpawner.instance.setvalueAtPosition(row, column, PieceManager.instance.returnPieceValue());
-		PieceManager.pieceArray[PieceManager.instance.returnIndex()].SetActive(false);
-		PieceManager.instance.pieceClicked( PieceManager.instance.returnIndex());
+		PlacedPieceManager.instance.addPieceToList(row,column);
+		
 	}
-
 }

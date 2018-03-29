@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TurnManagement : MonoBehaviour {
 	private int turnCounter;
 	public GameObject EndTurn;
-	public GameObject turnText;
-	public GameObject timerText;
+	private GameObject turnText;
+	private GameObject timerText;
 	private int Time;
 	public static int playerNumber;
 	public static TurnManagement instance;
@@ -17,6 +17,8 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	public void setUp(){
+		timerText= GameObject.Find("Timer");
+		turnText = GameObject.Find("TurnCounter");	
 		instance = this;
 		turnCounter = 0;
 		playerNumber = 0;
@@ -28,19 +30,18 @@ public class TurnManagement : MonoBehaviour {
 		int row = 0;
 		int column = 0;
 
-		foreach(Piece placement in PieceManager.instance.placedPieces){
+		foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 			row = int.Parse(placement.position.Substring(0,1));
 			column = int.Parse(placement.position.Substring(2,1));
-
 			Debug.Log("Attempting to place " + PieceManager.pieceArray[placement.index].GetComponentInChildren<Text>().text +" AT: ["+row+","+column+"]");
 			if (OddCheck(row,column)){
 				Debug.Log("This is valid");
 				validplays++;
 			}
 		}
-		if (validplays == PieceManager.instance.placedPieces.Count){
+		if (validplays == PlacedPieceManager.instance.returnPlacedPieces().Count){
 			if (validplays == 1){
-				foreach(Piece placement in PieceManager.instance.placedPieces){
+				foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 					row = int.Parse(placement.position.Substring(0,1));
 					column = int.Parse(placement.position.Substring(2,1));
 					addPiece(row,column, placement.index);
@@ -56,11 +57,11 @@ public class TurnManagement : MonoBehaviour {
 			} else if (validplays > 1){
 				compareMultiplePieces(row,column);
 			}
-			PieceManager.instance.placedPieces.Clear();
+			PlacedPieceManager.instance.returnPlacedPieces().Clear();
 			Debug.Log("INCREMENT TURN - CLEARED LIST");
 			incrementTurn();
 		} else if (validplays == 0) {
-			PieceManager.instance.ClearPlacedPieces(); 
+			PlacedPieceManager.instance.ClearPlacedPieces(); 
 			if(playerNumber == 2){
 				Debug.Log("Your move is still some how completely invalid. Explain plz.");
 				AI_Player.instance.returnToHumanPlayer();
@@ -74,7 +75,7 @@ public class TurnManagement : MonoBehaviour {
 		bool first = true;
 		int previousrow = 0;
 		int previouscol = 0;
-			foreach(Piece placement in PieceManager.instance.placedPieces){
+			foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 				row = int.Parse(placement.position.Substring(0,1));
 				column = int.Parse(placement.position.Substring(2,1));
 				if (first){
@@ -111,12 +112,15 @@ public class TurnManagement : MonoBehaviour {
 
 
 	public bool OddCheck(int row, int column){
-		return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
-		 && ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+		if (BoxSpawner.instance.returnValueAtPosition(row,column) != ""){
+			return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
+			&& ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+		} else {
+			return false; 
+		}
 	}
 
-	void addPiece(int row, int column, int index){
-		
+	void addPiece(int row, int column, int index){	
 		BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 		PieceManager.pieceArray[index].SetActive(true);
 		PieceManager.instance.setPieceValue(index);
@@ -161,9 +165,9 @@ public class TurnManagement : MonoBehaviour {
 
 
 	private void Update() {
-		if (PieceManager.instance.placedPieces.Count == 0){
+		if (PlacedPieceManager.instance.returnPlacedPieces().Count == 0 ){
 			EndTurn.GetComponent<Button>().interactable = false;
-		} else if (PieceManager.instance.placedPieces.Count > 0){
+		} else if (PlacedPieceManager.instance.returnPlacedPieces().Count > 0){
 			EndTurn.GetComponent<Button>().interactable = true;
 		}
 	}
@@ -171,21 +175,20 @@ public class TurnManagement : MonoBehaviour {
 	public void incrementTurn(){
 		StopAllCoroutines();
 		if (playerNumber != 0){
-			PieceManager.instance.addToStoredPieces();
+			StoredPieceManager.instance.addToStoredPieces();
 			ChangePlayer(); 
-			PieceManager.instance.swapPreviousPlayersVals();
+			StoredPieceManager.instance.swapPreviousPlayersVals();
 		} else if (playerNumber == 0) {
 			ChangePlayer();
-			// PieceManager.instance.swapPreviousPlayersVals();
 		}
-		
 		turnCounter++;
 		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
 		if (playerNumber ==2){
 			AI_Player.instance.GetPossibleMoves();
+			AI_Player.instance.makeMove();
 		} 
-			StartCoroutine(countdown(60));
+		StartCoroutine(countdown(60));
 		
 	}
 
@@ -206,17 +209,15 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	void ChangePlayer(){
-		if (playerNumber == 0){
+		if (playerNumber != 1){
 			playerNumber = 1;
 		} else if (playerNumber == 1){
 			playerNumber = 2;
-		} else if (playerNumber == 2){
-			playerNumber = 1;
-		}
+		} 
 	}
 
 	public void skipTurn(){
-		PieceManager.instance.ClearPlacedPieces();
+		PlacedPieceManager.instance.ClearPlacedPieces();
 		incrementTurn();
 	}
 

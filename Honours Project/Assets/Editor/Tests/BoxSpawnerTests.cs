@@ -14,12 +14,8 @@ public class BoxSpawnerTests {
 		Box.AddComponent<BoxSpawner>(); 
 		Box.AddComponent<NumberBag>();
 
-		Box.GetComponent<BoxSpawner>().gridSize = 5;
-		Box.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		Box.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
-		Box.GetComponent<NumberBag>().amountToPool = 5; 
-		
 		Box.GetComponent<NumberBag>().GenerateNumbers();
+		
 		Box.GetComponent<BoxSpawner>().SetUp(5);
 
 	}
@@ -52,6 +48,23 @@ public class BoxSpawnerTests {
 		Box.GetComponent<BoxSpawner>().setvalueAtPosition(3,3,value);
 		
 		Assert.AreEqual(value.ToString(),Box.GetComponent<BoxSpawner>().returnValueAtPosition(3,3));
+	}
+
+	[Test]
+	public void CheckEmptyPiecesFail(){
+		Box.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,4);
+		Assert.False(Box.GetComponent<BoxSpawner>().IsPositionEmpty(2,1));
+	}
+
+	[Test]
+	public void CheckEmptyPiecesPasses(){
+		Box.GetComponent<BoxSpawner>().setvalueAtPosition(2,1,4);
+		Assert.True(Box.GetComponent<BoxSpawner>().IsPositionEmpty(2,0));
+	}
+
+	[Test]
+	public void CheckEmptyOutOfBounds(){
+		Assert.True(Box.GetComponent<BoxSpawner>().IsPositionEmpty(-1,10));
 	}
 
 	[TearDown]

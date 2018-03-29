@@ -6,19 +6,28 @@ using UnityEngine.UI;
 
 public class BoxSpawner : MonoBehaviour {
 	[Header("Grid Attributes")]
-	public int gridSize;
+	private int gridSize = 5;
 	bool BoxWhite = true;
 	[Space]
 	[Header("Game Objects")]
-	public GameObject whiteSquare;
-	public GameObject greySquare;
+	private GameObject whiteSquare;
+	private GameObject greySquare;
 	private int middleSquare {get; set;}
 	public static GameObject[,] gridArray {get; set;}
 
 	public static BoxSpawner instance;
 
-	public void Start(){
+	private void Start(){
 		SetUp(gridSize);
+	}
+
+	public void SetUp(int size){
+		whiteSquare = (GameObject) Resources.Load("WhiteBox");
+		greySquare = (GameObject) Resources.Load("GreyBox");
+		gridArray = new GameObject[size,size];
+		instance = this;
+		setMiddleValue(size);
+		DisplayBoard();
 	}
 
 	public void DisplayBoard(){
@@ -51,7 +60,7 @@ public class BoxSpawner : MonoBehaviour {
 				NumberBag.numbers.RemoveAt(NumberBag.numbers.Count-1);
 				gridArray[row,column].GetComponent<Collider2D>().enabled = false;
 			}
-		gridArray[row,column].transform.name = (row + "_"+ column).ToString();
+		gridArray[row,column].transform.name = (row + "_"+ column);
 
 	}
 
@@ -64,12 +73,7 @@ public class BoxSpawner : MonoBehaviour {
 		return gridArray;
 	}
 
-	public void SetUp(int size){
-		gridArray = new GameObject[size,size];
-		instance = this;
-		setMiddleValue(size);
-		DisplayBoard();
-	}
+
 
 	public string returnValueAtPosition(int row, int col){
 		return gridArray[row,col].GetComponentInChildren<Text>().text;

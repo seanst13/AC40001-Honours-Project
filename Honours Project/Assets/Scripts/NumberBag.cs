@@ -5,7 +5,7 @@ using UnityEngine;
 public class NumberBag : MonoBehaviour {
 	public static List<int> numbers = new List<int>();
 	private int number = 1;
-	public int amountToPool = 5;
+	private int amountToPool = 5;
 
 	// Use this for initialization
 	void Start () {

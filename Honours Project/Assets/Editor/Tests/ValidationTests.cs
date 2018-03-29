@@ -11,13 +11,10 @@ public class ValidationTests {
 		Validator.AddComponent<NumberBag>();
 		Validator.AddComponent<BoxSpawner>(); 
 
-		Validator.GetComponent<NumberBag>().amountToPool = 5; 
 		Validator.GetComponent<NumberBag>().GenerateNumbers();
-		Validator.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
+
 		Validator.GetComponent<PieceManager>().setUp();
-		Validator.GetComponent<BoxSpawner>().gridSize = 5;
-		Validator.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		Validator.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
+
 		Validator.GetComponent<BoxSpawner>().SetUp(5);
 	}
 	[Test]
@@ -84,7 +81,6 @@ public class ValidationTests {
 
 	[Test]
 	public void CheckSecondaryColumnsFails(){
-		// Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
 		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
 		Assert.False(ValidationManager.secondaryColumnCheck(2,3));
 	}
@@ -99,7 +95,6 @@ public class ValidationTests {
 		[Test]
 	public void CheckSecondaryRowsFail(){
 		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
-		// Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,3,4);
 		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
 	}
 

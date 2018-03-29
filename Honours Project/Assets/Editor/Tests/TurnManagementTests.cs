@@ -10,6 +10,8 @@ public class TurnManagementTests {
 	public void SetUp(){
 		Manager = new GameObject();
 		Manager.AddComponent<PieceManager>();
+		Manager.AddComponent<StoredPieceManager>(); 
+		Manager.AddComponent<PlacedPieceManager>(); 
 		Manager.AddComponent<NumberBag>();
 		Manager.AddComponent<BoxSpawner>(); 
 		Manager.AddComponent<TurnManagement>();
@@ -17,22 +19,23 @@ public class TurnManagementTests {
 		Manager.AddComponent<AI_Player>();
 		Manager.AddComponent<ScoreManager>(); 
 
-		Manager.GetComponent<NumberBag>().amountToPool = 5; 
+
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
-		Manager.GetComponent<PieceManager>().playingPiece = (GameObject) Resources.Load("PlayPiece");
+
 		Manager.GetComponent<PieceManager>().setUp();
-		Manager.GetComponent<BoxSpawner>().gridSize = 5;
-		Manager.GetComponent<BoxSpawner>().whiteSquare = (GameObject) Resources.Load("WhiteBox");
-		Manager.GetComponent<BoxSpawner>().greySquare = (GameObject) Resources.Load("GreyBox");
+
+		Manager.GetComponent<StoredPieceManager>().SetUp(); 
+
+		Manager.GetComponent<PlacedPieceManager>().SetUp(); 
+
 		Manager.GetComponent<ScoreManager>().score1 = GameObject.Find("PlayerScore"); 
 		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
 		Manager.GetComponent<ScoreManager>().setup();  
+
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
-		Manager.GetComponent<AI_Player>().setup();
 
+		Manager.GetComponent<AI_Player>().SetUp();
 
-		Manager.GetComponent<TurnManagement>().turnText = GameObject.Find("TurnCounter");	
-		Manager.GetComponent<TurnManagement>().timerText= GameObject.Find("Timer");	
 		Manager.GetComponent<TurnManagement>().setUp();	
 	}
 	[Test]
@@ -49,19 +52,17 @@ public class TurnManagementTests {
 	[Test]
 	public void CheckIfSkipTurnClearsArrayOnSkip(){
 		Manager.GetComponent<PieceManager>().index = 0; 
-		Manager.GetComponent<PieceManager>().addPieceToList(0,0);
+		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,0);
 		Manager.GetComponent<PieceManager>().index = 1; 
-		Manager.GetComponent<PieceManager>().addPieceToList(0,1);
+		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,1);
 
 		Manager.GetComponent<TurnManagement>().skipTurn(); 
 
-		Assert.IsEmpty(Manager.GetComponent<PieceManager>().returnPlacedPieces());
+		Assert.IsEmpty(Manager.GetComponent<PlacedPieceManager>().returnPlacedPieces());
 	} 
 
 	[TearDown]
 	public void TearDown(){
 		GameObject.DestroyImmediate(Manager);
-	}
-
-	
+	}	
 }
