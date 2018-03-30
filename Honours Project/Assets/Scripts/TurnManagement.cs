@@ -110,7 +110,6 @@ public class TurnManagement : MonoBehaviour {
 			}
 	}
 
-
 	public bool OddCheck(int row, int column){
 		if (BoxSpawner.instance.returnValueAtPosition(row,column) != ""){
 			return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
