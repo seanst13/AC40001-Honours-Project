@@ -123,11 +123,11 @@ public void removeInValidPlacements(){
 
 	public void addSecondaryScoring(){
 		foreach (Move m in possiblemoves){
-			if (ValidationManager.RowTotal(m.row, m.column) == m.totalScore){
+			if ((ValidationManager.RowTotal(m.row, m.column) + m.pieceValue ) == m.totalScore){
 				if (ValidationManager.columnTotal(m.row,m.column) !=0) {
 					m.totalScore += (ValidationManager.columnTotal(m.row,m.column) + m.pieceValue);
 				}
-			} else if (ValidationManager.columnTotal(m.row, m.column) == m.totalScore){
+			} else if ((ValidationManager.columnTotal(m.row, m.column) + m.pieceValue ) == m.totalScore){
 				if (ValidationManager.RowTotal(m.row,m.column) !=0 ){
 					m.totalScore += (ValidationManager.RowTotal(m.row,m.column) + m.pieceValue);
 				}

@@ -59,6 +59,22 @@ public class AITests {
 	}
 
 	[Test]
+	public void checkSecondaryScoringWorks(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		Manager.GetComponent<AI_Player>().removeInValidPlacements();
+		Manager.GetComponent<AI_Player>().removeEvenTotals();
+
+		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
+			int valbefore = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
+			Manager.GetComponent<AI_Player>().addSecondaryScoring(); 
+			int valafter = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
+			Assert.GreaterOrEqual(valafter,valbefore);
+		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
+			Assert.IsEmpty(Manager.GetComponent<AI_Player>().returnPossibleMoves());
+		}		
+	}
+
+	[Test]
 	public void CheckIfSortingWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		Manager.GetComponent<AI_Player>().filterAndSortMoves();
