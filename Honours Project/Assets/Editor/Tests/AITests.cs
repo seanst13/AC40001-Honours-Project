@@ -28,7 +28,8 @@ public class AITests {
 	[Test]
 	public void checkPossibleMovesAreRetrieved(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		Assert.Greater(Manager.GetComponent<AI_Player>().returnPossibleMoves().Count,0);
+		int count = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count; 
+		Assert.Greater(count,0);
 	}
 
 	[Test]

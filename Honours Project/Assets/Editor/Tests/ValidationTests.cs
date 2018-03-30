@@ -18,12 +18,12 @@ public class ValidationTests {
 		Validator.GetComponent<BoxSpawner>().SetUp(5);
 	}
 	[Test]
-	public void CheckValidPositioning() {
+	public static void CheckValidPositioning() {
 		Assert.AreEqual(true, ValidationManager.PositioningValidation(2,3));
 	}
 
 	[Test]
-	public void CheckInvalidPositioning(){
+	public static void CheckInvalidPositioning(){
 		Assert.AreNotEqual(true, ValidationManager.PositioningValidation(0,0));
 	}
 
