@@ -55,7 +55,7 @@ public class TurnManagement : MonoBehaviour {
 					}
 				}
 			} else if (validplays > 1){
-				compareMultiplePieces(row,column);
+				compareMultiplePieces();
 			}
 			PlacedPieceManager.instance.returnPlacedPieces().Clear();
 			Debug.Log("INCREMENT TURN - CLEARED LIST");
@@ -65,19 +65,17 @@ public class TurnManagement : MonoBehaviour {
 			if(playerNumber == 2){
 				Debug.Log("Your move is still some how completely invalid. Explain plz.");
 				AI_Player.instance.returnToHumanPlayer();
-
 			}
-
 		}
 	}
 
-	void compareMultiplePieces(int row, int column){
+	void compareMultiplePieces(){
 		bool first = true;
 		int previousrow = 0;
 		int previouscol = 0;
 			foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
-				row = int.Parse(placement.position.Substring(0,1));
-				column = int.Parse(placement.position.Substring(2,1));
+				int row = int.Parse(placement.position.Substring(0,1));
+				int column = int.Parse(placement.position.Substring(2,1));
 				if (first){
 					previousrow = row;
 					previouscol = column;
@@ -110,7 +108,6 @@ public class TurnManagement : MonoBehaviour {
 			}
 	}
 
-
 	public bool OddCheck(int row, int column){
 		if (BoxSpawner.instance.returnValueAtPosition(row,column) != ""){
 			return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
@@ -127,20 +124,12 @@ public class TurnManagement : MonoBehaviour {
 		PieceManager.instance.pieceClicked(index);
 	}
 
-
 	void addScore(int row, int column){
 		int total = 0;
-		int secondtotal = 0;
 
 		if ((ValidationManager.RowTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)) ) != int.Parse(BoxSpawner.gridArray[row,column].GetComponentInChildren<Text>().text)){
 			total = ValidationManager.RowTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
 			Debug.Log("Row Total: " + total);
-
-			//TO MOVE INTO ITS OWN SCORE METHOD.
-
-			Debug.Log("Second Column Total: " + secondtotal);
-			total = total + secondtotal;
-
 		} else {
 			total = ValidationManager.columnTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
 			Debug.Log("Column Total: " + total);
@@ -148,7 +137,6 @@ public class TurnManagement : MonoBehaviour {
 
 		Debug.Log("TOTAL SCORE: " + total);
 		ScoreManager.instance.setPlayerScore(total,playerNumber);
-
 	}
 
 	public void secondaryTotalCheck(int row, int column, string type){
@@ -162,7 +150,6 @@ public class TurnManagement : MonoBehaviour {
 			}
 		}
 	}
-
 
 	private void Update() {
 		if (PlacedPieceManager.instance.returnPlacedPieces().Count == 0 ){
@@ -203,9 +190,7 @@ public class TurnManagement : MonoBehaviour {
 		if (Time == 0){
 			Debug.Log("INCREMENT TURN - TIME = 0");
 			skipTurn();
-
 		}
-
 	}
 
 	void ChangePlayer(){

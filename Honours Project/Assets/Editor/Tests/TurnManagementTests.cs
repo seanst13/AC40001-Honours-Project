@@ -51,9 +51,9 @@ public class TurnManagementTests {
 
 	[Test]
 	public void CheckIfSkipTurnClearsArrayOnSkip(){
-		Manager.GetComponent<PieceManager>().index = 0; 
+		Manager.GetComponent<PieceManager>().setIndex(0); 
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,0);
-		Manager.GetComponent<PieceManager>().index = 1; 
+		Manager.GetComponent<PieceManager>().setIndex(1); 
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(0,1);
 
 		Manager.GetComponent<TurnManagement>().skipTurn(); 

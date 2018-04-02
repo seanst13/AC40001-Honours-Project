@@ -28,7 +28,8 @@ public class AITests {
 	[Test]
 	public void checkPossibleMovesAreRetrieved(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		Assert.Greater(Manager.GetComponent<AI_Player>().returnPossibleMoves().Count,0);
+		int count = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count; 
+		Assert.Greater(count,0);
 	}
 
 	[Test]
@@ -56,6 +57,22 @@ public class AITests {
 		Manager.GetComponent<AI_Player>().removeEvenTotals();
 		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
 		Assert.Less(afterFilter,beforeFilter);
+	}
+
+	[Test]
+	public void checkSecondaryScoringWorks(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		Manager.GetComponent<AI_Player>().removeInValidPlacements();
+		Manager.GetComponent<AI_Player>().removeEvenTotals();
+
+		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
+			int valbefore = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
+			Manager.GetComponent<AI_Player>().addSecondaryScoring(); 
+			int valafter = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
+			Assert.GreaterOrEqual(valafter,valbefore);
+		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
+			Assert.IsEmpty(Manager.GetComponent<AI_Player>().returnPossibleMoves());
+		}		
 	}
 
 	[Test]

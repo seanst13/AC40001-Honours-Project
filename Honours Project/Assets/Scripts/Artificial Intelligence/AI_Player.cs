@@ -67,6 +67,7 @@ public class AI_Player : MonoBehaviour {
 		removeInValidPlacements();
 		//Filter Out the Even Totals
 		removeEvenTotals();
+		addSecondaryScoring();
 
 		//Sort to lowest > highest
 		possiblemoves.Sort(delegate(Move a , Move b){
@@ -115,18 +116,23 @@ public void removeInValidPlacements(){
 		int total = ValidationManager.RowTotal(row,column) + valOfPiece;
 		if (total == valOfPiece){
 			total = ValidationManager.columnTotal(row,column) + valOfPiece;
-			//if (ValidationManager.secondaryRowCheck(row,column)){
-			//	total += ValidationManager.RowTotal(row,column);
-			//}
 		}
-		// else {
-		// 	if (ValidationManager.secondaryColumnCheck(row,column)){
-		// 		total += ValidationManager.columnTotal(row,column);
-		// 	}
-		// }
-
-		// Debug.Log("TOTAL SCORE OF THE THING:" + total);
 		return total;
+	}
+
+
+	public void addSecondaryScoring(){
+		foreach (Move m in possiblemoves){
+			if ((ValidationManager.RowTotal(m.row, m.column) + m.pieceValue ) == m.totalScore){
+				if (ValidationManager.columnTotal(m.row,m.column) !=0) {
+					m.totalScore += (ValidationManager.columnTotal(m.row,m.column) + m.pieceValue);
+				}
+			} else if ((ValidationManager.columnTotal(m.row, m.column) + m.pieceValue ) == m.totalScore){
+				if (ValidationManager.RowTotal(m.row,m.column) !=0 ){
+					m.totalScore += (ValidationManager.RowTotal(m.row,m.column) + m.pieceValue);
+				}
+			}
+		}
 	}
 
 	public void removeEvenTotals(){

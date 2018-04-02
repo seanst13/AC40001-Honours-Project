@@ -8,7 +8,7 @@ public class PieceManager : MonoBehaviour {
 	[Header("Piece Array Related")]			
 	public static GameObject[] pieceArray; 
 	private GameObject playingPiece;   		
-	private int index {get; set;} 
+	private int index { get; set; } 
 	public static PieceManager instance;
 	[Header("Boolean Values")]
 	private static bool selected; 
@@ -174,8 +174,10 @@ public class PieceManager : MonoBehaviour {
 		int p = 0; 
 		foreach (char i in swap){
 			if (i.ToString() == val.ToString())
-				{Debug.Log("match found at index: " + p);
-				swap = swap.Remove(p,1);}
+				{
+					Debug.Log("match found at index: " + p);
+					swap = swap.Remove(p,1);
+				}
 			p++; 
 		}
 		pieceArray[val].GetComponent<Image>().color = Color.white;
