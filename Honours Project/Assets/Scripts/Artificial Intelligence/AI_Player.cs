@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AI_Player : MonoBehaviour {
-	public List<Move> possiblemoves;
+	public List<SubMove> possiblemoves;
 	public static AI_Player instance;
 	private int ShuffleCounter;
 
@@ -13,7 +13,7 @@ public class AI_Player : MonoBehaviour {
 	}
 
 	public void SetUp(){
-		possiblemoves = new List<Move>();
+		possiblemoves = new List<SubMove>();
 		instance = this;
 		ShuffleCounter = 0;
 	}
@@ -51,15 +51,25 @@ public class AI_Player : MonoBehaviour {
 		if (BoxSpawner.instance.IsPositionEmpty(row,column) && BoxSpawner.gridArray[row,column].GetComponent<Collider2D>().enabled){
 	//Add to the List of Possible Moves
 			possiblemoves.Add(
-				new Move {
+				new SubMove {
 					row = row, 
 					column = column,
 					pieceValue = int.Parse(PieceManager.pieceArray[index].GetComponentInChildren<Text>().text),
 					pieceIndex = index,
-					totalScore = returnTotalScore(row,column,int.Parse(PieceManager.pieceArray[index].GetComponentInChildren<Text>().text))
+					totalScore = returnTotalScore(row,column,int.Parse(PieceManager.pieceArray[index].GetComponentInChildren<Text>().text)),
+					totalIsRow = setTotalIsRow(row,column,int.Parse(PieceManager.pieceArray[index].GetComponentInChildren<Text>().text))
 				}
 			);
 		}
+	}
+
+	public bool setTotalIsRow(int row, int column, int piecevalue){
+		if ((ValidationManager.RowTotal(row,column) + piecevalue) != piecevalue){
+			return true; 
+		} else {
+			return false; 
+		}
+		
 	}
 
 	public void filterAndSortMoves(){
@@ -67,10 +77,11 @@ public class AI_Player : MonoBehaviour {
 		removeInValidPlacements();
 		//Filter Out the Even Totals
 		removeEvenTotals();
+		getSecondPlacements(); 
 		addSecondaryScoring();
 
 		//Sort to lowest > highest
-		possiblemoves.Sort(delegate(Move a , Move b){
+		possiblemoves.Sort(delegate(SubMove a , SubMove b){
 			return a.totalScore.CompareTo(b.totalScore);
 		});
 	}
@@ -93,8 +104,8 @@ public class AI_Player : MonoBehaviour {
 	}
 
 public void removeInValidPlacements(){
-		List<Move> removedInvalids = new List<Move>();
-		foreach (Move m in possiblemoves){
+		List<SubMove> removedInvalids = new List<SubMove>();
+		foreach (SubMove m in possiblemoves){
 			if (ValidationManager.PositioningValidation(m.row,m.column) && BoxSpawner.instance.IsPositionEmpty(m.row,m.column)){
 				if (ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && ValidationManager.newColValidation(m.row,m.column, m.pieceValue)){
 					if (m.pieceValue == int.Parse(PieceManager.pieceArray[m.pieceIndex].GetComponentInChildren<Text>().text)){
@@ -107,7 +118,7 @@ public void removeInValidPlacements(){
 		possiblemoves.AddRange(removedInvalids);
 	}
 
-	public List<Move> returnPossibleMoves(){
+	public List<SubMove> returnPossibleMoves(){
 		return possiblemoves; 
 	}
 
@@ -136,8 +147,8 @@ public void removeInValidPlacements(){
 	}
 
 	public void removeEvenTotals(){
-		List<Move> removedEven = new List<Move>();
-		foreach(Move m in possiblemoves){
+		List<SubMove> removedEven = new List<SubMove>();
+		foreach(SubMove m in possiblemoves){
 			if (m.totalScore % 2 != 0){
 				removedEven.Add(m);
 			}
@@ -147,11 +158,80 @@ public void removeInValidPlacements(){
 		possiblemoves.AddRange(removedEven);
 	}
 
+	public void getSecondPlacements(){
+		foreach(SubMove m in possiblemoves){
+			for(int i = 0; i < PieceManager.pieceArray.Length; i++){
+				if (i != m.pieceIndex){
+					obtainSecondPlacements(i, m);
+				}
+			}
+			
+		}
+	}
+
+	public void obtainSecondPlacements(int pieceIndex, SubMove m){
+		int pieceval = int.Parse(PieceManager.pieceArray[pieceIndex].GetComponentInChildren<Text>().text);
+		
+		if (pieceval %2 !=0 && (!ValidationManager.newRowValidation(m.row,m.column, pieceval) || !ValidationManager.newColValidation(m.row,m.column,pieceval))
+		|| pieceval %2 ==0 && (ValidationManager.newRowValidation(m.row,m.column, pieceval) || ValidationManager.newColValidation(m.row,m.column,pieceval))) 
+		{
+			List <Move> moves = checkForValidMoves(m, pieceIndex);
+			if (moves != null) {
+				moves.Sort(delegate(Move a , Move b){
+				return a.totalScore.CompareTo(b.totalScore);});
+				possiblemoves[possiblemoves.IndexOf(m)].secondaryMoves.AddRange(moves); 
+			}
+		}
+		
+	}
+
+	public List<Move> checkForValidMoves(SubMove m, int pieceindex){
+		int pieceval = int.Parse(PieceManager.pieceArray[pieceindex].GetComponentInChildren<Text>().text);
+		List <Move> posSecondMoves = new List<Move>(); 
+		//Row Checks
+		for (int i = 0; i < 5; i++){
+			if (ValidationManager.newRowValidation(i, m.column, pieceval) && ValidationManager.newColValidation(i,m.column, pieceval) 
+			&& BoxSpawner.instance.IsPositionEmpty(i,m.column)){
+				posSecondMoves.Add(new Move{
+					row = i, column = m.column, pieceValue = pieceval, pieceIndex = pieceindex, totalScore =  m.pieceValue + ValidationManager.RowTotal(i, m.column) + pieceval,
+					 totalIsRow = true
+				});
+			}
+		}
+
+		//Col checks
+		for (int i = 0; i < 5; i++){
+			if (ValidationManager.newRowValidation(m.row, i, pieceval) && ValidationManager.newColValidation(m.row,i, pieceval) 
+			&& BoxSpawner.instance.IsPositionEmpty(m.row,i)){
+				posSecondMoves.Add(new Move{
+					row = m.row, column = i, pieceValue = pieceval, pieceIndex = pieceindex, totalScore = m.pieceValue + ValidationManager.columnTotal(m.row, i) + pieceval,
+					totalIsRow = false
+				});
+			}
+		}
+		//Check if its null
+
+		if (posSecondMoves.Count == 0){
+			return null;
+		} else {
+			return posSecondMoves; 
+		}
+
+	}
+	public bool determineIfOdd(int i){
+		return int.Parse(PieceManager.pieceArray[i].GetComponentInChildren<Text>().text) %2 !=0;
+	}
+
 	void placeMove(){
 		int max = possiblemoves.Count-1;
-
+		
 		PieceManager.instance.pieceClicked(possiblemoves[max].pieceIndex);
 		BoxClick.tempAddPiece(possiblemoves[max].row,possiblemoves[max].column);
+		if (possiblemoves[max].secondaryMoves.Count != 0){
+			int secondMax = possiblemoves[max].secondaryMoves.Count-1; 
+			PieceManager.instance.pieceClicked(possiblemoves[max].secondaryMoves[secondMax].pieceIndex);
+			BoxClick.tempAddPiece(possiblemoves[max].secondaryMoves[secondMax].row,possiblemoves[max].secondaryMoves[secondMax].column);
+		}
 		TurnManagement.instance.checkIfValid();
 	}
 
