@@ -56,7 +56,7 @@ public class AITests {
 		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
 		Manager.GetComponent<AI_Player>().removeCompleteEvenTotals();
 		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Assert.Less(afterFilter,beforeFilter);
+		Assert.LessOrEqual(afterFilter,beforeFilter);
 	}
 
 	[Test]
