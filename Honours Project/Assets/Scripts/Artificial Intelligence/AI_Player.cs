@@ -76,8 +76,9 @@ public class AI_Player : MonoBehaviour {
 		//Check if the Move Is Valid
 		removeInValidPlacements();
 		//Filter Out the Even Totals
-		removeEvenTotals();
+		removeCompleteEvenTotals();
 		getSecondPlacements(); 
+		removeEvenTotals(); 
 		addSecondaryScoring();
 
 		//Sort to lowest > highest
@@ -146,10 +147,12 @@ public void removeInValidPlacements(){
 		}
 	}
 
-	public void removeEvenTotals(){
+	public void removeCompleteEvenTotals(){
 		List<SubMove> removedEven = new List<SubMove>();
 		foreach(SubMove m in possiblemoves){
-			if (m.totalScore % 2 != 0){
+			if ((ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && ValidationManager.newColValidation(m.row,m.column,m.pieceValue) 
+			|| (!ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && ValidationManager.newColValidation(m.row,m.column,m.pieceValue) 
+			||(ValidationManager.newRowValidation(m.row,m.column,m.pieceValue) && !ValidationManager.newColValidation(m.row,m.column,m.pieceValue))))){
 				removedEven.Add(m);
 			}
 		}
@@ -191,7 +194,7 @@ public void removeInValidPlacements(){
 		//Row Checks
 		for (int i = 0; i < 5; i++){
 			if (ValidationManager.newRowValidation(i, m.column, pieceval) && ValidationManager.newColValidation(i,m.column, pieceval) 
-			&& BoxSpawner.instance.IsPositionEmpty(i,m.column)){
+			&& (BoxSpawner.instance.IsPositionEmpty(i,m.column) && ValidationManager.PositioningValidation(i,m.column))){
 				posSecondMoves.Add(new Move{
 					row = i, column = m.column, pieceValue = pieceval, pieceIndex = pieceindex, totalScore =  m.pieceValue + ValidationManager.RowTotal(i, m.column) + pieceval,
 					 totalIsRow = true
@@ -202,7 +205,7 @@ public void removeInValidPlacements(){
 		//Col checks
 		for (int i = 0; i < 5; i++){
 			if (ValidationManager.newRowValidation(m.row, i, pieceval) && ValidationManager.newColValidation(m.row,i, pieceval) 
-			&& BoxSpawner.instance.IsPositionEmpty(m.row,i)){
+			&& (BoxSpawner.instance.IsPositionEmpty(m.row,i) && ValidationManager.PositioningValidation(m.row, i))){
 				posSecondMoves.Add(new Move{
 					row = m.row, column = i, pieceValue = pieceval, pieceIndex = pieceindex, totalScore = m.pieceValue + ValidationManager.columnTotal(m.row, i) + pieceval,
 					totalIsRow = false
@@ -217,6 +220,17 @@ public void removeInValidPlacements(){
 			return posSecondMoves; 
 		}
 
+	}
+
+	public void removeEvenTotals(){
+		List<SubMove> moves = new List<SubMove>(); 
+		foreach (SubMove m in possiblemoves){
+			if (ValidationManager.newRowValidation(m.row,m.column, m.pieceValue) && ValidationManager.newColValidation(m.row, m.column, m.pieceValue)){
+				moves.Add(m);
+			}
+		}
+		possiblemoves.Clear();
+		possiblemoves.AddRange(moves); 
 	}
 	public bool determineIfOdd(int i){
 		return int.Parse(PieceManager.pieceArray[i].GetComponentInChildren<Text>().text) %2 !=0;

@@ -54,7 +54,7 @@ public class AITests {
 	public void CheckEvenFilterWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Manager.GetComponent<AI_Player>().removeEvenTotals();
+		Manager.GetComponent<AI_Player>().removeCompleteEvenTotals();
 		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
 		Assert.Less(afterFilter,beforeFilter);
 	}
@@ -63,7 +63,7 @@ public class AITests {
 	public void checkSecondaryScoringWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		Manager.GetComponent<AI_Player>().removeInValidPlacements();
-		Manager.GetComponent<AI_Player>().removeEvenTotals();
+		Manager.GetComponent<AI_Player>().removeCompleteEvenTotals();
 
 		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
 			int valbefore = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
