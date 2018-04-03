@@ -16,28 +16,7 @@ public static bool PositioningValidation(int row, int column){
 	}
 #endregion
 #region Row & Column Validation
-	public static bool ColumnValidation(int row, int column){
-		Debug.Log("Column: " + column);
-		int total = 0;
-		total = columnTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
-		Debug.Log("Column Total:  " + total);
-			return oddTotalValidation(total);
-
-	}
-	public static bool RowValidation(int row, int column){
-		Debug.Log("Row: " + row);
-		int total = 0;
-		total = RowTotal(row, column) + int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column));
-		Debug.Log("Row Total:  " + total);
-
-		if (total != PieceManager.instance.returnPieceValue()){
-			return oddTotalValidation(total);
-		} else{
-			return ColumnValidation(row,column);
-		}
-	}
-
-	public static bool newRowValidation(int row, int column, int valueofPlacement){
+	public static bool RowValidation(int row, int column, int valueofPlacement){
 		if ((!BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
 		|| (BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
 		|| (!BoxSpawner.instance.IsPositionEmpty(row,column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1))){
@@ -49,7 +28,7 @@ public static bool PositioningValidation(int row, int column){
 		}
 	}
 
-	public static bool newColValidation(int row, int column, int valueofPlacement){
+	public static bool ColumnValidation(int row, int column, int valueofPlacement){
 		if ((!BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
 		|| (BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
 		|| (!BoxSpawner.instance.IsPositionEmpty(row+1,column) && BoxSpawner.instance.IsPositionEmpty(row-1,column))){
