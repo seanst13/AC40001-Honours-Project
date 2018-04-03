@@ -284,6 +284,7 @@ public void removeInValidPlacements(){
 			for(int i = 0; i<5; i++){
 				if (i != m.row){
 					if (BoxSpawner.instance.IsPositionEmpty(i,m.column) && ValidationManager.PositioningValidation(i, m.column)){
+						if (ValidationManager.RowValidation(i,m.column, pieceval+m.pieceValue) && ValidationManager.ColumnValidation(i,m.column, pieceval+m.pieceValue))
 						{
 							secondMoves.Add(new Move{
 								row = i, column = m.column,
@@ -298,6 +299,7 @@ public void removeInValidPlacements(){
 			for (int i = 0; i < 5; i ++){
 				if (i !=m.column){
 					if (BoxSpawner.instance.IsPositionEmpty(m.row,i) && ValidationManager.PositioningValidation(m.row, i)){
+						if (ValidationManager.RowValidation(m.row,i,pieceval+m.pieceValue) && ValidationManager.ColumnValidation(m.row,i,pieceval+m.pieceValue)){
 							secondMoves.Add(new Move{
 								row = m.row, column = i,
 								pieceIndex = index, pieceValue = pieceval,
