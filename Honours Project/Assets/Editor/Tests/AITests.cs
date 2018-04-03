@@ -89,6 +89,12 @@ public class AITests {
 		}		
 	}
 
+	[Test]
+	public void CheckSecondaryMovesCanBeRetrieved(){
+		Manager.GetComponent<AI_Player>().GetPossibleMoves();
+		Assert.Fail(); 
+	}
+
 	[TearDown]
 	public void TearDown(){
 		GameObject.DestroyImmediate(Manager); 
