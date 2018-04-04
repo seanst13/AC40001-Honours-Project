@@ -63,7 +63,7 @@ public class AI_Player : MonoBehaviour {
 		}
 	}
 
-	public bool setTotalIsRow(int row, int column, int piecevalue){
+	public static bool setTotalIsRow(int row, int column, int piecevalue){
 		if ((ValidationManager.RowTotal(row,column) + piecevalue) != piecevalue){
 			return true;
 		} else {
@@ -184,7 +184,7 @@ public class AI_Player : MonoBehaviour {
 	}
 
 
-	public List<Move> getTotalsCorrect(Move m, int index){
+	public static List<Move> getTotalsCorrect(Move m, int index){
 		int pieceval = int.Parse(PieceManager.pieceArray[index].GetComponentInChildren<Text>().text);
 		List<Move> secondMoves = new List<Move>();
 
@@ -225,10 +225,6 @@ public class AI_Player : MonoBehaviour {
 		secondMoves = Filter.addSecondaryScoring(secondMoves);
 		return secondMoves;
 	}
-	}
-	
-	public bool determineIfOdd(int i){
-		return int.Parse(PieceManager.pieceArray[i].GetComponentInChildren<Text>().text) %2 !=0;
 	}
 
 	void placeMove(){
