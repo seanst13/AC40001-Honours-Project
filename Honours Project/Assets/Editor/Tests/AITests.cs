@@ -94,7 +94,15 @@ public class AITests {
 	[Test]
 	public void CheckSecondaryMovesCanBeRetrieved(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		Assert.Fail(); 
+		Manager.GetComponent<AI_Player>().getSecondPlacements();
+		foreach(Move m in Manager.GetComponent<AI_Player>().returnPossibleMoves()){
+			if (m.secondaryMoves.Count > 0){
+				Assert.IsNotEmpty(m.secondaryMoves);
+			} else{
+				Assert.IsEmpty(m.secondaryMoves);
+			}
+		}
+		
 	}
 
 	[TearDown]
