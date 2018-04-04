@@ -178,57 +178,7 @@ public void removeInValidPlacements(){
 
 		}
 	}
-#region
-	public void obtainSecondPlacements(int pieceIndex, SubMove m){
-		int pieceval = int.Parse(PieceManager.pieceArray[pieceIndex].GetComponentInChildren<Text>().text);
-
-		if (pieceval %2 !=0 && (!ValidationManager.RowValidation(m.row,m.column, pieceval) || !ValidationManager.ColumnValidation(m.row,m.column,pieceval))
-		|| pieceval %2 ==0 && (ValidationManager.RowValidation(m.row,m.column, pieceval) || ValidationManager.ColumnValidation(m.row,m.column,pieceval)))
-		{
-			List <Move> moves = checkForValidMoves(m, pieceIndex);
-			if (moves != null) {
-				moves.Sort(delegate(Move a , Move b){
-				return a.totalScore.CompareTo(b.totalScore);});
-				possiblemoves[possiblemoves.IndexOf(m)].secondaryMoves.AddRange(moves);
-			}
-		}
-
-	}
-
-	public List<Move> checkForValidMoves(SubMove m, int pieceindex){
-		int pieceval = int.Parse(PieceManager.pieceArray[pieceindex].GetComponentInChildren<Text>().text);
-		List <Move> posSecondMoves = new List<Move>();
-		//Row Checks
-		for (int i = 0; i < 5; i++){
-			if (ValidationManager.RowValidation(i, m.column, pieceval) && ValidationManager.ColumnValidation(i,m.column, pieceval)
-			&& (BoxSpawner.instance.IsPositionEmpty(i,m.column) && ValidationManager.PositioningValidation(i,m.column))){
-				posSecondMoves.Add(new Move{
-					row = i, column = m.column, pieceValue = pieceval, pieceIndex = pieceindex, totalScore =  m.pieceValue + ValidationManager.RowTotal(i, m.column) + pieceval,
-					 totalIsRow = true
-				});
-			}
-		}
-
-		//Col checks
-		for (int i = 0; i < 5; i++){
-			if (ValidationManager.RowValidation(m.row, i, pieceval) && ValidationManager.ColumnValidation(m.row,i, pieceval)
-			&& (BoxSpawner.instance.IsPositionEmpty(m.row,i) && ValidationManager.PositioningValidation(m.row, i))){
-				posSecondMoves.Add(new Move{
-					row = m.row, column = i, pieceValue = pieceval, pieceIndex = pieceindex, totalScore = m.pieceValue + ValidationManager.columnTotal(m.row, i) + pieceval,
-					totalIsRow = false
-				});
-			}
-		}
-		//Check if its null
-
-		if (posSecondMoves.Count == 0){
-			return null;
-		} else {
-			return posSecondMoves;
-		}
-
-	}
-#endregion
+	
 	public void filterForSecondaryPositions(int index){
 		foreach (SubMove m in possiblemoves){
 			List<Move> moves = new List<Move>(); 
