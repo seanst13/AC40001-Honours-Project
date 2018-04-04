@@ -148,7 +148,9 @@ public class AI_Player : MonoBehaviour {
 		}
 			if (moves !=null){
 				moves.Sort(delegate(Move a , Move b){
-				return a.totalScore.CompareTo(b.totalScore);});
+					return a.totalScore.CompareTo(b.totalScore);
+					}
+				);
 				m.returnSecondaryMoves().AddRange(moves); 
 			}
 		}
