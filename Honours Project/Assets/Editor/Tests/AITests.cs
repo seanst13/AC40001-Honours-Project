@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic; 
+using UnityEngine;
 using UnityEditor;
 using NUnit.Framework;
 
@@ -13,6 +14,7 @@ public class AITests {
 		Manager.AddComponent<NumberBag>();
 		Manager.AddComponent<PieceManager>(); 
 		Manager.AddComponent<ValidationManager>();
+		Manager.AddComponent<Filter>(); 
 
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
 		Manager.GetComponent<PieceManager>().setUp(); 
@@ -45,7 +47,7 @@ public class AITests {
 	public void CheckValidFilterWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Manager.GetComponent<AI_Player>().removeInValidPlacements();
+		Filter.removeInValidPlacements(Manager.GetComponent<AI_Player>().returnPossibleMoves());
 		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
 		Assert.Less(afterFilter,beforeFilter);
 	}
@@ -54,7 +56,7 @@ public class AITests {
 	public void CheckEvenFilterWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Manager.GetComponent<AI_Player>().removeCompleteEvenTotals();
+		Filter.removeCompleteEvenTotals(Manager.GetComponent<AI_Player>().returnPossibleMoves());
 		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
 		Assert.LessOrEqual(afterFilter,beforeFilter);
 	}
@@ -62,12 +64,12 @@ public class AITests {
 	[Test]
 	public void checkSecondaryScoringWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		Manager.GetComponent<AI_Player>().removeInValidPlacements();
-		Manager.GetComponent<AI_Player>().removeCompleteEvenTotals();
+		Filter.removeInValidPlacements(Manager.GetComponent<AI_Player>().returnPossibleMoves());
+		Filter.removeCompleteEvenTotals(Manager.GetComponent<AI_Player>().returnPossibleMoves());
 
 		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
 			int valbefore = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
-			Manager.GetComponent<AI_Player>().addSecondaryScoring(); 
+			Filter.addSecondaryScoring(Manager.GetComponent<AI_Player>().returnPossibleMoves()); 
 			int valafter = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
 			Assert.GreaterOrEqual(valafter,valbefore);
 		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
