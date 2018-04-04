@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Filter: MonoBehaviour{
-
  public static List<Move> addSecondaryScoring(List<Move> possiblemoves){
 		foreach (Move m in possiblemoves){
 			if ((ValidationManager.RowTotal(m.row, m.column) + m.pieceValue ) == m.totalScore){

@@ -96,10 +96,10 @@ public class AITests {
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		Manager.GetComponent<AI_Player>().getSecondPlacements();
 		foreach(Move m in Manager.GetComponent<AI_Player>().returnPossibleMoves()){
-			if (m.secondaryMoves.Count > 0){
-				Assert.IsNotEmpty(m.secondaryMoves);
+			if (m.returnSizeOfSecondaryMoves() > 0){
+				Assert.IsNotEmpty(m.returnSecondaryMoves());
 			} else{
-				Assert.IsEmpty(m.secondaryMoves);
+				Assert.IsEmpty(m.returnSecondaryMoves());
 			}
 		}
 		

@@ -90,8 +90,8 @@ public class AI_Player : MonoBehaviour {
 	public void DisplayPossibleMoves(){
 		foreach(Move m in possiblemoves){
 			Debug.Log("Possible Move: " + m.pieceValue + " at [" + m.row + "," + m.column + "], scoring: " + m.totalScore);
-			if (m.secondaryMoves.Count != 0){
-				Debug.Log("Possible Secondary Moves:" + m.secondaryMoves.Count);
+			if (m.returnSizeOfSecondaryMoves() != 0){
+				Debug.Log("Possible Secondary Moves:" + m.returnSizeOfSecondaryMoves());
 
 			} else {
 				Debug.Log("No Secondary moves Possible");
@@ -126,9 +126,6 @@ public class AI_Player : MonoBehaviour {
 		return total;
 	}
 
-
-	
-
 	public void getSecondPlacements(){
 		foreach(Move m in possiblemoves){
 			for(int i = 0; i < PieceManager.pieceArray.Length; i++){
@@ -152,7 +149,7 @@ public class AI_Player : MonoBehaviour {
 			if (moves !=null){
 				moves.Sort(delegate(Move a , Move b){
 				return a.totalScore.CompareTo(b.totalScore);});
-				m.secondaryMoves.AddRange(moves); 
+				m.returnSecondaryMoves().AddRange(moves); 
 			}
 		}
 	}
@@ -239,10 +236,10 @@ public class AI_Player : MonoBehaviour {
 
 		PieceManager.instance.pieceClicked(possiblemoves[max].pieceIndex);
 		BoxClick.tempAddPiece(possiblemoves[max].row,possiblemoves[max].column);
-		if (possiblemoves[max].secondaryMoves.Count != 0){
-			int secondMax = possiblemoves[max].secondaryMoves.Count-1;
-			PieceManager.instance.pieceClicked(possiblemoves[max].secondaryMoves[secondMax].pieceIndex);
-			BoxClick.tempAddPiece(possiblemoves[max].secondaryMoves[secondMax].row,possiblemoves[max].secondaryMoves[secondMax].column);
+		if (possiblemoves[max].returnSizeOfSecondaryMoves() != 0){
+			int secondMax = possiblemoves[max].returnSizeOfSecondaryMoves()-1;
+			PieceManager.instance.pieceClicked(possiblemoves[max].returnSecondaryMoves()[secondMax].pieceIndex);
+			BoxClick.tempAddPiece(possiblemoves[max].returnSecondaryMoves()[secondMax].row,possiblemoves[max].returnSecondaryMoves()[secondMax].column);
 		}
 		TurnManagement.instance.checkIfValid();
 	}
