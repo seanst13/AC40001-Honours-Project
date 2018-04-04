@@ -60,7 +60,7 @@ public class TurnManagement : MonoBehaviour {
 			PlacedPieceManager.instance.returnPlacedPieces().Clear();
 			Debug.Log("INCREMENT TURN - CLEARED LIST");
 			incrementTurn();
-		} else if (validplays == 0) {
+		} else {
 			PlacedPieceManager.instance.ClearPlacedPieces(); 
 			if(playerNumber == 2){
 				Debug.Log("Your move is still some how completely invalid. Explain plz.");
@@ -110,8 +110,8 @@ public class TurnManagement : MonoBehaviour {
 
 	public bool OddCheck(int row, int column){
 		if (BoxSpawner.instance.returnValueAtPosition(row,column) != ""){
-			return ValidationManager.newRowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
-			&& ValidationManager.newColValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
+			return ValidationManager.RowValidation(row, column, int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)))
+			&& ValidationManager.ColumnValidation(row,column,int.Parse(BoxSpawner.instance.returnValueAtPosition(row,column)));
 		} else {
 			return false; 
 		}
