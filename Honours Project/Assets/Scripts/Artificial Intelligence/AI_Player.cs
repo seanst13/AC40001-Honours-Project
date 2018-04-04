@@ -91,9 +91,8 @@ public class AI_Player : MonoBehaviour {
 		foreach(Move m in possiblemoves){
 			Debug.Log("Possible Move: " + m.pieceValue + " at [" + m.row + "," + m.column + "], scoring: " + m.totalScore);
 			if (m.secondaryMoves.Count != 0){
-			foreach(Move n in m.secondaryMoves){
-				Debug.Log("Possible Secondary Move: " + n.pieceValue + " at [" + n.row + "," + n.column + "], scoring: " + n.totalScore);
-			}
+				Debug.Log("Possible Secondary Moves:" + m.secondaryMoves.Count);
+
 			} else {
 				Debug.Log("No Secondary moves Possible");
 			}
@@ -106,6 +105,8 @@ public class AI_Player : MonoBehaviour {
 			if (ShuffleCounter == 2){
 				ShuffleCounter = 0;
 				PieceManager.instance.SwapPieces(Random.Range(0,PieceManager.pieceArray.Length-1));
+				TurnManagement.instance.skipTurn();
+
 			} else {
 				TurnManagement.instance.skipTurn();
 			}
