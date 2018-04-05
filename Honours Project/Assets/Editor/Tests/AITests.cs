@@ -43,7 +43,6 @@ public class AITests {
 		Assert.Less(afterFilter,beforeFilter);
 	}
 
-
 	[Test]
 	public void CheckIfSortingWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();

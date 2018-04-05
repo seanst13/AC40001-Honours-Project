@@ -4,7 +4,6 @@ using UnityEditor;
 using NUnit.Framework;
 
 public class FilterTests {
-
 	GameObject filters;
 	[SetUp]
 	public void SetUp(){
