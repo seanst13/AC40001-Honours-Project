@@ -221,8 +221,8 @@ public class AI_Player : MonoBehaviour {
 			return null; 
 		} else {
 			List<Move> moves = Filter.filterEvenSecondTotals(secondMoves); 
-			secondMoves = Filter.addSecondaryScoring(moves);
-			return secondMoves;
+			List<Move> filteredEven = Filter.addSecondaryScoring(moves);
+			return filteredEven;
 		}
 	}
 
