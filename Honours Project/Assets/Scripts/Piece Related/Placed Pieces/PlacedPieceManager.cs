@@ -48,7 +48,8 @@ public class PlacedPieceManager : MonoBehaviour {
 		foreach(Piece p in pieces){
 			if (p.position == BoxSpawner.instance.returnNameAtPosition(row,column)){
 				PieceManager.pieceArray[p.index].SetActive(true);
-				placedPieces.RemoveAt(pieces.IndexOf(p));
+			} else {
+				placedPieces.Add(p); 
 			}
 		}
 

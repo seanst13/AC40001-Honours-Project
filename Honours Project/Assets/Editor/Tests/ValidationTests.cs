@@ -92,10 +92,38 @@ public class ValidationTests {
 		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
 	}
 
-		[Test]
+	[Test]
 	public void CheckSecondaryRowsFail(){
 		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
 		Assert.True(ValidationManager.secondaryColumnCheck(2,3));
+	}
+
+	[Test]
+	public void CheckRowAndColumnValidationPass(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,4,4);
+		Assert.True(ValidationManager.RowValidation(2,3,4) && ValidationManager.ColumnValidation(2,3,4));
+	}
+
+	[Test]
+	public void CheckRowInvalidColumnValid(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,3);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,4,1);
+		Assert.False(ValidationManager.RowValidation(2,3,4) && ValidationManager.ColumnValidation(2,3,4));
+	}
+
+	[Test]
+	public void CheckRowValidColumnInValid(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,2);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,4,2);
+		Assert.False(ValidationManager.RowValidation(2,3,4) && ValidationManager.ColumnValidation(2,3,4));		
+	}
+
+	[Test]
+	public void CheckRowAndColumnValidationFail(){
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(1,3,2);
+		Validator.GetComponent<BoxSpawner>().setvalueAtPosition(2,4,1);
+		Assert.False(ValidationManager.RowValidation(2,3,4) && ValidationManager.ColumnValidation(2,3,4));
 	}
 
 	[TearDown]

@@ -175,14 +175,7 @@ public class AI_Player : MonoBehaviour {
 				}
 			}
 		}
-
-		if (secondMoves.Count == 0){
-			return null;
-		} else{
-			secondMoves = Filter.filterEvenSecondTotals(secondMoves); 
-			secondMoves = Filter.addSecondaryScoring(secondMoves);
-			return secondMoves; 
-		}
+	return FilterAndSeconaryScore(secondMoves);
 	}
 
 
@@ -220,13 +213,17 @@ public class AI_Player : MonoBehaviour {
 				}
 			}
 		}
-	if (secondMoves.Count ==0)
-		{	return null; }
-	else {
-		secondMoves = Filter.filterEvenSecondTotals(secondMoves); 
-		secondMoves = Filter.addSecondaryScoring(secondMoves);
-		return secondMoves;
+		return FilterAndSeconaryScore(secondMoves);
 	}
+
+	public static List<Move> FilterAndSeconaryScore(List<Move> secondMoves){
+		if (secondMoves.Count ==0){	
+			return null; 
+		} else {
+			List<Move> moves = Filter.filterEvenSecondTotals(secondMoves); 
+			List<Move> filteredEven = Filter.addSecondaryScoring(moves);
+			return filteredEven;
+		}
 	}
 
 	void placeMove(){

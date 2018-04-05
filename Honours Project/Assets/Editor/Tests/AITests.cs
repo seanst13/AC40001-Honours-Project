@@ -44,40 +44,6 @@ public class AITests {
 	}
 
 	[Test]
-	public void CheckValidFilterWorks(){
-		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Filter.removeInValidPlacements(Manager.GetComponent<AI_Player>().returnPossibleMoves());
-		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Assert.Less(afterFilter,beforeFilter);
-	}
-
-	[Test]
-	public void CheckEvenFilterWorks(){
-		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		int beforeFilter = Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Filter.removeCompleteEvenTotals(Manager.GetComponent<AI_Player>().returnPossibleMoves());
-		int afterFilter =  Manager.GetComponent<AI_Player>().returnPossibleMoves().Count;
-		Assert.LessOrEqual(afterFilter,beforeFilter);
-	}
-
-	[Test]
-	public void checkSecondaryScoringWorks(){
-		Manager.GetComponent<AI_Player>().GetPossibleMoves();
-		Filter.removeInValidPlacements(Manager.GetComponent<AI_Player>().returnPossibleMoves());
-		Filter.removeCompleteEvenTotals(Manager.GetComponent<AI_Player>().returnPossibleMoves());
-
-		if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count >0){
-			int valbefore = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
-			Filter.addSecondaryScoring(Manager.GetComponent<AI_Player>().returnPossibleMoves()); 
-			int valafter = Manager.GetComponent<AI_Player>().returnScoreAtPosition(0);
-			Assert.GreaterOrEqual(valafter,valbefore);
-		} else if (Manager.GetComponent<AI_Player>().returnPossibleMoves().Count == 0){
-			Assert.IsEmpty(Manager.GetComponent<AI_Player>().returnPossibleMoves());
-		}		
-	}
-
-	[Test]
 	public void CheckIfSortingWorks(){
 		Manager.GetComponent<AI_Player>().GetPossibleMoves();
 		Manager.GetComponent<AI_Player>().filterAndSortMoves();
