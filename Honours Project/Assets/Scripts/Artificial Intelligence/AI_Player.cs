@@ -220,8 +220,8 @@ public class AI_Player : MonoBehaviour {
 		if (secondMoves.Count ==0){	
 			return null; 
 		} else {
-			secondMoves = Filter.filterEvenSecondTotals(secondMoves); 
-			secondMoves = Filter.addSecondaryScoring(secondMoves);
+			List<Move> moves = Filter.filterEvenSecondTotals(secondMoves); 
+			secondMoves = Filter.addSecondaryScoring(moves);
 			return secondMoves;
 		}
 	}
