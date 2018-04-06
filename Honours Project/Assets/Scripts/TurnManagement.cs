@@ -8,7 +8,6 @@ public class TurnManagement : MonoBehaviour {
 	public GameObject EndTurn;
 	private GameObject turnText;
 	private GameObject timerText;
-	private int Time;
 	public static int playerNumber;
 	public static TurnManagement instance;
 
@@ -180,7 +179,7 @@ public class TurnManagement : MonoBehaviour {
 	}
 
 	public IEnumerator countdown(int value){
-		Time = value;
+		int Time = value;
 		while (Time > 0){
 			timerText.GetComponent<Text>().text = Time.ToString();
 			yield return new WaitForSeconds(1.0f);

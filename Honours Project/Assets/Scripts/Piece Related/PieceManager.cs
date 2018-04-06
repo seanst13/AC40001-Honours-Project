@@ -17,6 +17,7 @@ public class PieceManager : MonoBehaviour {
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
+	private int bothPlayersEmpty = 0; 
 #endregion
 #region Set Up
 	void Start () {
@@ -118,13 +119,19 @@ public class PieceManager : MonoBehaviour {
 		if (NumberBag.numbers.Count == 0){
 			int usedpieces = 0; 
 			for(int i = 0; i < pieceArray.Length; i++){
-				if (!pieceArray[i].activeInHierarchy)
+				if (!pieceArray[i].activeInHierarchy){
 					usedpieces++;
+				}	
 
 			}
-
-			if (usedpieces == pieceArray.Length-1){
+			
+			if (usedpieces == pieceArray.Length){
+				bothPlayersEmpty++;
+				if (bothPlayersEmpty == 2){
 				ErrorManagement.instance.ShowError("YOU HAVE ENDED THE GAME");
+				} else {
+					TurnManagement.instance.incrementTurn();
+				}
 			}
 		}
 	}
