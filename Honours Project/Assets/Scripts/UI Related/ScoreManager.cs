@@ -7,8 +7,8 @@ public class ScoreManager : MonoBehaviour {
 	public static ScoreManager instance;
 	public GameObject score1;
 	public GameObject score2;
-	public int playerOneScore;
-	public int playerTwoScore; 
+	private int playerOneScore;
+	private int playerTwoScore; 
 
 	// Use this for initialization
 	void Start () {
@@ -31,9 +31,17 @@ public class ScoreManager : MonoBehaviour {
 		} else if (player == 2){
 			playerTwoScore += value; 
 			score2.GetComponent<Text>().text = playerTwoScore.ToString();
-		}
+		}		
+	}
 
-		
+	public int returnPlayerScore(int player){
+		if (player == 1){
+			return playerOneScore;
+		} else if (player == 2){
+			return playerTwoScore; 
+		} else {
+			return -1; 
+		}
 	}
 
 

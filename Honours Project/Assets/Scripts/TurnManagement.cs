@@ -21,7 +21,7 @@ public class TurnManagement : MonoBehaviour {
 		instance = this;
 		turnCounter = 0;
 		playerNumber = 0;
-		incrementTurn();
+		startNewTurn();
 	}
 
 	public void checkIfValid(){
@@ -160,6 +160,14 @@ public class TurnManagement : MonoBehaviour {
 
 	public void incrementTurn(){
 		StopAllCoroutines();
+		if (!EndGame.gridIsComplete()){
+			startNewTurn();
+		} else {
+			EndGame.determineWinner();
+		}
+	}
+
+	public void startNewTurn(){
 		if (playerNumber != 0){
 			StoredPieceManager.instance.addToStoredPieces();
 			ChangePlayer(); 
