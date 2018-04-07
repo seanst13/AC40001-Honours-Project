@@ -29,7 +29,7 @@ public class EndGame : MonoBehaviour {
 
 		if (p1Score > p2Score){
 			//Player 1 is the Winner
-		} else if (p1Score < p2Score){
+		} else if (p2Score > p1Score){
 			//Player 2 is the Winner
 		} else if (p1Score == p2Score){
 			//Neither Win - it is a draw. 
