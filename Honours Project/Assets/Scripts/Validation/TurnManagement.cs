@@ -21,6 +21,7 @@ public class TurnManagement : MonoBehaviour {
 		instance = this;
 		turnCounter = 0;
 		playerNumber = 0;
+		EndGame.instance.disableScreen();
 		startNewTurn();
 	}
 
@@ -163,7 +164,7 @@ public class TurnManagement : MonoBehaviour {
 		if (!EndGame.gridIsComplete()){
 			startNewTurn();
 		} else {
-			EndGame.determineWinner();
+			EndGame.instance.determineWinner();
 		}
 	}
 
