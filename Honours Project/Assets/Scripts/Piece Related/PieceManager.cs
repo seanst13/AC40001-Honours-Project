@@ -74,6 +74,7 @@ public class PieceManager : MonoBehaviour {
 			}
 		} else if (NumberBag.numbers.Count == 0){
 			pieceArray[pieceIndex].SetActive(false);
+			checkIfPiecesAreEmpty();
 			Debug.Log("The list is Null. ");
 		}
 	}
@@ -116,31 +117,13 @@ public class PieceManager : MonoBehaviour {
 			}
 		}
 
-		if (NumberBag.numbers.Count == 0){
-			int usedpieces = 0; 
-			for(int i = 0; i < pieceArray.Length; i++){
-				if (!pieceArray[i].activeInHierarchy){
-					usedpieces++;
-				}	
-
-			}
-			
-			if (usedpieces == pieceArray.Length){
-				bothPlayersEmpty++;
-				if (bothPlayersEmpty == 2){
-				ErrorManagement.instance.ShowError("YOU HAVE ENDED THE GAME");
-				} else {
-					TurnManagement.instance.incrementTurn();
-				}
-			}
-		}
 	}
 
 #endregion
 	public void pieceClicked(int val){
 		if(!swapSelected){
 			checkIfSelected(val);
-		} else if (swapSelected){
+		} else {
 			if (swap.Length != pieceArray.Length){
 				if(!swap.Contains(val.ToString())){
 					swap = swap + val.ToString();
@@ -211,4 +194,26 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
+
+	public void checkIfPiecesAreEmpty(){
+		if (NumberBag.numbers.Count == 0){
+			int usedpieces = 0; 
+			for(int i = 0; i < pieceArray.Length; i++){
+				if (!pieceArray[i].activeInHierarchy){
+					usedpieces++;
+				}	
+
+			}
+
+			if (usedpieces == pieceArray.Length){
+				bothPlayersEmpty++;
+				if (bothPlayersEmpty == 2){
+					EndGame.instance.determineWinner();
+				} else {
+					TurnManagement.instance.incrementTurn();
+				}
+			}
+		}
+	}
+
 }
