@@ -5,14 +5,20 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class EndGame: MonoBehaviour {
-	public GameObject victoryScreen; 
-	public Text WinnerText; 
+	private GameObject victoryScreen; 
+	private GameObject WinnerText; 
 	public static EndGame instance;
 
 	private void Awake() {
-		instance = this; 	
+		setInstance();	
 	} 
 
+	public void setInstance(){
+		instance = this; 
+		WinnerText = GameObject.Find("WinnerText"); 
+		victoryScreen = GameObject.Find("VictoryPanel");
+		
+	}
 	public static bool gridIsComplete(){
 		int filledpieces = 0; 
 
@@ -35,11 +41,13 @@ public class EndGame: MonoBehaviour {
 		victoryScreen.SetActive(false);
 	}
 
+	public void enableScreen(){
+		victoryScreen.SetActive(true);
+	}
+
 	public void determineWinner(){
 		int p1Score = ScoreManager.instance.returnPlayerScore(1);
 		int p2Score = ScoreManager.instance.returnPlayerScore(2);
-
-		victoryScreen.SetActive(true);
 
 		if (p1Score > p2Score){
 			DisplayWinner(1);
@@ -52,9 +60,9 @@ public class EndGame: MonoBehaviour {
 
 	 void DisplayWinner(int winner){
 		if (winner > 0){
-			WinnerText.text = "Player " + winner + " is the winner!";
+			WinnerText.GetComponent<Text>().text = "Player " + winner + " is the winner!";
 		} else {
-			WinnerText.text = "It is a tie!";
+			WinnerText.GetComponent<Text>().text = "It is a tie!";
 		}
 		
 	}

@@ -18,6 +18,7 @@ public class TurnManagementTests {
 		Manager.AddComponent<ValidationManager>(); 
 		Manager.AddComponent<AI_Player>();
 		Manager.AddComponent<ScoreManager>(); 
+		Manager.AddComponent<EndGame>(); 
 
 
 		Manager.GetComponent<NumberBag>().GenerateNumbers();
@@ -28,13 +29,13 @@ public class TurnManagementTests {
 
 		Manager.GetComponent<PlacedPieceManager>().SetUp(); 
 
-		Manager.GetComponent<ScoreManager>().score1 = GameObject.Find("PlayerScore"); 
-		Manager.GetComponent<ScoreManager>().score2 = GameObject.Find("ComputerScore");
 		Manager.GetComponent<ScoreManager>().setup();  
 
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
 
 		Manager.GetComponent<AI_Player>().SetUp();
+
+		Manager.GetComponent<EndGame>().setInstance();
 
 		Manager.GetComponent<TurnManagement>().setUp();	
 	}
@@ -63,6 +64,7 @@ public class TurnManagementTests {
 
 	[TearDown]
 	public void TearDown(){
+		Manager.GetComponent<EndGame>().enableScreen();
 		GameObject.DestroyImmediate(Manager);
 	}	
 }

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
 	public static ScoreManager instance;
-	public GameObject score1;
-	public GameObject score2;
+	private GameObject score1;
+	private GameObject score2;
 	private int playerOneScore;
 	private int playerTwoScore; 
 
@@ -19,6 +19,10 @@ public class ScoreManager : MonoBehaviour {
 		playerOneScore = 0;
 		playerTwoScore = 0;  
 		instance = this;
+
+		score1 = GameObject.Find("PlayerScore");
+		score2 = GameObject.Find("ComputerScore"); 
+
 		setPlayerScore(playerOneScore, 1);
 		setPlayerScore(playerOneScore, 2);
 	}
