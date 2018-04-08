@@ -41,7 +41,7 @@ public class TurnManagementTests {
 	}
 	[Test]
 	public void CheckIfPlayerNumberUpdates() {
-		Assert.AreEqual(1, Manager.GetComponent<TurnManagement>().returnPlayerNumber());
+		Assert.AreEqual(1, TurnManagement.returnPlayerNumber());
 	}
 
 	[Test]
@@ -64,7 +64,7 @@ public class TurnManagementTests {
 
 	[TearDown]
 	public void TearDown(){
-		Manager.GetComponent<EndGame>().enableScreen();
+		Manager.GetComponent<EndGame>().enableAll();
 		GameObject.DestroyImmediate(Manager);
 	}	
 }

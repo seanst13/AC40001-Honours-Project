@@ -17,7 +17,6 @@ public class PieceManager : MonoBehaviour {
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
-	private int bothPlayersEmpty = 0; 
 #endregion
 #region Set Up
 	void Start () {

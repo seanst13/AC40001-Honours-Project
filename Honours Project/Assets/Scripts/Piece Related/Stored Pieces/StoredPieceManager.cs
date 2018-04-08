@@ -23,7 +23,7 @@ public void addToStoredPieces(){
 		for(int i = 0; i < PieceManager.pieceArray.Length; i++){
 			stored.Add(new StoredPiece{
 				pieceValue = PieceManager.pieceArray[i].GetComponentInChildren<Text>().text,
-				playerNumber = TurnManagement.playerNumber,
+				playerNumber = TurnManagement.returnPlayerNumber(),
 				pieceArrayIndex = i
 				}
 			);
@@ -46,7 +46,7 @@ public void addToStoredPieces(){
 	public void checkIfStoredPiecesMatch(){
 		string indexes = ""; 
 		foreach (StoredPiece piece in stored){
-			if (piece.playerNumber == TurnManagement.playerNumber){
+			if (piece.playerNumber == TurnManagement.returnPlayerNumber()){
 				indexes += stored.IndexOf(piece).ToString();
 			}
 		}
@@ -92,7 +92,7 @@ public void addToStoredPieces(){
 
 	public bool piecesAreSwapped(){
 		foreach (StoredPiece p in stored){
-			if (p.playerNumber == TurnManagement.playerNumber){
+			if (p.playerNumber == TurnManagement.returnPlayerNumber()){
 				return false; 
 			}
 		}

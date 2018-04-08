@@ -52,7 +52,7 @@ public class StoredPiecesTests {
 
 	[TearDown]
 	public void TearDown(){
-		Manager.GetComponent<EndGame>().enableScreen();
+		Manager.GetComponent<EndGame>().enableAll();
 		GameObject.DestroyImmediate(Manager);
 	}
 }
