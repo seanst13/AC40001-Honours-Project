@@ -8,8 +8,9 @@ public class TurnManagement : MonoBehaviour {
 	public GameObject EndTurn;
 	private GameObject turnText;
 	private GameObject timerText;
-	public static int playerNumber;
+	private static int playerNumber;
 	public static TurnManagement instance;
+	private int skipCounter; 
 
 	private void Start() {
 		setUp();
@@ -21,7 +22,8 @@ public class TurnManagement : MonoBehaviour {
 		instance = this;
 		turnCounter = 0;
 		playerNumber = 0;
-		EndGame.instance.disableScreen();
+		EndGame.instance.disableVictoryScreen();
+		EndGame.instance.DisableEndGame();
 		startNewTurn();
 	}
 
@@ -40,6 +42,7 @@ public class TurnManagement : MonoBehaviour {
 			}
 		}
 		if (validplays == PlacedPieceManager.instance.returnPlacedPieces().Count){
+			resetSkipCounter(); 
 			if (validplays == 1){
 				foreach(Piece placement in PlacedPieceManager.instance.returnPlacedPieces()){
 					row = int.Parse(placement.position.Substring(0,1));
@@ -179,12 +182,15 @@ public class TurnManagement : MonoBehaviour {
 		turnCounter++;
 		Debug.Log("TURN COUNTER " + turnCounter);
 		turnText.GetComponent<Text>().text = "Turn " + turnCounter;
-		if (playerNumber ==2){
-			AI_Player.instance.GetPossibleMoves();
-			AI_Player.instance.makeMove();
-		} 
-		StartCoroutine(countdown(60));
-		
+		if (EndGame.instance.checkIfCurrentPlayerIsEmpty()){
+			incrementTurn();
+		} else {
+			if (playerNumber ==2){
+				AI_Player.instance.GetPossibleMoves();
+				AI_Player.instance.makeMove();
+			} 
+			StartCoroutine(countdown(60));
+		}
 	}
 
 	public IEnumerator countdown(int value){
@@ -211,10 +217,20 @@ public class TurnManagement : MonoBehaviour {
 
 	public void skipTurn(){
 		PlacedPieceManager.instance.ClearPlacedPieces();
-		incrementTurn();
+		skipCounter++; 
+
+		if (skipCounter == 3){
+			EndGame.instance.EnableEndGame(); 
+		} else {
+			incrementTurn();
+		}
 	}
 
-	public int returnPlayerNumber(){
+	public void resetSkipCounter(){
+		skipCounter = 0; 
+	}
+
+	public static int returnPlayerNumber(){
 		return playerNumber;
 	}
 

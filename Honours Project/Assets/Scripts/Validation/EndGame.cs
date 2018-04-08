@@ -9,6 +9,8 @@ public class EndGame: MonoBehaviour {
 	private GameObject WinnerText; 
 	public static EndGame instance;
 
+	private GameObject endGameScreen; 
+
 	private void Awake() {
 		setInstance();	
 	} 
@@ -17,6 +19,7 @@ public class EndGame: MonoBehaviour {
 		instance = this; 
 		WinnerText = GameObject.Find("WinnerText"); 
 		victoryScreen = GameObject.Find("VictoryPanel");
+		endGameScreen = GameObject.Find("EndGamePrompt"); 
 		
 	}
 	public static bool gridIsComplete(){
@@ -37,7 +40,7 @@ public class EndGame: MonoBehaviour {
 		}
 	}
 
-	public void disableScreen(){
+	public void disableVictoryScreen(){
 		victoryScreen.SetActive(false);
 	}
 
@@ -48,6 +51,7 @@ public class EndGame: MonoBehaviour {
 	public void determineWinner(){
 		int p1Score = ScoreManager.instance.returnPlayerScore(1);
 		int p2Score = ScoreManager.instance.returnPlayerScore(2);
+		enableScreen(); 
 
 		if (p1Score > p2Score){
 			DisplayWinner(1);
@@ -74,5 +78,53 @@ public class EndGame: MonoBehaviour {
 	public void QuitGame(){
 		SceneManager.LoadScene("Title Screen");
 	}
+
+	public bool checkIfCurrentPlayerIsEmpty(){
+		if (NumberBag.numbers.Count == 0){
+			int usedpieces = 0; 
+			for(int i = 0; i < PieceManager.pieceArray.Length; i++){
+				if (!PieceManager.IsElementActive(i)){
+					usedpieces++;
+				}	
+			}
+
+			if (usedpieces == PieceManager.pieceArray.Length){
+				return true; 
+			} else {
+				return false; 
+			}
+		} else {
+			return false; 
+		}
+	}
+
+	public void EnableEndGame(){
+		endGameScreen.SetActive(true);
+	}
+
+	public void DisableEndGame(){
+		endGameScreen.SetActive(false);
+	}
+
+	public void disableAll(){
+		DisableEndGame();
+		disableVictoryScreen();
+	}
+
+	public void enableAll(){
+		enableScreen();
+		EnableEndGame();
+	}
+	public void EndGameYes(){
+		DisableEndGame();
+		determineWinner();
+	}
+
+	public void EndGameNo(){
+		DisableEndGame();
+		TurnManagement.instance.resetSkipCounter(); 
+		TurnManagement.instance.incrementTurn();
+	}
+
 
 }
