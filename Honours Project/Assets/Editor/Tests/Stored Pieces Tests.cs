@@ -16,6 +16,7 @@ public class StoredPiecesTests {
 		Manager.AddComponent<ValidationManager>(); 
 		Manager.AddComponent<AI_Player>();
 		Manager.AddComponent<ScoreManager>(); 
+		Manager.AddComponent<EndGame>();
 
 		Manager.GetComponent<StoredPieceManager>().SetUp();
 
@@ -24,6 +25,8 @@ public class StoredPiecesTests {
 		Manager.GetComponent<BoxSpawner>().SetUp(5);
 
 		Manager.GetComponent<PieceManager>().setUp();
+
+		Manager.GetComponent<EndGame>().setInstance(); 
 
 		Manager.GetComponent<TurnManagement>().setUp();
 		 
@@ -49,6 +52,7 @@ public class StoredPiecesTests {
 
 	[TearDown]
 	public void TearDown(){
+		Manager.GetComponent<EndGame>().enableAll();
 		GameObject.DestroyImmediate(Manager);
 	}
 }

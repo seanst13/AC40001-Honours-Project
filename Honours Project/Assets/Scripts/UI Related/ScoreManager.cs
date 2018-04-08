@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
 	public static ScoreManager instance;
-	public GameObject score1;
-	public GameObject score2;
-	public int playerOneScore;
-	public int playerTwoScore; 
+	private GameObject score1;
+	private GameObject score2;
+	private int playerOneScore;
+	private int playerTwoScore; 
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +19,10 @@ public class ScoreManager : MonoBehaviour {
 		playerOneScore = 0;
 		playerTwoScore = 0;  
 		instance = this;
+
+		score1 = GameObject.Find("PlayerScore");
+		score2 = GameObject.Find("ComputerScore"); 
+
 		setPlayerScore(playerOneScore, 1);
 		setPlayerScore(playerOneScore, 2);
 	}
@@ -31,9 +35,17 @@ public class ScoreManager : MonoBehaviour {
 		} else if (player == 2){
 			playerTwoScore += value; 
 			score2.GetComponent<Text>().text = playerTwoScore.ToString();
-		}
+		}		
+	}
 
-		
+	public int returnPlayerScore(int player){
+		if (player == 1){
+			return playerOneScore;
+		} else if (player == 2){
+			return playerTwoScore; 
+		} else {
+			return -1; 
+		}
 	}
 
 

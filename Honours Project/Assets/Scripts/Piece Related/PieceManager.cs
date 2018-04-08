@@ -90,7 +90,7 @@ public class PieceManager : MonoBehaviour {
 		return(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
 	}
 
-	public bool IsElementActive(int index){
+	public static bool IsElementActive(int index){
 		return pieceArray[index].activeInHierarchy;
 	}
 
@@ -100,7 +100,7 @@ public class PieceManager : MonoBehaviour {
 	public static bool returnSelected(){
 		return selected;
 	}
-	public GameObject[] returnPieceArray(){
+	public static GameObject[] returnPieceArray(){
 		return pieceArray; 
 	}
 
@@ -115,25 +115,13 @@ public class PieceManager : MonoBehaviour {
 			}
 		}
 
-		if (NumberBag.numbers.Count == 0){
-			int usedpieces = 0; 
-			for(int i = 0; i < pieceArray.Length; i++){
-				if (!pieceArray[i].activeInHierarchy)
-					usedpieces++;
-
-			}
-
-			if (usedpieces == pieceArray.Length-1){
-				ErrorManagement.instance.ShowError("YOU HAVE ENDED THE GAME");
-			}
-		}
 	}
 
 #endregion
 	public void pieceClicked(int val){
 		if(!swapSelected){
 			checkIfSelected(val);
-		} else if (swapSelected){
+		} else {
 			if (swap.Length != pieceArray.Length){
 				if(!swap.Contains(val.ToString())){
 					swap = swap + val.ToString();
@@ -204,4 +192,6 @@ public class PieceManager : MonoBehaviour {
 		}
 	}
 #endregion
+
+
 }
