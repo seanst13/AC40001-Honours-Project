@@ -18,7 +18,7 @@ public class PieceManagerTests {
 
 	[Test]
 	public void CheckPieceArrayExists() {
-		Assert.IsNotEmpty(Manager.GetComponent<PieceManager>().returnPieceArray());
+		Assert.IsNotEmpty(PieceManager.returnPieceArray());
 	}
 
 	[Test]

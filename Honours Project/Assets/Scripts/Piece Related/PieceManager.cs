@@ -74,7 +74,6 @@ public class PieceManager : MonoBehaviour {
 			}
 		} else if (NumberBag.numbers.Count == 0){
 			pieceArray[pieceIndex].SetActive(false);
-			checkIfPiecesAreEmpty();
 			Debug.Log("The list is Null. ");
 		}
 	}
@@ -92,7 +91,7 @@ public class PieceManager : MonoBehaviour {
 		return(int.Parse(pieceArray[index].GetComponentInChildren<Text>().text));
 	}
 
-	public bool IsElementActive(int index){
+	public static bool IsElementActive(int index){
 		return pieceArray[index].activeInHierarchy;
 	}
 
@@ -102,7 +101,7 @@ public class PieceManager : MonoBehaviour {
 	public static bool returnSelected(){
 		return selected;
 	}
-	public GameObject[] returnPieceArray(){
+	public static GameObject[] returnPieceArray(){
 		return pieceArray; 
 	}
 
@@ -195,25 +194,5 @@ public class PieceManager : MonoBehaviour {
 	}
 #endregion
 
-	public void checkIfPiecesAreEmpty(){
-		if (NumberBag.numbers.Count == 0){
-			int usedpieces = 0; 
-			for(int i = 0; i < pieceArray.Length; i++){
-				if (!pieceArray[i].activeInHierarchy){
-					usedpieces++;
-				}	
-
-			}
-
-			if (usedpieces == pieceArray.Length){
-				bothPlayersEmpty++;
-				if (bothPlayersEmpty == 2){
-					EndGame.instance.determineWinner();
-				} else {
-					TurnManagement.instance.incrementTurn();
-				}
-			}
-		}
-	}
 
 }

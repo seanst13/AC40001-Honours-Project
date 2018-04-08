@@ -66,7 +66,11 @@ public void addToStoredPieces(){
 			int val = int.Parse(i.ToString());
 			Debug.Log("Stored Value at ["+val+"]: " + stored[val].pieceValue);
 			Debug.Log("Text Value at: ["+stored[val].pieceArrayIndex+"]"+ PieceManager.pieceArray[stored[val].pieceArrayIndex].GetComponentInChildren<Text>().text);
+			if (!PieceManager.IsElementActive(stored[val].pieceArrayIndex)){
+				PieceManager.pieceArray[stored[val].pieceArrayIndex].SetActive(true); 
+			}
 			PieceManager.pieceArray[stored[val].pieceArrayIndex].GetComponentInChildren<Text>().text = stored[val].pieceValue;
+
 		}
 
 		if (indexes.Length != PieceManager.pieceArray.Length){

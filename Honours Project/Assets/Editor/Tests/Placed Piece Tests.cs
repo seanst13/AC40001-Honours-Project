@@ -54,7 +54,7 @@ public class PlacedPieceTests {
 		Manager.GetComponent<PlacedPieceManager>().addPieceToList(1,0);
 		Manager.GetComponent<PlacedPieceManager>().reactivatePiece(1,0); 
 
-		Assert.IsTrue(Manager.GetComponent<PieceManager>().IsElementActive(0));
+		Assert.IsTrue(PieceManager.IsElementActive(0));
 	}
 
 	[TearDown]
