@@ -16,28 +16,21 @@ public static bool PositioningValidation(int row, int column){
 	}
 #endregion
 #region Row & Column Validation
-	public static bool RowValidation(int row, int column, int valueofPlacement){
-		if ((!BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
-		|| (BoxSpawner.instance.IsPositionEmpty(row,column+1) && !BoxSpawner.instance.IsPositionEmpty(row,column-1))
-		|| (!BoxSpawner.instance.IsPositionEmpty(row,column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1))){
-			return oddTotalValidation(RowTotal(row,column) + valueofPlacement);
-		} else if (BoxSpawner.instance.IsPositionEmpty(row,column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1)){
+	public static bool RowValidation(int row, int column, int valueofPlacement){		
+		if(BoxSpawner.instance.IsPositionEmpty(row, column+1) && BoxSpawner.instance.IsPositionEmpty(row,column-1)){
 			return true;
-		} else{
-			return false; 
+		} else {
+			return oddTotalValidation(RowTotal(row,column) + valueofPlacement);
 		}
 	}
 
 	public static bool ColumnValidation(int row, int column, int valueofPlacement){
-		if ((!BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
-		|| (BoxSpawner.instance.IsPositionEmpty(row+1,column) && !BoxSpawner.instance.IsPositionEmpty(row-1,column))
-		|| (!BoxSpawner.instance.IsPositionEmpty(row+1,column) && BoxSpawner.instance.IsPositionEmpty(row-1,column))){
-			return oddTotalValidation(columnTotal(row,column) + valueofPlacement);
-		} else if (BoxSpawner.instance.IsPositionEmpty(row+1,column) && BoxSpawner.instance.IsPositionEmpty(row-1,column)){
+		if(BoxSpawner.instance.IsPositionEmpty(row+1, column) && BoxSpawner.instance.IsPositionEmpty(row-1,column)){
 			return true;
-		} else{
-			return false; 
+		} else {
+			return oddTotalValidation(columnTotal(row,column) + valueofPlacement);
 		}
+
 	}	
 
 //Check if the total score for the row is an odd number.

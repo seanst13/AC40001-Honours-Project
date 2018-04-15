@@ -73,8 +73,6 @@ public class BoxSpawner : MonoBehaviour {
 		return gridArray;
 	}
 
-
-
 	public string returnValueAtPosition(int row, int col){
 		return gridArray[row,col].GetComponentInChildren<Text>().text;
 	}
