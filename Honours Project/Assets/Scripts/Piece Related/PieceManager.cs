@@ -17,6 +17,7 @@ public class PieceManager : MonoBehaviour {
 	[Header("Swapping Pieces Related Variables")]
 	private bool swapSelected = false; 
 	private string swap; 
+	private GameObject swapButton; 
 #endregion
 #region Set Up
 	void Start () {
@@ -28,6 +29,7 @@ public class PieceManager : MonoBehaviour {
 		pieceArray = new GameObject[2]; 
 		instance = this; 
 		selected = false;
+		swapButton = GameObject.Find("SwapButton");
 		generatePieces();
 		swap = ""; 
 	}
@@ -38,7 +40,7 @@ public class PieceManager : MonoBehaviour {
 			pieceArray[i] = Instantiate(playingPiece,new Vector3(xposition,110,0), Quaternion.identity,instance.transform);
 			pieceArray[i].transform.name = "P_" + i; 
 			pieceArray[i].transform.SetParent(this.transform, true);
-			xposition = xposition + 80;
+			xposition = xposition + 100;
 			Debug.Log(pieceArray[i].name + " has been instantiated.");
 			setPieceValue(i);
 		}
@@ -113,6 +115,12 @@ public class PieceManager : MonoBehaviour {
 			} else if (!selected) {
 				pieceArray[index].GetComponent<Image>().color = Color.white;
 			}
+		} else {
+			if (swap.Length == 0){
+				swapButton.GetComponentInChildren<Text>().text = "Cancel Swap";
+			} else {
+				swapButton.GetComponentInChildren<Text>().text = "Click to Swap. ";
+			}
 		}
 
 	}
@@ -178,17 +186,22 @@ public class PieceManager : MonoBehaviour {
 
 	public void PerformSwap(){
 		if (swapSelected){ 
-			foreach(char i in swap){
-			 SwapPieces(int.Parse(i.ToString()));
-			 pieceArray[int.Parse(i.ToString())].GetComponent<Image>().color = Color.white;
+			if (swap != ""){
+				foreach(char i in swap){
+				SwapPieces(int.Parse(i.ToString()));
+				pieceArray[int.Parse(i.ToString())].GetComponent<Image>().color = Color.white;
+				}
+				swap = ""; 
+				TurnManagement.instance.skipTurn(); 
 			}
 			swapSelected = false; 
-			swap = ""; 
-			TurnManagement.instance.skipTurn(); 
+			swapButton.GetComponentInChildren<Text>().text = "Swap Pieces"; 
+			
 		} else {
 			pieceArray[index].GetComponent<Image>().color = Color.white;
 			setSelected(false);
 			swapSelected = true; 
+			swapButton.GetComponentInChildren<Text>().text = "Cancel Swap"; 
 		}
 	}
 #endregion
