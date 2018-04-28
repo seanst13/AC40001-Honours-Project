@@ -142,6 +142,7 @@ public class AI_Player : MonoBehaviour {
 			List<Move> moves = new List<Move>(); 
 			if (ValidationManager.RowValidation(m.row,m.column,m.pieceValue) && ValidationManager.ColumnValidation(m.row,m.column,m.pieceValue)){
 				moves = getAddtionalScore(m, index);
+				m.totalScore = moves[moves.Count-1].totalScore;
 			} else if ((!ValidationManager.RowValidation(m.row,m.column,m.pieceValue) && ValidationManager.ColumnValidation(m.row,m.column,m.pieceValue))
 			|| (ValidationManager.RowValidation(m.row,m.column,m.pieceValue) && !ValidationManager.ColumnValidation(m.row,m.column,m.pieceValue))){
 				moves = getTotalsCorrect(m, index);
@@ -194,6 +195,7 @@ public class AI_Player : MonoBehaviour {
 								pieceIndex = index, pieceValue = pieceval,
 								totalScore = m.pieceValue  + ValidationManager.RowTotal(i,m.column) + pieceval
 							});
+							
 						}
 					}
 				}

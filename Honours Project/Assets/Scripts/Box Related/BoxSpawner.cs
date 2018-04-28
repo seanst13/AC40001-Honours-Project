@@ -100,4 +100,8 @@ public class BoxSpawner : MonoBehaviour {
 			}
 		}
 	}
+
+	public void setColourAtPosition(int row, int column, Color32 newColour){
+		gridArray[row,column].GetComponent<Image>().color = newColour; 
+	}
 }

@@ -125,6 +125,23 @@ public class TurnManagement : MonoBehaviour {
 		PieceManager.pieceArray[index].SetActive(true);
 		PieceManager.instance.setPieceValue(index);
 		PieceManager.instance.pieceClicked(index);
+		flashColour(row, column);
+	}
+
+	public IEnumerator flashColour(int row, int column){
+
+		Color32 originalColour = BoxSpawner.gridArray[row,column].GetComponent<Image>().color;
+
+		if (playerNumber == 1){
+			BoxSpawner.instance.setColourAtPosition(row,column, Color.blue);
+		} else {
+			BoxSpawner.instance.setColourAtPosition(row,column,Color.red);
+		}
+
+		yield return new WaitForSeconds(5.0f);
+
+
+		Invoke("BoxSpawner.instance.setColourAtPosition("+row +  "," + column + "," + originalColour + ")" ,3.0f);
 	}
 
 	void addScore(int row, int column){

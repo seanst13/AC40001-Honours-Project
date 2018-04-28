@@ -119,7 +119,7 @@ public class PieceManager : MonoBehaviour {
 			if (swap.Length == 0){
 				swapButton.GetComponentInChildren<Text>().text = "Cancel Swap";
 			} else {
-				swapButton.GetComponentInChildren<Text>().text = "Click to Swap. ";
+				swapButton.GetComponentInChildren<Text>().text = "Click Here to Swap Pieces";
 			}
 		}
 
