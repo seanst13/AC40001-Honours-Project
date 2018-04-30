@@ -64,7 +64,7 @@ public class EndGame: MonoBehaviour {
 
 	 void DisplayWinner(int winner){
 		if (winner == 1){
-			WinnerText.GetComponent<Text>().text = "Congratulations! You the won!";
+			WinnerText.GetComponent<Text>().text = "Congratulations! You have won the game!";
 		} else if (winner == 2){
 			WinnerText.GetComponent<Text>().text = "The Computer won! Better luck next time!";
 		} else {
